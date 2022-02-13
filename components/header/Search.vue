@@ -1,0 +1,79 @@
+<template>
+  <div class="header-search">
+    <form>
+      <div class="header-search-field-wrap">
+        <div class="header-search-field">
+          <input type="text" placeholder="Search" />
+        </div>
+        <div class="header-search-submit">
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 30 30"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              opacity="0.963"
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M11.9818 2.78317C16.0586 2.51246 19.291 4.01637 21.6791 7.29489C23.6147 10.3675 23.9467 13.6097 22.6751 17.0214C22.2787 18.0007 21.7416 18.8894 21.0638 19.6875C23.3588 21.9824 25.6536 24.2773 27.9486 26.5722C28.1968 27.0833 28.1284 27.5422 27.7435 27.9492C27.3529 28.1445 26.9623 28.1445 26.5716 27.9492C24.2767 25.6542 21.9818 23.3594 19.6869 21.0644C16.5985 23.459 13.1903 24.0352 9.46225 22.7929C6.02995 21.4067 3.87172 18.9164 2.98764 15.3222C2.22789 11.0376 3.52672 7.53178 6.88413 4.80465C8.41425 3.69902 10.1135 3.02519 11.9818 2.78317ZM13.0365 4.65817C16.5056 4.81463 19.0545 6.41622 20.683 9.46286C22.2292 13.2671 21.5358 16.5971 18.6029 19.4531C15.9584 21.5636 13.0482 22.0323 9.87241 20.8593C6.57997 19.3248 4.8612 16.737 4.71616 13.0957C4.83641 9.64051 6.41843 7.1112 9.46225 5.50778C10.6067 4.99206 11.7982 4.70886 13.0365 4.65817Z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'HeaderSearch'
+};
+</script>
+
+<style scoped>
+.header-search {
+  margin-right: 40px;
+}
+
+.header-search-field-wrap {
+  position: relative;
+}
+
+.header-search-field input {
+  width: 100%;
+  border-radius: 50px;
+  border: 1px solid transparent;
+  padding: 0 75px 0 25px;
+  height: 44px;
+  background: #F3F1F1;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.header-search-field {
+  width: 300px;
+}
+
+.header-search-submit {
+  position: absolute;
+  right: 8px;
+  top: -1px;
+  width: 44px;
+  height: 44px;
+  margin: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  color: #9A9A9A;
+  transition: all 0.5s;
+  cursor: pointer;
+}
+
+.header-search-submit:hover {
+  color: var(--dark);
+}
+</style>
