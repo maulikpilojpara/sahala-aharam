@@ -73,7 +73,7 @@ $(document).ready(function() {
     }
 });
 $('.offer-carousel.owl-carousel').owlCarousel({
-    loop:true,
+    loop:false,
     margin:20,
     dots:false,
     nav:true,
@@ -156,7 +156,7 @@ $('.testimonial-carousel.owl-carousel').owlCarousel({
     autoplayHoverPause:false,
 });
 $('.certification-carousel.owl-carousel').owlCarousel({
-    loop:true,
+    loop:false,
     dots:false,
     nav:true,
     autoplay:true,

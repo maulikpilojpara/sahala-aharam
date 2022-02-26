@@ -1,5 +1,6 @@
 <template>
-  <section class="mini-section pt-md-0">
+  <section class="mini-section pt-md-0" v-if="homeBanners && homeBanners.length > 0">
+    {{homeBanners}}
     <div class="container">
       <div class="main-slider owl-carousel owl-theme">
         <div class="item">
@@ -96,8 +97,16 @@
 </template>
 
 <script>
+import { mapGetters  } from 'vuex'
+
 export default {
-  name: 'MainBanner'
+  name: 'MainBanner',
+  computed: {
+    ...mapGetters({
+      homeBanners: 'global/getHomeBanners'
+    })
+  }
+  
 };
 </script>
 

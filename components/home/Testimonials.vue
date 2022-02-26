@@ -1,5 +1,5 @@
 <template>
-  <section class="bg-primary">
+  <section class="bg-primary" v-if="testimonials && testimonials.length > 0">
     <div class="section-can-top">
       <img src="/section-can-top.png" class="w-100 d-block" />
     </div>
@@ -21,40 +21,20 @@
       </div>
       <div class="testimonial-carousel-wrap">
         <div class="testimonial-carousel owl-carousel owl-theme">
-          <div class="item">
+          <div class="item" 
+            v-for="(testimonial, index) in testimonials"
+            :key="index">
             <div class="testimonial-box">
               <p>
-                Lorem ipsum is a placeholder text commonly used to demonstrate
-                the visual form of a document or a typeface without relying on
-                meaningful content. Lorem ipsum may be used as a placeholder
-                before the final copy is available.
+                {{testimonial.feedback}}
               </p>
               <div class="testi-user">
                 <div class="inner">
                   <div class="img">
-                    <img src="/avtar.jpg" class="d-block" />
+                    <img :src="testimonial.cust_image ? cust_image : '/avtar.jpg'" class="d-block" />
                   </div>
-                  <h4>Minish Sharma</h4>
-                  <h5>Customer</h5>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="testimonial-box">
-              <p>
-                Lorem ipsum is a placeholder text commonly used to demonstrate
-                the visual form of a document or a typeface without relying on
-                meaningful content. Lorem ipsum may be used as a placeholder
-                before the final copy is available.
-              </p>
-              <div class="testi-user">
-                <div class="inner">
-                  <div class="img">
-                    <img src="/avtar.jpg" class="d-block" />
-                  </div>
-                  <h4>Minish Sharma</h4>
-                  <h5>Customer</h5>
+                  <h4>{{testimonial.customer_name}}</h4>
+                  <h5>{{testimonial.customer_description}}</h5>
                 </div>
               </div>
             </div>
@@ -66,8 +46,16 @@
 </template>
 
 <script>
+import { mapGetters  } from 'vuex'
+
 export default {
   name: 'Testimonials',
+  computed: {
+    ...mapGetters({
+      testimonials: 'global/getTestimonials'
+    })
+  }
+  
 };
 </script>
 

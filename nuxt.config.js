@@ -33,7 +33,9 @@ export default {
       { hid: 'custom', src: 'js/custom.js', defer: true, body: true },
     ]
   },
-
+  serverMiddleware: [
+    { path: "/rest", handler: "~/server-middleware/rest.js" },
+  ],
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     '~/assets/css/owl.carousel.min.css',
