@@ -42,38 +42,3 @@ export default {
   name: 'MinCart'
 };
 </script>
-
-<style scoped>
-.min-cart {
-  margin-right: 35px;
-}
-
-.min-cart-toggle {
-  color: var(--dark);
-  font-weight: 500;
-  line-height: 38px;
-  display: inline-flex;
-  align-items: center;
-}
-
-.min-cart-toggle:hover {
-  color: var(--primary);
-}
-
-.min-cart-toggle .icon {
-  width: 30px;
-  margin-right: 6px;
-}
-
-.min-cart-toggle .cart-budge {
-  min-width: 16px;
-  text-align: center;
-  margin-left: 7px;
-  background: var(--primary);
-  color: #fff;
-  line-height: 16px;
-  border-radius: 50%;
-  font-size: 10px;
-  font-weight: normal;
-}
-</style>
