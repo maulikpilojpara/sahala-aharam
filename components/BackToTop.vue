@@ -20,33 +20,3 @@ export default {
   name: 'BackToTop',
 };
 </script>
-
-<style scoped>
-.scrollToTop {
-  position: fixed;
-  right: 0;
-  bottom: -100px;
-  opacity: 0;
-  width: 36px;
-  height: 36px;
-  background: var(--primary);
-  color: #fff;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 90px 30px;
-  transition: all 0.5s;
-  z-index: 9;
-  padding: 12px;
-}
-
-.scrollToTop:hover {
-  background: var(--dark);
-}
-
-.sticky .scrollToTop {
-  bottom: 0;
-  opacity: 1;
-}
-</style>
