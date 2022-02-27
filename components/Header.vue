@@ -3,10 +3,10 @@
     <div class="container">
       <div class="navbar">
         <div class="header-left">
-          <a href="index.html" class="logo d-xl-none">
+          <nuxt-link to="/" class="logo d-xl-none">
             <img src="/logo.svg" />
             <h3>Organic Stores</h3>
-          </a>
+          </nuxt-link>
         </div>
         <div class="header-right">
           <HeaderSearch />
