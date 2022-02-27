@@ -16,5 +16,17 @@ export default {
     LoginInfo,
     LoginForm
   },
+  mounted() {
+    this.$nextTick(() => {
+      const bodyEle = document.querySelector('body');
+      bodyEle ? bodyEle.classList.add('pt-0') : '';
+    })
+  },
+  beforeDestroy() {
+    this.$nextTick(() => {
+      const bodyEle = document.querySelector('body');
+      bodyEle ? bodyEle.classList.remove('pt-0') : '';
+    })
+  }
 }
 </script>

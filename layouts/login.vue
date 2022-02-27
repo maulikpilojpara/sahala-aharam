@@ -17,12 +17,6 @@ export default {
   components: {
     PageLoader,
     BackToTop: () => import('~/components/BackToTop.vue')
-  },
-  mounted() {
-    this.$nextTick(() => {
-      const bodyEle = document.querySelector('body');
-      bodyEle ? bodyEle.classList.add('pt-0') : '';
-    })
   }
 }
 </script>
