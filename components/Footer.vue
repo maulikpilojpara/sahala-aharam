@@ -8,9 +8,9 @@
         <div class="container">
           <div class="footer-text">
             <div class="footer-logo">
-              <a href="index.html" class="logo">
+              <nuxt-link to="/" class="logo">
                 <img src="/footer-logo.svg" />
-              </a>
+              </nuxt-link>
             </div>
             <p>
               Sahaja Aharam is an effort to connect organic producers and

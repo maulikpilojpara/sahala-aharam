@@ -6,10 +6,10 @@
     </div>
     <div class="sidebar-top-wrap">
       <div class="sidebar-logo">
-        <a href="index.html" class="logo">
+        <nuxt-link to="/" class="logo">
           <img src="/logo.svg" />
           <h3>Organic Stores</h3>
-        </a>
+        </nuxt-link>
       </div>
       <nav>
         <h5>Shop</h5>
@@ -104,12 +104,12 @@
           </li>
         </ul>
         <div class="nav-btn">
-          <a href="#">
+          <nuxt-link to="login">
             <span class="icon"
               ><img src="/nav-icons/nav-login.svg" alt=""
             /></span>
             Login / Sign Up
-          </a>
+          </nuxt-link>
         </div>
       </nav>
     </div>
