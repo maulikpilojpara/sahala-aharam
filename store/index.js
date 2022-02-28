@@ -1,8 +1,9 @@
 export const actions = {
   async nuxtServerInit({ commit }, context) {
+    const appURL = process.env.NODE_ENV !== 'production' ? process.env.APP_URL_LOCAL : process.env.APP_URL_PROD
     const axiosOptions = {
       method: 'GET',
-      url: `${process.env.APP_URL}/api/getGlobalContent`
+      url: `${appURL}/api/getGlobalContent`
     }
     await context.$axios(axiosOptions)
       .then(res => {
