@@ -7,6 +7,7 @@
             <img src="/logo.svg" />
             <h3>Organic Stores</h3>
           </nuxt-link>
+          <h2 v-if="$route.name === 'category'">Health Care</h2>
         </div>
         <div class="header-right">
           <HeaderSearch />
