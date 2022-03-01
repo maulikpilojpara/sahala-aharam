@@ -19,26 +19,26 @@
         ></a>
       </div>
       <div class="product-carousel owl-carousel owl-theme title-nav">
-        <div class="item">
+        <div class="item" v-for="(product, indx) in products" :key="indx">
           <div class="product-box">
             <div class="img">
               <a href="#">
-                <img src="/products/1.jpg" class="d-block" />
+                <img :src="product.image ? product.image : '/logo.svg'" class="d-block" />
               </a>
-              <div class="offer-label">20% Off</div>
+              <!-- <div class="offer-label">20% Off</div> -->
               <div class="product-whishlist">
                 <a href="#"><img src="/wishlist-icon.svg" alt="" /></a>
               </div>
             </div>
             <div class="text">
-              <h3><a href="#">Sahaja Jaggery Blocks</a></h3>
+              <h3><a href="#">{{product.item_name}}</a></h3>
               <div class="price">
-                <span>$7.25</span>
-                <del>$8.50</del>
+                <span>&#8377;{{product.rate}}</span>
+                <!-- <del>$8.50</del> -->
               </div>
-              <div class="reting-wrap">
+              <!-- <div class="reting-wrap">
                 <span style="width: 80%"></span>
-              </div>
+              </div> -->
               <div class="more-link">
                 <a href="#"
                   ><svg
@@ -67,7 +67,7 @@
             </div>
           </div>
         </div>
-        <div class="item">
+        <!-- <div class="item">
           <div class="product-box">
             <div class="img">
               <a href="#">
@@ -306,7 +306,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
