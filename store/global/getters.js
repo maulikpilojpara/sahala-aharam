@@ -10,6 +10,15 @@ const getters = {
   },
   getHomeBanners (state) {
     return state?.commonElements?.message?.banner || []
+  },
+  getMainCategories (state) {
+    return state?.commonElements?.message?.product_group || []
+  },
+  getHomePopularProducts (state) {
+    return state?.commonElements?.message?.popular_product || []
+  },
+  getHomeRecentProducts (state) {
+    return state?.commonElements?.message?.recent_product || []
   }
 }
 export default getters

@@ -1,14 +1,14 @@
 <template>
-  <section class="mini-section pt-0">
+  <section class="mini-section pt-0" v-if="categories && categories.length > 0">
     <div class="container">
       <h2 class="sub-title">Our Category</h2>
       <div class="category-carousel owl-carousel owl-theme title-nav">
-        <div class="item">
+        <div class="item" v-for="(cat, indx) in categories" :key="indx">
           <div class="category-box">
             <div class="icon">
-              <img src="/category-icon/Oils.svg" class="d-block" />
+              <img :src="cat.icon ? cat.icon : '/logo.svg'" class="d-block" />
             </div>
-            <h3>Oils</h3>
+            <h3>{{cat.name}}</h3>
             <div class="more-link">
               <a href="#"
                 ><svg
@@ -27,6 +27,7 @@
             </div>
           </div>
         </div>
+      <!--
         <div class="item">
           <div class="category-box">
             <div class="icon">
@@ -221,14 +222,22 @@
               </a>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import { mapGetters  } from 'vuex'
+
 export default {
   name: 'Category',
+  computed: {
+    ...mapGetters({
+      categories: 'global/getMainCategories'
+    })
+  }
+  
 };
 </script>
