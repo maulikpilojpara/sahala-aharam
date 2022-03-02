@@ -3,6 +3,7 @@
     <div class="container">
       <div class="sub-title-wrap sub-title-with-nav">
         <h2 class="sub-title" v-if="title">{{ title }}</h2>
+        <pre></pre>
         <a href="#" class="title-btn"
           >See All
           <svg
@@ -22,16 +23,20 @@
         <div class="item" v-for="(product, indx) in products" :key="indx">
           <div class="product-box">
             <div class="img">
-              <a href="#">
+              <nuxt-link :to="`product/${product.slug}`">
                 <img :src="product.image ? product.image : '/logo.svg'" class="d-block" />
-              </a>
+              </nuxt-link>
               <!-- <div class="offer-label">20% Off</div> -->
-              <div class="product-whishlist">
+              <!-- <div class="product-whishlist">
                 <a href="#"><img src="/wishlist-icon.svg" alt="" /></a>
-              </div>
+              </div> -->
             </div>
             <div class="text">
-              <h3><a href="#">{{product.item_name}}</a></h3>
+              <h3>
+                <nuxt-link :to="`product/${product.slug}`">
+                  {{product.item_name}}
+                </nuxt-link>
+              </h3>
               <div class="price">
                 <span>&#8377;{{product.rate}}</span>
                 <!-- <del>$8.50</del> -->
@@ -40,8 +45,8 @@
                 <span style="width: 80%"></span>
               </div> -->
               <div class="more-link">
-                <a href="#"
-                  ><svg
+                <nuxt-link :to="`product/${product.slug}`">
+                  <svg
                     width="19"
                     height="19"
                     viewBox="0 0 19 19"
@@ -62,7 +67,7 @@
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     /></svg
-                ></a>
+                ></nuxt-link>
               </div>
             </div>
           </div>

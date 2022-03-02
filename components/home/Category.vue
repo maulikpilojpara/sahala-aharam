@@ -10,8 +10,8 @@
             </div>
             <h3>{{cat.name}}</h3>
             <div class="more-link">
-              <a href="#"
-                ><svg
+              <nuxt-link :to="`category/${cat.route}`">
+                <svg
                   width="17"
                   height="12"
                   viewBox="0 0 17 12"
@@ -23,7 +23,7 @@
                     fill="currentColor"
                   />
                 </svg>
-              </a>
+              </nuxt-link>
             </div>
           </div>
         </div>
