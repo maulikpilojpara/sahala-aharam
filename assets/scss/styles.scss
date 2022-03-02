@@ -2032,6 +2032,9 @@ ul.breadcrumb-list li:before{
   right:7px;
   top:0;
 }
+ul.breadcrumb-list li:last-child a {
+  pointer-events: none;
+}
 .product-filter-right {
   display: flex;
   align-items: center;

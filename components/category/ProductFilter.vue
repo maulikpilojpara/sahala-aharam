@@ -1,6 +1,6 @@
 <template>
   <div class="product-filter">
-    <Breadcrumb />
+    <Breadcrumb :breadcrumb="breadcrumb" />
     <div class="product-filter-right">
       <div class="item">
         <CategorySearch />
@@ -13,12 +13,30 @@
 </template>
 
 <script>
-import Breadcrumb from '~/components/category/Breadcrumb.vue'
+import Breadcrumb from '~/components/Breadcrumb.vue'
 import CategorySearch from '~/components/category/CategorySearch.vue'
 import CategorySortBy from '~/components/category/CategorySortBy.vue'
 
 export default {
   name: 'ProductFilter',
+  data() {
+    return {
+      breadcrumb: [
+        {
+          name: 'Home',
+          url: '/'
+        },
+        {
+          name: 'Shop',
+          url: '/shop'
+        },
+        {
+          name: 'Health Care',
+          url: '/shop/health-care'
+        }
+      ]
+    }
+  },
   components: {
     Breadcrumb,
     CategorySearch,

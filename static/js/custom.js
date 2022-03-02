@@ -210,6 +210,44 @@ $(document).ready(function () {
     }
   });
 
+  $('.details-gallery-carousel.owl-carousel').owlCarousel({
+    loop: true,
+    margin: 0,
+    dots: false,
+    nav: true,
+    items: 1,
+    autoplay: true,
+    autoplayTimeout: 7000,
+    autoplayHoverPause: false
+  });
+
+  $('.product-carousel.owl-carousel').owlCarousel({
+    loop: true,
+    dots: false,
+    nav: true,
+    autoplay: true,
+    autoplayTimeout: 7000,
+    autoplayHoverPause: false,
+    responsive: {
+      0: {
+        margin: 15,
+        items: 1
+      },
+      768: {
+        margin: 20,
+        items: 3
+      },
+      992: {
+        margin: 20,
+        items: 4
+      },
+      1201: {
+        margin: 20,
+        items: 5
+      }
+    }
+  });
+
 });
 
 window.onscroll = function () { scrollTop() };
@@ -219,7 +257,7 @@ function scrollTop() {
   var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
   var scrolled = (winScroll / height) * 100;
   var myBarElement = document.getElementById("myBar");
-  if(myBarElement) {
+  if (myBarElement) {
     myBarElement.style.width = scrolled + "%";
   }
 }
