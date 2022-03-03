@@ -30,6 +30,7 @@ export default {
       { hid: 'aos', src: 'js/aos.js', defer: true, body: true },
       { hid: 'smoothscrollbar', src: 'js/smooth-scrollbar.js', defer: true, body: true },
       { hid: 'kursor', src: 'js/kursor.js', defer: true, body: true },
+      { hid: 'fancybox', src: 'js/fancybox.umd.js', defer: true, body: true },
       { hid: 'custom', src: 'js/custom.js', defer: true, body: true },
     ]
   },
@@ -42,6 +43,7 @@ export default {
     '~/assets/css/bootstrap.min.css',
     '~/assets/css/aos.css',
     '~/assets/css/smooth-scrollbar.css',
+    '~/assets/css/fancybox.css',
     '~/assets/scss/styles.scss',
     '~/assets/scss/responsive.scss'
   ],
