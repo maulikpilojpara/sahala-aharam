@@ -36,10 +36,10 @@ html .container {
   max-width: 1270px
 }
 section{
-position: relative;
-  padding-top: 100px;
-  padding-bottom: 100px;
-z-index:1;
+  position: relative;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  z-index:1;
 }
 section.mini-section {
   padding-top: 55px;
@@ -702,24 +702,26 @@ ul.social-info li a:hover {
   line-height: 38px;
   display: inline-flex;
   align-items: center;
+  position: relative;
 }
 .min-cart-toggle:hover{
   color: var(--primary);
 }
 .min-cart-toggle .icon {
   width: 30px;
-  margin-right: 6px;
 }
 .min-cart-toggle  .cart-budge {
   min-width: 16px;
   text-align: center;
-  margin-left: 7px;
   background: var(--primary);
   color: #fff;
   line-height: 16px;
   border-radius: 50%;
   font-size: 10px;
   font-weight: normal;
+  position: absolute;
+  right: -2px;
+  top: 2px;
 }
 header .navbar {
   padding: 22px 0;
@@ -1342,14 +1344,14 @@ html .owl-carousel .owl-nav button[class*="owl-"].owl-next {
   z-index: -2;
 }
 .testimonial-box {
-  padding-top: 68px;
+  padding-top: 48px;
   position: relative;
   z-index: 1;
   background: url("/testi-icon.svg") no-repeat top center;
-  background-size: 180px auto;
+  background-size: 120px auto;
 }
 .testimonial-box p {
-  font-size: 19px;
+  font-size: 16px;
   font-style: italic;
 }
 .testi-user {
@@ -1475,8 +1477,8 @@ footer {
   margin-top: -170px;
 }
 .footer-middle {
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 .footer-bottom {
   padding: 20px 0;
@@ -1501,15 +1503,6 @@ footer {
   position: relative;
   margin: 0 0 12px;
   text-transform: uppercase;
-}
-.footer-middle h3:before {
-  content: "";
-  display: block;
-  width: 38px;
-  height: 38px;
-  background: url("/footer-title-icon.svg") no-repeat center center;
-  background-size: contain;
-  margin: 0 0 -10px -7px;
 }
 .footer-list {
   list-style: none;
