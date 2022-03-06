@@ -83,6 +83,7 @@
         </div>
       </nav>
     </div>
+    <!-- <div class="sidebar-bottom-wrap" v-if="$device.isMobileOrTablet"> -->
     <div class="sidebar-bottom-wrap">
       <nav>
         <h5>ACCOUNT</h5>

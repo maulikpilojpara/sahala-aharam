@@ -31,7 +31,7 @@
             fill="currentColor"
           />
         </svg> </span
-      >Cart
+      >
       <span class="cart-budge">0</span>
     </a>
   </div>
