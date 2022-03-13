@@ -1,0 +1,74 @@
+<template>
+  <div class="min-wishlist">
+    <a href="#" class="min-wishlist-toggle">
+      <span class="icon">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="29" height="29" viewBox="0 0 29 29">
+          <defs>
+            <clipPath id="clip-path">
+              <rect id="Rectangle_3" data-name="Rectangle 3" width="23" height="23" transform="translate(-0.314 -0.314)" fill="#fff"/>
+            </clipPath>
+          </defs>
+          <g id="Group_6" data-name="Group 6" transform="translate(-644 -437)">
+            <rect id="Rectangle_5" data-name="Rectangle 5" width="29" height="29" transform="translate(644 437)" fill="currentColor" opacity="0"/>
+            <g id="Wishlist" transform="translate(647.314 441.314)" clip-path="url(#clip-path)">
+              <path id="Path_50" data-name="Path 50" d="M22.346,7.228V8.757a8.269,8.269,0,0,1-.983,2.884A17.252,17.252,0,0,1,19.615,14q-1.787,1.809-3.692,3.474l-4.282,3.67a.686.686,0,0,1-.961,0q-3.166-2.707-6.292-5.462A23.412,23.412,0,0,1,1.568,12.6,9.781,9.781,0,0,1,.344,10.286,11.668,11.668,0,0,1-.027,8.757V7.228a6.477,6.477,0,0,1,3.059-4.96,5.641,5.641,0,0,1,5.812.087,7.931,7.931,0,0,1,2.316,2.6,6.76,6.76,0,0,1,3.059-2.993A5.772,5.772,0,0,1,20.751,3.47,7.018,7.018,0,0,1,22.346,7.228ZM5.784,2.858a4.347,4.347,0,0,1,3.474,1.7A8.846,8.846,0,0,1,10.613,7.1a.7.7,0,0,0,1.092,0A8.846,8.846,0,0,1,13.06,4.562a4.248,4.248,0,0,1,5.615-1.071,5.146,5.146,0,0,1,2.316,4.479,5.892,5.892,0,0,1-.852,3.059A17.63,17.63,0,0,1,17.1,14.591q-2.923,2.628-5.943,5.134-2.716-2.268-5.375-4.61a28.584,28.584,0,0,1-2.906-3.037A8.673,8.673,0,0,1,1.611,9.806,5.669,5.669,0,0,1,2.616,4.344,4.583,4.583,0,0,1,5.784,2.858Z" transform="translate(0.005 -0.258)" fill-rule="evenodd" opacity="0.962"/>
+            </g>
+          </g>
+        </svg>
+      </span>
+      <span class="wishlist-budge">0</span>
+    </a>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'MinWishlist'
+}
+</script>
+
+<style lang="scss" scoped>
+.min-wishlist {
+  margin-right: 20px;
+  .min-wishlist-toggle {
+    color: var(--dark);
+    font-weight: 500;
+    line-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    svg {
+      path {
+        transition: all 0.5s;
+        stroke: var(--dark);
+      }
+    }
+
+    &:hover{
+      svg {
+        path {
+          stroke: var(--primary);
+        }
+      }
+    }
+
+    .icon {
+      width: 30px;
+    }
+
+    .wishlist-budge {
+      min-width: 16px;
+      text-align: center;
+      background: var(--primary);
+      color: #fff;
+      line-height: 16px;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: normal;
+      position: absolute;
+      right: -2px;
+      top: 2px;
+    }
+  }
+}
+</style>

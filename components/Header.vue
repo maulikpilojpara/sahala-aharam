@@ -12,6 +12,8 @@
         </div>
         <div class="header-right">
           <HeaderSearch />
+          <MinProfile v-if="$device.isDesktop" />
+          <MinWishlist v-if="$device.isDesktop" />
           <MinCart />
           <button class="header-info-toggle" type="button">
             <span></span>
@@ -27,6 +29,8 @@
 <script>
 import HeaderSearch from "~/components/header/Search.vue";
 import MinCart from "~/components/header/Cart.vue";
+import MinWishlist from "~/components/header/Wishlist.vue";
+import MinProfile from "~/components/header/Profile.vue";
 import Breadcrumb from '~/components/Breadcrumb.vue'
 
 export default {
@@ -52,7 +56,9 @@ export default {
   components: {
     HeaderSearch,
     MinCart,
-    Breadcrumb
+    Breadcrumb,
+    MinWishlist,
+    MinProfile
   },
 };
 </script>

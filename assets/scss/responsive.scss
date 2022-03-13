@@ -200,11 +200,6 @@
   .footer-middle h3 {
       font-size: 16px;
   }
-  .footer-middle h3:before {
-      width: 32px;
-      height: 32px;
-      margin: 0 0 -8px -6px;
-  }
   .login-wrap .login-body {
       width: 58%;
       max-width: 58%;
@@ -277,6 +272,11 @@
 
 }
 
+@media (max-width: 990px) {
+  .min-cart-toggle  .cart-budge {
+    right: -7px;
+  }
+}
 
 /*Mobile view*/
 @media (max-width:767px){
@@ -516,11 +516,6 @@
   }
   .footer-middle h3 {
       font-size: 16px;
-  }
-  .footer-middle h3:before {
-      width: 32px;
-      height: 32px;
-      margin: 0 0 -8px -6px;
   }
   .footer-middle .col {
       width: 50%;
