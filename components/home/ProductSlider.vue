@@ -3,9 +3,7 @@
     <div class="container">
       <div class="sub-title-wrap sub-title-with-nav">
         <h2 class="sub-title" v-if="title">{{ title }}</h2>
-        <pre></pre>
-        <a href="#" class="title-btn"
-          >See All
+        <a href="#" class="title-btn" v-if="seeAllButton">See All
           <svg
             width="16"
             height="12"
@@ -23,7 +21,7 @@
         <div class="item" v-for="(product, indx) in products" :key="indx">
           <div class="product-box">
             <div class="img">
-              <nuxt-link :to="`product/${product.slug}`">
+              <nuxt-link :to="{path: `${product.name}` }">
                 <img :src="product.image ? product.image : '/logo.svg'" class="d-block" />
               </nuxt-link>
               <!-- <div class="offer-label">20% Off</div> -->
@@ -33,7 +31,7 @@
             </div>
             <div class="text">
               <h3>
-                <nuxt-link :to="`product/${product.slug}`">
+                <nuxt-link :to="{path: `${product.name}` }">
                   {{product.item_name}}
                 </nuxt-link>
               </h3>
@@ -45,7 +43,7 @@
                 <span style="width: 80%"></span>
               </div> -->
               <div class="more-link">
-                <nuxt-link :to="`product/${product.slug}`">
+                <nuxt-link :to="{path: `${product.name}` }">
                   <svg
                     width="19"
                     height="19"
@@ -324,6 +322,10 @@ export default {
     title: {
       type: String,
       default: '',
+    },
+    seeAllButton: {
+      type: Boolean,
+      default: true,
     },
     products: {
       type: Array,

@@ -1,26 +1,21 @@
 <template>
   <div class="summery">
-    <div class="price-offer"><span>20% Off</span></div>
-    <h2>All Natural Italian-Style Chicken Meatballs</h2>
+    <!-- <div class="price-offer"><span>20% Off</span></div> -->
+    <h2>{{getName}}</h2>
     <div class="price-rating-wrap">
-      <div class="price">$7.25 <del>$8.50</del></div>
-      <div class="reting-wrap">
+      <!-- <div class="price">$7.25 <del>$8.50</del></div> -->
+      <div class="price">&#8377;{{getprice}}</div>
+      <!-- <div class="reting-wrap">
         <span style="width: 80%"></span>
-      </div>
+      </div> -->
     </div>
-    <p>
-      In publishing and graphic design, Lorem ipsum is a placeholder text
-      commonly used to demonstrate the visual form of a docubefore the fin a
-      placeholder text commonly used to demonstrate the visual form of a
-      document or a typeface without relying on meaningful content. Lorem ipsum
-      may be used as a placeholder before the final copy is available.
-    </p>
-    <ul class="variation-point">
+    <p v-if="getProductDescription" v-html="getProductDescription"></p>
+    <!-- <ul class="variation-point">
       <li><b>Type : </b>Organic</li>
       <li><b>MFG : </b>Jun 4,2021</li>
       <li><b>Life : </b>30 days</li>
-    </ul>
-    <div class="qty-submit-wrap">
+    </ul> -->
+    <div class="qty-submit-wrap" v-if="isInStock">
       <div class="product-qty">
         <div class="product-qty-field">
           <input type="text" value="1" />
@@ -73,13 +68,16 @@
         </button>
       </div>
     </div>
+    <div class="is-not-available" v-else>
+      <h4>Out of stock!</h4>
+    </div>
     <div class="product-meta">
-      <div class="item"><b>Category : </b>Meats & Seafood</div>
-      <div class="item"><b>SKU : </b>ZU49VOR</div>
-      <div class="item ms-lg-auto">
+      <div class="item" v-if="getCategory"><b>Category : </b>{{getCategory}}</div>
+      <div class="item"><b>SKU : </b>{{getSku}}</div>
+      <!-- <div class="item ms-lg-auto">
         <b>Tags : </b><a href="#">Chicken</a>, <a href="#">Natural</a>,
         <a href="#">Organic</a>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -87,5 +85,34 @@
 <script>
 export default {
   name: "ProductSummary",
+  props: {
+    product: {
+      type: Array,
+      default: () => []
+    }
+  },
+  computed: {
+    getName () {
+      return this.product?.[0]?.item_name || 'Product Name'
+    },
+    getprice () {
+      return this.product?.[0]?.rate || 0
+    },
+    getProductDescription () {
+      return this.product?.[0]?.description || 'Product Description'
+    },
+    isInStock () {
+      if (this.product && this.product.length > 0) {
+        const stock = this.product[0].stock;
+        return stock > 0
+      }
+    },
+    getSku () {
+      return this.product?.[0]?.sku || ''
+    },
+    getCategory () {
+      return this.product?.[0]?.item_group || ''
+    }
+  }
 };
 </script>
