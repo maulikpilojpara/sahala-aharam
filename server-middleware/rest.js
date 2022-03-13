@@ -27,9 +27,47 @@ app.get('/api/getGlobalContent', (req, res) => {
     method: 'GET',
     url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.get_website_content`,
     headers: {
-      'Authorization': 'token e95e6c8dd17415c:b93c4ac11a576d9'
+      'Authorization': process.env.GUEST_TOKEN
     }
   };
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error('getGlobalContent:  ', error);
+  });
+});
+
+//Related products from SKU
+app.get('/api/getRelatedProducts/:id', (req, res) => {
+  const options = {
+    method: 'GET',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.get_related_items?product=${req.params.id}`,
+    headers: {
+      'Authorization': process.env.GUEST_TOKEN
+    }
+  };
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error('getGlobalContent:  ', error);
+  });
+});
+
+app.post('/api/getProductDetails', (req, res) => {
+  var data = JSON.stringify({
+    "product_id": req.body.id
+  });
+  const options = {
+    method: 'post',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.get_product_detail`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': process.env.GUEST_TOKEN,
+      'Cookie': 'sid=Guest'
+    },
+    data : data
+  };
+
   axios.request(options).then((response) => {
     res.status(200).send(response.data);
   }).catch((error) => {
