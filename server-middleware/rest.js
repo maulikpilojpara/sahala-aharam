@@ -53,6 +53,22 @@ app.get('/api/getRelatedProducts/:id', (req, res) => {
   });
 });
 
+//Related products from SKU
+app.get('/api/getproducts/:categoryId', (req, res) => {
+  const options = {
+    method: 'GET',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.get_product_group_items?route=${req.params.categoryId}`,
+    headers: {
+      'Authorization': process.env.GUEST_TOKEN
+    }
+  };
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error('getproducts:  ', error);
+  });
+});
+
 app.post('/api/getProductDetails', (req, res) => {
   var data = JSON.stringify({
     "product_id": req.body.id
