@@ -3,7 +3,7 @@
     <Breadcrumb :breadcrumb="breadcrumb" />
     <div class="product-filter-right">
       <div class="item">
-        <CategorySearch />
+        <!-- <CategorySearch /> -->
       </div>
       <div class="item">
         <CategorySortBy />
@@ -19,6 +19,12 @@ import CategorySortBy from '~/components/category/CategorySortBy.vue'
 
 export default {
   name: 'ProductFilter',
+  props: {
+    currentCat: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
       breadcrumb: [
@@ -26,13 +32,12 @@ export default {
           name: 'Home',
           url: '/'
         },
+        // {
+        //   name: 'Shop',
+        //   url: '/shop'
+        // },
         {
-          name: 'Shop',
-          url: '/shop'
-        },
-        {
-          name: 'Health Care',
-          url: '/shop/health-care'
+          name: this.currentCat
         }
       ]
     }

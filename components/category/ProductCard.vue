@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <div class="product-box">
+    <!-- <div class="product-box">
       <div class="img">
         <a href="#">
           <img src="/products/3.jpg" class="d-block" />
@@ -45,7 +45,7 @@
           ></a>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
