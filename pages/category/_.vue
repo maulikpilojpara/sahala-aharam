@@ -27,18 +27,10 @@ export default {
   },
   async asyncData({$axios, route}) {
     const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD;
-    // let products = ['TEST'];
     let currentSlug = route.params.pathMatch;
     let catTitle = (route.params.pathMatch).replace('-', ' ');
-    const productResponse = await $axios.get(`${appURL}/api/getproducts/${currentSlug}`)
-    // .then(res => {
-    //   if (res && res.data && res.data.message) {
-    //     this.products = res.data.message;
-    //     console.log('res:::', res.data.message);
-    //   }
-    // })
-    let products = productResponse?.data?.message || []
-    console.log('productResponse products::: ', products);
+    const productResponse = await $axios.get(`${appURL}/api/getproducts/${currentSlug}`);
+    let products = productResponse?.data?.message || [];
     return {
       products,
       catTitle

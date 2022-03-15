@@ -42,10 +42,8 @@ export default {
   async fetch (context) {
     // const currentRouteWithoutTrailingForwardSlash = context.route.path.replace(/\/$/, '');
     const currentSlug = context.route.params.pathMatch;
-    console.log('currentRouteWithoutTrailingForwardSlash ', currentSlug);
     await context.store.dispatch('product/saveProductData', currentSlug);
     // await context.store.dispatch('product/getRelatedProducts', currentSlug);
-    console.log('this.currentProduct::: ', this.currentProduct);
     // await context.store.dispatch('global/saveDataFunc', currentSlug);
   },
   async mounted()  {
@@ -53,7 +51,6 @@ export default {
       return this.$nuxt.error({ statusCode: 404, message: 'err message' })
     }
     this.relatedProductData = await this.$store.dispatch('product/getRelatedProducts', this.$route.params.pathMatch);
-    console.log('relatedData::: ', this.relatedProductData);
   },
   computed: {
     // mix the getters into computed with object spread operator
