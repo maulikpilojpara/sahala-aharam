@@ -68,7 +68,6 @@ export default {
   },
   methods: {
     getImageUrl (product) {
-      console.log('getImageUrl"" ', product);
       return product?.image || 'logo.svg'
     }
   }

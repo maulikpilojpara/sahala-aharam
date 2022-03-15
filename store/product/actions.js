@@ -4,7 +4,6 @@ const actions = {
       const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
       const productRes = await this.$axios.post(`${appURL}/api/getProductDetails/`, {id: skuName})
       if (productRes.data && productRes.data.message) {
-        console.log('productResDATA message::: ', typeof productRes.data.message);
         commit('SAVE_CURRENT_PRODUCT', productRes.data.message)
       }
 
