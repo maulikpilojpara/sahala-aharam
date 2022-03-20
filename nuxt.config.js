@@ -2,6 +2,11 @@ const webpack = require('webpack')
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
+  env: {
+    APP_URL_LOCAL: process.env.APP_URL_LOCAL || '',
+    APP_URL_PROD: process.env.APP_URL_PROD || '',
+    NODE_ENV: process.env.NODE_ENV || '',
+  },
   head: {
     title: 'Sahaja Aharam',
     __dangerouslyDisableSanitizers: ['script'],
@@ -70,6 +75,7 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    'cookie-universal-nuxt'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -86,6 +92,5 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {
-  }
+  build: {},
 }

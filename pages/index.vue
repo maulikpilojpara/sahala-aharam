@@ -3,8 +3,8 @@
     <MainBanner />
     <BestOffers />
     <Category />
-    <ProductSlider title="Popular Products" :products="popularProducts" />
-    <ProductSlider title="Recent Products" :products="recentProducts" />
+    <ProductSlider v-if="popularProducts && popularProducts.length > 0" title="Popular Products" :products="popularProducts" />
+    <ProductSlider v-if="recentProducts && recentProducts.length > 0" title="Recent Products" :products="recentProducts" />
     <Testimonials />
     <Certifications />
   </div>
@@ -23,6 +23,9 @@ export default {
       recentProducts: 'global/getHomeRecentProducts'
     })
   },
+  // async fetch (context) {
+  //   await context.store.dispatch('getWebsiteMainContent');
+  // },
   components: {
     MainBanner,
     BestOffers,

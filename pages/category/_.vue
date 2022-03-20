@@ -1,6 +1,6 @@
 <template>
   <div class="category-page TESTinghre">
-    <CategoryBanner :current-cat="catTitle" />
+    <CategoryBanner v-if="bannerImageURL" :current-cat="catTitle" :image="bannerImageURL" />
     <section class="mini-section pt-0">
       <div class="container">
         <ProductFilter :current-cat="catTitle" />
@@ -30,10 +30,14 @@ export default {
     let currentSlug = route.params.pathMatch;
     let catTitle = (route.params.pathMatch).replace('-', ' ');
     const productResponse = await $axios.get(`${appURL}/api/getproducts/${currentSlug}`);
-    let products = productResponse?.data?.message || [];
+    console.log('productResponse.data::', productResponse.data);
+    let products = productResponse?.data?.message?.items || [];
+    let bannerImageURL = productResponse?.data?.message?.banner || '';
+    // let products = [];
     return {
       products,
-      catTitle
+      catTitle,
+      bannerImageURL
     }
   },
 }

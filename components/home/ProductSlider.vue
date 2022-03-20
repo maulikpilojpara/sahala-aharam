@@ -3,7 +3,7 @@
     <div class="container">
       <div class="sub-title-wrap sub-title-with-nav">
         <h2 class="sub-title" v-if="title">{{ title }}</h2>
-        <a href="#" class="title-btn" v-if="seeAllButton">See All
+        <!-- <a href="#" class="title-btn" v-if="seeAllButton">See All
           <svg
             width="16"
             height="12"
@@ -15,7 +15,7 @@
               d="M9.92367 0.164778L9.61163 0.496184C9.40484 0.715841 9.40484 1.072 9.61163 1.2917L13.3153 5.20314H0.529554C0.237108 5.20314 0 5.455 0 5.76564V6.23439C0 6.54503 0.237108 6.79689 0.529554 6.79689H13.3153L9.61163 10.7083C9.40484 10.928 9.40484 11.2841 9.61163 11.5039L9.92367 11.8353C10.1305 12.0549 10.4658 12.0549 10.6725 11.8353L15.813 6.39775C16.0198 6.1781 16.0198 5.82194 15.813 5.60224L10.6725 0.164778C10.4658 -0.0549258 10.1305 -0.0549258 9.92367 0.164778Z"
               fill="white"
             /></svg
-        ></a>
+        ></a> -->
       </div>
       <div class="product-carousel owl-carousel owl-theme title-nav">
         <div class="item" v-for="(product, indx) in products" :key="indx">

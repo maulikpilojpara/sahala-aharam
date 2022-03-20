@@ -1,6 +1,6 @@
 <template>
   <div class="min-profile">
-    <a href="#" class="min-profile-toggle">
+    <nuxt-link to="/login" class="min-profile-toggle">
       <span class="icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="29" viewBox="0 0 28 29">
           <g id="Profile" transform="translate(-0.339 1.779)">
@@ -10,7 +10,7 @@
           </g>
         </svg>
       </span>
-    </a>
+    </nuxt-link>
   </div>
 </template>
 

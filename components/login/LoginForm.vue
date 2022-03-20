@@ -8,7 +8,7 @@
       </div>
       <h2>Sign in to Account</h2>
       <ul class="login-with-social">
-        <li>
+        <!-- <li>
           <a href="#">
             <svg
               width="18"
@@ -23,7 +23,7 @@
               />
             </svg>
           </a>
-        </li>
+        </li> -->
         <li>
           <a href="#">
             <svg
@@ -42,14 +42,14 @@
         </li>
       </ul>
       <p class="login-sub-label">Or use your email account</p>
-      <form>
+      <form method="post" @submit.prevent="register">
         <div class="form-field-latest">
           <label>Email <em>*</em></label>
-          <input type="email" class="form-control" required />
+          <input v-model="email" type="email" class="form-control" required />
         </div>
         <div class="form-field-latest">
           <label>Password <em>*</em></label>
-          <input type="password" class="form-control" required />
+          <input v-model="password" type="password" class="form-control" required />
         </div>
         <div class="form-field-links">
           <div class="remember-login-field">
@@ -66,14 +66,17 @@
           <button class="btn btn-primary">Sign In</button>
         </div>
       </form>
+      <div v-if="formResponse" class="form-response">
+        <h5>{{ formResponse }}</h5>
+      </div>
     </div>
     <div class="login-bottom-links">
       <ul>
         <li>
-          <a href="#">Privacy Policy</a>
+          <nuxt-link to="/">Privacy Policy</nuxt-link>
         </li>
         <li>
-          <a href="#">Terms & Conditions</a>
+          <nuxt-link to="/">Terms & Conditions</nuxt-link>
         </li>
       </ul>
     </div>
@@ -83,5 +86,50 @@
 <script>
 export default {
   name: 'LoginForm',
+  data() {
+    return {
+      email: '',
+      password: '',
+      formResponse: ''
+    }
+  },
+  computed: {
+    appURL() {
+      return process.env;
+    },
+  },
+  methods: {
+    async register() {
+      if (!this.email || !this.password) {
+        return;
+      }
+      this.formResponse = '';
+      try {
+        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
+        const loginRes = await this.$axios.post(`${appURL}/api/login`, {
+          // "email":"maulik@yopmail.com",
+          // "password":"maulik@123"
+          "email": this.email,
+          "password": this.password
+        });
+        if (loginRes && loginRes.data && loginRes.data.message) {
+          if (Object.prototype.hasOwnProperty.call(loginRes.data.message, 'message')) {
+            this.formResponse = loginRes.data.message.message;
+            return;
+          }
+          this.$cookies.set('login_token', loginRes.data.message, { path: '/', maxAge: 60 * 60 * 24 * 7 });
+          await this.$store.dispatch('customer/updateLoginFlag', true)
+          await this.$store.dispatch('customer/updateUserContext', loginRes.data)
+          this.formResponse = 'You Have Successfully Logged in!'
+          this.$router.push('/my-account');
+        } else {
+          this.formResponse = 'Something went wrong. Please try again!'
+        }
+
+      } catch (e) {
+        this.error = e.response.data.message
+      }
+    }
+  }
 };
 </script>
