@@ -8,18 +8,23 @@ module.exports = {
 app.use(bodyParser.json());
 
 app.post('/api/login', (req, res) => {
-  console.log('req', req);
-  console.log('res', res);
-  res.status(200).send("TEstingin");
-  // const options = {
-  //   method: 'GET',
-  //   url: `https://${process.env.ERP_DOMAIN}` + req.originalUrl
-  // };
-  // axios.request(options).then((response) => {
-  //   res.status(200).send(response.data);
-  // }).catch((error) => {
-  //   console.error(error);
-  // });
+  const data = JSON.stringify({
+      "usr": req.body.email,
+      "pwd": req.body.password
+  });
+  const options = {
+    method: 'post',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.login`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: data
+  };
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+  });
 });
 
 app.get('/api/getGlobalContent', (req, res) => {
@@ -70,16 +75,23 @@ app.get('/api/getproducts/:categoryId', (req, res) => {
 });
 
 app.post('/api/getProductDetails', (req, res) => {
-  var data = JSON.stringify({
-    "product_id": req.body.id
+
+  if (!req.body.api_key && !req.body.api_secret) {
+    res.status(404).send('No data found!');
+    return;
+  }
+
+  const token = `token ${req.body.api_key}:${req.body.api_secret}`
+  const data = JSON.stringify({
+    "product_id": req.body.id,
+    "Authorization": req.body.token
   });
   const options = {
     method: 'post',
     url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.get_product_detail`,
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': process.env.GUEST_TOKEN,
-      'Cookie': 'sid=Guest'
+      'Authorization': token
     },
     data : data
   };
@@ -88,5 +100,6 @@ app.post('/api/getProductDetails', (req, res) => {
     res.status(200).send(response.data);
   }).catch((error) => {
     console.error(error);
+    res.status(404).send('Something went wrong. Please try again!');
   });
 });

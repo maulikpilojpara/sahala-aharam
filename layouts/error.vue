@@ -21,7 +21,7 @@ export default {
         return error404;
       }
       // catch everything else
-      return error500;
+      return error404;
     },
   }
 }

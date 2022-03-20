@@ -14,7 +14,7 @@
           </div>
           <h2>Hello, Friend!</h2>
           <h5>Start Your shopping Today <br />with Sahara Aahram.....</h5>
-          <nuxt-link to="/signup" class="btn btn-light">Sign Up</nuxt-link>
+          <nuxt-link to="/login" class="btn btn-light">Sign In</nuxt-link>
         </div>
       </div>
     </div>
