@@ -42,7 +42,7 @@
         </li>
       </ul>
       <p class="login-sub-label">Or use your email account</p>
-      <form method="post" @submit.prevent="register">
+      <form method="post" @submit.prevent="loginAction">
         <div class="form-field-latest">
           <label>Email <em>*</em></label>
           <input v-model="email" type="email" class="form-control" required />
@@ -99,11 +99,14 @@ export default {
     },
   },
   methods: {
-    async register() {
+    async loginAction() {
       if (!this.email || !this.password) {
         return;
       }
       this.formResponse = '';
+      console.log('this.email', this.email);
+      console.log('this.password', this.password);
+      
       try {
         const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
         const loginRes = await this.$axios.post(`${appURL}/api/login`, {
