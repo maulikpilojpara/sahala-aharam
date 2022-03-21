@@ -12,6 +12,7 @@ app.post('/api/login', (req, res) => {
       "usr": req.body.email,
       "pwd": req.body.password
   });
+  console.log('data:: ', data);
   const options = {
     method: 'post',
     url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.login`,
@@ -20,7 +21,10 @@ app.post('/api/login', (req, res) => {
     },
     data: data
   };
+  console.log('options:: ', options);
   axios.request(options).then((response) => {
+    console.log('response.data:: ', response.data);
+    
     res.status(200).send(response.data);
   }).catch((error) => {
     console.error(error);
