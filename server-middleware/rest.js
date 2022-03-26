@@ -31,6 +31,40 @@ app.post('/api/login', (req, res) => {
   });
 });
 
+app.post('/api/register_user', (req, res) => {
+  // const data = JSON.stringify({
+  //   "email": "maulik@yopmail.com",
+  //   "first_name": "Maulik",
+  //   "last_name": "Pilojpara",
+  //   "gender": "Male",
+  //   "mobile_no": "8141669871"
+  // });
+  const data = JSON.stringify({
+    "email": req.body.email,
+    "first_name": req.body.first_name,
+    "last_name": req.body.last_name,
+    "gender": req.body.gender,
+    "mobile_no": req.body.mobile
+  });
+  console.log('data:: ', data);
+  const options = {
+    method: 'post',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.user_sign_up`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: data
+  };
+  console.log('register options:: ', options);
+  axios.request(options).then((response) => {
+    console.log('response.data:: ', response.data);
+    
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+  });
+});
+
 app.get('/api/getGlobalContent', (req, res) => {
   const options = {
     method: 'GET',
