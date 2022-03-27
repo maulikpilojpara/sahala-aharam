@@ -30,14 +30,14 @@ export default {
       }
     ],
     script: [
-      { hid: 'jquery', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/jquery-2.2.4.min.js`, defer: true, body: true },
-      { hid: 'bootstrap', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/bootstrap.bundle.min.js`, defer: true, body: true },
-      { hid: 'owlcarousel', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/owl.carousel.min.js`, defer: true, body: true },
-      { hid: 'aos', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/aos.js`, defer: true, body: true },
-      { hid: 'smoothscrollbar', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/smooth-scrollbar.js`, defer: true, body: true },
-      { hid: 'kursor', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/kursor.js`, defer: true, body: true },
-      { hid: 'fancybox', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/fancybox.umd.js`, defer: true, body: true },
-      { hid: 'custom', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/custom.js`, defer: true, body: true },
+      // { hid: 'jquery', src: `${process.env.APP_URL_PROD}/js/jquery-2.2.4.min.js`, defer: true, body: true },
+      // { hid: 'bootstrap', src: `${process.env.APP_URL_PROD}/js/bootstrap.bundle.min.js`, defer: true, body: true },
+      // { hid: 'owlcarousel', src: `${process.env.APP_URL_PROD}/js/owl.carousel.min.js`, defer: true, body: true },
+      // { hid: 'aos', src: `${process.env.APP_URL_PROD}/js/aos.js`, defer: true, body: true },
+      // { hid: 'smoothscrollbar', src: `${process.env.APP_URL_PROD}/js/smooth-scrollbar.js`, defer: true, body: true },
+      // { hid: 'kursor', src: `${process.env.APP_URL_PROD}/js/kursor.js`, defer: true, body: true },
+      // { hid: 'fancybox', src: `${process.env.APP_URL_PROD}/js/fancybox.umd.js`, defer: true, body: true },
+      // { hid: 'custom', src: `${process.env.APP_URL_PROD}/js/custom.js`, defer: true, body: true },
     ]
   },
   serverMiddleware: [
