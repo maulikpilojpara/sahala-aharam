@@ -13,15 +13,16 @@
       </div>
       <nav>
         <h5>Shop</h5>
-        <ul class="nav-menu">
-          <li>
-            <a href="#">
-              <span class="icon"
-                ><img src="/nav-icons/oils.svg" alt="" /></span
-              >Oils
-            </a>
+        <ul class="nav-menu" v-if="firstHalfCat && firstHalfCat.length > 0 && toggleCat === 'show_half'">
+          <li v-for="(cat, indx) in firstHalfCat" :key="indx">
+            <nuxt-link :to="`category/${cat.route}`">
+              <span class="icon">
+                <img :src="cat.icon ? cat.icon : '/logo.svg'" class="d-block" />
+                </span>
+                {{cat.name}}
+            </nuxt-link>
           </li>
-          <li class="active">
+          <!-- <li class="active">
             <a href="#">
               <span class="icon"
                 ><img src="/nav-icons/Pulses.svg" alt="" /></span
@@ -76,10 +77,23 @@
                 ><img src="/nav-icons/Processed-Foods.svg" alt="" /></span
               >Processed Foods
             </a>
+          </li> -->
+        </ul>
+        <ul class="nav-menu" v-if="categories && categories.length > 0 && toggleCat === 'show_all'">
+          <li v-for="(cat, indx) in categories" :key="indx">
+            <nuxt-link :to="`category/${cat.route}`">
+              <span class="icon">
+                <img :src="cat.icon ? cat.icon : '/logo.svg'" class="d-block" />
+                </span>
+                {{cat.name}}
+            </nuxt-link>
           </li>
         </ul>
         <div class="nav-view-all">
-          <a href="#"><u>View All +</u></a>
+          <a href="javascript:void(0)" @click.prevent="toggleCat === 'show_all' ? toggleCat = 'show_half' : toggleCat = 'show_all'">
+            <u v-show="toggleCat === 'show_all'">View Less -</u>
+            <u v-show="toggleCat === 'show_half'">View All +</u>
+          </a>
         </div>
       </nav>
     </div>
@@ -117,7 +131,23 @@
 </template>
 
 <script>
+import { mapGetters  } from 'vuex'
+
 export default {
-  name: "NavSidebar",
+  name: 'NavSidebar',
+  data () {
+    return {
+      toggleCat: 'show_half'
+    }
+  },
+  computed: {
+    ...mapGetters({
+      categories: 'global/getMainCategories'
+    }),
+    firstHalfCat () {
+      return this.categories && this.categories.length > 0 ? this.categories.slice(0, 6) : [];
+    }
+  }
+  
 };
 </script>
