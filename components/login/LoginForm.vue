@@ -117,6 +117,7 @@ export default {
           class: 'load'
         }
         const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
+        console.log('appURL:: ', appURL);
         const loginRes = await this.$axios.post(`${appURL}/api/login_user`, {
           // "email":"maulik@yopmail.com",
           // "password":"maulik@123"

@@ -3,7 +3,6 @@ export const actions = {
     try {
       const appURL = process.env.NODE_ENV !== 'production' ? process.env.APP_URL_LOCAL : process.env.APP_URL_PROD;
       const loggedinUserData = context.$cookies.get('login_token');
-      console.log('nuxtServerInit loggedinUserData:: ', loggedinUserData);
       
       const axiosOptions = {
         method: 'GET',
