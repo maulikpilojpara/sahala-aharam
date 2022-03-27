@@ -63,11 +63,15 @@
           <p><a href="#">Forgot Password?</a></p>
         </div>
         <div class="form-field-submit">
-          <button class="btn btn-primary">Sign In</button>
+          <!-- <button class="btn btn-primary">Sign In</button> -->
+          <button class="btn btn-primary" :disabled="formResponse && formResponse.class === 'load' ? true : false">
+            <span v-if="formResponse && formResponse.class === 'load'"> {{formResponse.msg}} </span>
+            <span v-else> Sign In </span>
+          </button>
         </div>
       </form>
-      <div v-if="formResponse" class="form-response">
-        <h5>{{ formResponse }}</h5>
+      <div v-if="formResponse && formResponse.class !== 'load'" class="form-response" :class="formResponse.class">
+        <h5>{{ formResponse.msg }}</h5>
       </div>
     </div>
     <div class="login-bottom-links">
@@ -90,7 +94,7 @@ export default {
     return {
       email: '',
       password: '',
-      formResponse: ''
+      formResponse: {}
     }
   },
   computed: {
@@ -103,34 +107,49 @@ export default {
       if (!this.email || !this.password) {
         return;
       }
-      this.formResponse = '';
+      this.formResponse = {};
       console.log('this.email', this.email);
       console.log('this.password', this.password);
       
       try {
+        this.formResponse = {
+          msg: 'Processing...',
+          class: 'load'
+        }
         const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
-        const loginRes = await this.$axios.post(`${appURL}/api/login`, {
+        const loginRes = await this.$axios.post(`${appURL}/api/login_user`, {
           // "email":"maulik@yopmail.com",
           // "password":"maulik@123"
           "email": this.email,
           "password": this.password
         });
         if (loginRes && loginRes.data && loginRes.data.message) {
-          if (Object.prototype.hasOwnProperty.call(loginRes.data.message, 'message')) {
-            this.formResponse = loginRes.data.message.message;
+          if (Object.prototype.hasOwnProperty.call(loginRes.data.message, 'message')) { //Authentication Failed
+            this.formResponse = {
+              msg: loginRes.data.message.message,
+              class: 'warning'
+            };
             return;
           }
-          this.$cookies.set('login_token', loginRes.data.message, { path: '/', maxAge: 60 * 60 * 24 * 7 });
+          this.$cookies.set('login_token', loginRes.data, { path: '/', maxAge: 60 * 60 * 24 * 7 });
           await this.$store.dispatch('customer/updateLoginFlag', true)
           await this.$store.dispatch('customer/updateUserContext', loginRes.data)
-          this.formResponse = 'You Have Successfully Logged in!'
-          this.$router.push('/my-account');
+          
+          this.formResponse = {
+            msg: 'You Have Successfully Logged in!',
+            class: 'success'
+          }
+          // this.$router.push('/my-account');
         } else {
-          this.formResponse = 'Something went wrong. Please try again!'
+          this.formResponse = {
+            msg: 'Something went wrong. Please try again!',
+            class: 'danger'  
+          }
         }
 
       } catch (e) {
         this.error = e.response.data.message
+        this.formResponse = {}
       }
     }
   }
