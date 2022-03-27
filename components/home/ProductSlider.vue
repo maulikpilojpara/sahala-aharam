@@ -17,8 +17,8 @@
             /></svg
         ></a> -->
       </div>
-      <div class="product-carousel owl-carousel owl-theme title-nav">
-        <div class="item" v-for="(product, indx) in products" :key="indx">
+      <hooper class="product-carousel title-nav" :settings="homeProductSliderSetting">
+        <slide class="item" v-for="(product, indx) in products" :key="indx">
           <div class="product-box">
             <div class="img">
               <nuxt-link :to="{path: `product/${product.name}` }">
@@ -69,7 +69,8 @@
               </div>
             </div>
           </div>
-        </div>
+        </slide>
+        <hooper-navigation slot="hooper-addons"></hooper-navigation>
         <!-- <div class="item">
           <div class="product-box">
             <div class="img">
@@ -310,14 +311,51 @@
             </div>
           </div>
         </div> -->
-      </div>
+      </hooper>
     </div>
   </section>
 </template>
 
 <script>
+import { Hooper, Slide, Navigation as HooperNavigation } from 'hooper';
+import 'hooper/dist/hooper.css'
+
 export default {
   name: 'ProductSlider',
+  data() {
+    return {
+      homeProductSliderSetting: {
+        infiniteScroll: true,
+        wheelControl: false,
+        keysControl: false,
+        autoPlay: true,
+        hoverPause: false,
+        playSpeed: 3000,
+        transition: 600,
+        itemsToSlide: 1,
+        trimWhiteSpace: true,
+        breakpoints: {
+          0: {
+            itemsToShow: 1
+          },
+          768: {
+            itemsToShow: 3
+          },
+          992: {
+            itemsToShow: 4
+          },
+          1201: {
+            itemsToShow: 5
+          }
+        }
+      }
+    }
+  },
+  components: {
+    Hooper,
+    Slide,
+    HooperNavigation
+  },
   props: {
     title: {
       type: String,
