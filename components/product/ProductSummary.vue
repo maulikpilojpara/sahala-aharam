@@ -18,8 +18,8 @@
     <div class="qty-submit-wrap" v-if="isInStock">
       <div class="product-qty">
         <div class="product-qty-field">
-          <input type="text" value="1" />
-          <span class="qty-action qty-action-minus"
+          <input type="text" v-model="qty" />
+          <span class="qty-action qty-action-minus" @click="decreaseQty()"
             ><svg
               width="17"
               height="2"
@@ -36,7 +36,7 @@
               />
             </svg>
           </span>
-          <span class="qty-action qty-action-plus"
+          <span class="qty-action qty-action-plus" @click="increaseQty()"
             ><svg
               width="17"
               height="17"
@@ -63,7 +63,7 @@
         </div>
       </div>
       <div class="add-to-cart">
-        <button class="addtocart-btn">
+        <button class="addtocart-btn" @click="addToCart">
           <img src="images/shopping-cart.svg" alt="" /> Add to Cart
         </button>
       </div>
@@ -73,7 +73,7 @@
     </div>
     <div class="product-meta">
       <div class="item" v-if="getCategory"><b>Category : </b>{{getCategory}}</div>
-      <div class="item"><b>SKU : </b>{{getSku}}</div>
+      <div class="item" v-if="getSku"><b>SKU : </b>{{getSku}}</div>
       <!-- <div class="item ms-lg-auto">
         <b>Tags : </b><a href="#">Chicken</a>, <a href="#">Natural</a>,
         <a href="#">Organic</a>
@@ -83,23 +83,68 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: "ProductSummary",
+  data() {
+    return {
+      qty: 1
+    }
+  },
   props: {
     product: {
       type: Array,
       default: () => []
     }
   },
+  methods: {
+    increaseQty() {
+      console.log('this.qty: ', this.qty);
+      
+      this.qty = this.qty + 1
+    },
+    decreaseQty() {
+      if (this.qty > 1) {
+        this.qty = this.qty - 1
+      }
+    },
+    async addToCart () {
+      console.log('addToCart in');
+      console.log('this.customerToken:: ', this.customerToken);
+      console.log('this.$store:: ', this.getUserLoginStatus);
+      
+      if (this.getUserLoginStatus) {
+        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
+        const cartPayload = {
+          items:[{
+              item_code: 'OSGNW5KG',
+              qty: this.qty
+            }],
+          token: this.customerToken
+        }
+        const createCartResponse = await this.$axios.post(`${appURL}/api/create_cart`, cartPayload);
+        const customerCartRes = await this.$axios.post(`${appURL}/api/get_cutomer_cart`, { token: this.customerToken });
+
+        console.log('createCartResponse::: ', createCartResponse);
+        console.log('customerCartRes::: ', customerCartRes);
+      } else {
+
+      }
+    }
+  },
   computed: {
+    ...mapGetters({
+      getUserLoginStatus: 'customer/getUserLoginStatus',
+      customerToken: 'customer/getCustomerToken'
+    }),
     getName () {
-      return this.product?.[0]?.item_name || 'Product Name'
+      return this.product?.[0]?.item_name || ''
     },
     getprice () {
       return this.product?.[0]?.rate || 0
     },
     getProductDescription () {
-      return this.product?.[0]?.description || 'Product Description'
+      return this.product?.[0]?.description || ''
     },
     isInStock () {
       if (this.product && this.product.length > 0) {

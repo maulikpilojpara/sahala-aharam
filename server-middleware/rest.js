@@ -7,7 +7,7 @@ module.exports = {
 };
 app.use(bodyParser.json());
 
-app.post('/api/login', (req, res) => {
+app.post('/api/login_user', (req, res) => {
   const data = JSON.stringify({
       "usr": req.body.email,
       "pwd": req.body.password
@@ -133,6 +133,55 @@ app.post('/api/getProductDetails', (req, res) => {
     data : data
   };
 
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send('Something went wrong. Please try again!');
+  });
+});
+
+app.post('/api/create_cart', (req, res) => {
+  console.log('req.body.token:: ', JSON.stringify(req.body.items));
+  const items = JSON.stringify(req.body.items);
+  var data = JSON.stringify({
+    "items": items,
+    // "items":"[{\"item_code\": \"OSGNW5KG\",\"qty\": 3}, {\"item_code\": \"VGOKRLSE\",\"qty\": 2}]",
+    "warehouse": "Tarnaka DC - SAPCO"
+  });
+  const options = {
+    method: 'post',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.update_cart_custom`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': req.body.token
+    },
+    data : data
+  };
+
+  console.log('create_cart options:: ', options);
+  
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send('Something went wrong. Please try again!');
+  });
+});
+
+app.post('/api/get_cutomer_cart', (req, res) => {
+  console.log('req.body.token:: ', req.body.token);
+  const options = {
+    method: 'GET',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.get_cart_quotation`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': req.body.token
+    },
+  };
+
+  console.log('get_cutomer_cart options:: ', options);
+  
   axios.request(options).then((response) => {
     res.status(200).send(response.data);
   }).catch((error) => {
