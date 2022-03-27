@@ -7,7 +7,7 @@ module.exports = {
 };
 app.use(bodyParser.json());
 
-app.post('/api/login', (req, res) => {
+app.post('/api/login_user', (req, res) => {
   const data = JSON.stringify({
       "usr": req.body.email,
       "pwd": req.body.password
@@ -22,6 +22,40 @@ app.post('/api/login', (req, res) => {
     data: data
   };
   console.log('options:: ', options);
+  axios.request(options).then((response) => {
+    console.log('response.data:: ', response.data);
+    
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+  });
+});
+
+app.post('/api/register_user', (req, res) => {
+  // const data = JSON.stringify({
+  //   "email": "maulik@yopmail.com",
+  //   "first_name": "Maulik",
+  //   "last_name": "Pilojpara",
+  //   "gender": "Male",
+  //   "mobile_no": "8141669871"
+  // });
+  const data = JSON.stringify({
+    "email": req.body.email,
+    "first_name": req.body.first_name,
+    "last_name": req.body.last_name,
+    "gender": req.body.gender,
+    "mobile_no": req.body.mobile
+  });
+  console.log('data:: ', data);
+  const options = {
+    method: 'post',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.user_sign_up`,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: data
+  };
+  console.log('register options:: ', options);
   axios.request(options).then((response) => {
     console.log('response.data:: ', response.data);
     
@@ -80,12 +114,11 @@ app.get('/api/getproducts/:categoryId', (req, res) => {
 
 app.post('/api/getProductDetails', (req, res) => {
 
-  if (!req.body.api_key && !req.body.api_secret) {
-    res.status(404).send('No data found!');
-    return;
+  let token = '';
+  if (req.body.api_key && req.body.api_secret) {
+    token = `token ${req.body.api_key}:${req.body.api_secret}`
   }
-
-  const token = `token ${req.body.api_key}:${req.body.api_secret}`
+  
   const data = JSON.stringify({
     "product_id": req.body.id,
     "Authorization": req.body.token
@@ -100,6 +133,55 @@ app.post('/api/getProductDetails', (req, res) => {
     data : data
   };
 
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send('Something went wrong. Please try again!');
+  });
+});
+
+app.post('/api/create_cart', (req, res) => {
+  console.log('req.body.token:: ', JSON.stringify(req.body.items));
+  const items = JSON.stringify(req.body.items);
+  var data = JSON.stringify({
+    "items": items,
+    // "items":"[{\"item_code\": \"OSGNW5KG\",\"qty\": 3}, {\"item_code\": \"VGOKRLSE\",\"qty\": 2}]",
+    "warehouse": "Tarnaka DC - SAPCO"
+  });
+  const options = {
+    method: 'post',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.update_cart_custom`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': req.body.token
+    },
+    data : data
+  };
+
+  console.log('create_cart options:: ', options);
+  
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send('Something went wrong. Please try again!');
+  });
+});
+
+app.post('/api/get_cutomer_cart', (req, res) => {
+  console.log('req.body.token:: ', req.body.token);
+  const options = {
+    method: 'GET',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.get_cart_quotation`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': req.body.token
+    },
+  };
+
+  console.log('get_cutomer_cart options:: ', options);
+  
   axios.request(options).then((response) => {
     res.status(200).send(response.data);
   }).catch((error) => {
