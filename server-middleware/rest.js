@@ -114,12 +114,11 @@ app.get('/api/getproducts/:categoryId', (req, res) => {
 
 app.post('/api/getProductDetails', (req, res) => {
 
-  if (!req.body.api_key && !req.body.api_secret) {
-    res.status(404).send('No data found!');
-    return;
+  let token = '';
+  if (req.body.api_key && req.body.api_secret) {
+    token = `token ${req.body.api_key}:${req.body.api_secret}`
   }
-
-  const token = `token ${req.body.api_key}:${req.body.api_secret}`
+  
   const data = JSON.stringify({
     "product_id": req.body.id,
     "Authorization": req.body.token
