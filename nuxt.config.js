@@ -1,8 +1,12 @@
 // const webpack = require('webpack')
 
 export default {
-  target: 'static',
+  // target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
+  server: {
+    port: 3000,
+    host: process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost',
+  },
   env: {
     APP_URL_LOCAL: process.env.APP_URL_LOCAL || '',
     APP_URL_PROD: process.env.APP_URL_PROD || '',
