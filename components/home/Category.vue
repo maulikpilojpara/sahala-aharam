@@ -2,8 +2,8 @@
   <section class="mini-section pt-0" v-if="categories && categories.length > 0">
     <div class="container">
       <h2 class="sub-title">Our Category</h2>
-      <div class="category-carousel owl-carousel owl-theme title-nav">
-        <div class="item" v-for="(cat, indx) in categories" :key="indx">
+      <hooper class="category-carousel title-nav" :settings="homeCategorySetting">
+        <slide class="item" v-for="(cat, indx) in categories" :key="indx">
           <div class="category-box">
             <div class="icon">
               <img :src="cat.icon ? cat.icon : '/logo.svg'" class="d-block" />
@@ -26,7 +26,8 @@
               </nuxt-link>
             </div>
           </div>
-        </div>
+        </slide>
+        <hooper-navigation slot="hooper-addons"></hooper-navigation>
       <!--
         <div class="item">
           <div class="category-box">
@@ -223,21 +224,57 @@
             </div>
           </div>
         </div> -->
-      </div>
+      </hooper>
     </div>
   </section>
 </template>
 
 <script>
+import { Hooper, Slide, Navigation as HooperNavigation } from 'hooper';
+import 'hooper/dist/hooper.css'
 import { mapGetters  } from 'vuex'
 
 export default {
   name: 'Category',
+  data() {
+    return {
+      homeCategorySetting: {
+        infiniteScroll: true,
+        wheelControl: false,
+        keysControl: false,
+        autoPlay: true,
+        hoverPause: false,
+        playSpeed: 3000,
+        transition: 600,
+        itemsToSlide: 1,
+        trimWhiteSpace: true,
+        breakpoints: {
+          0: {
+            itemsToShow: 3
+          },
+          768: {
+            itemsToShow: 6
+          },
+          992: {
+            itemsToShow: 7
+          },
+          1201: {
+            itemsToShow: 8
+          }
+        }
+      }
+    }
+  },
+  components: {
+    Hooper,
+    Slide,
+    HooperNavigation
+  },
   computed: {
     ...mapGetters({
       categories: 'global/getMainCategories'
     })
   }
-  
+
 };
 </script>

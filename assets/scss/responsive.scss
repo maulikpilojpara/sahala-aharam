@@ -408,11 +408,11 @@
       margin: 0 0 15px;
       line-height: 140%;
   }
-  html .owl-carousel .owl-nav button[class*="owl-"] {
+  html .hooper .hooper-navigation button[class*="hooper-"] {
       width: 32px;
       height: 32px;
   }
-  .title-nav .owl-nav {
+  .title-nav .hooper-navigation {
       top: -44px;
   }
   .category-box .icon {
@@ -774,7 +774,13 @@
       padding: 5px 10px;
       font-size: 13px;
   }
-
+  .product-carousel .item,
+  .offer-carousel .item {
+    padding: 0 5px;
+  }
+  .category-carousel .item {
+    padding: 0 10px;
+  }
 
 }
 

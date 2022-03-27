@@ -21,6 +21,26 @@
 
 <script>
 export default {
-  name: 'PageLoader'
+  name: 'PageLoader',
+  mounted() {
+    this.$nextTick(() => {
+      this.addLoadedClass();
+    });
+  },
+  beforeDestroy() {
+    this.$nextTick(() => {
+      this.removeLoadedClass();
+    });
+  },
+  methods: {
+    addLoadedClass() {
+      setTimeout(() => {
+        document.body.classList.add('loaded');
+      }, 1000);
+    },
+    removeLoadedClass() {
+      document.body.classList.remove('loaded');
+    },
+  },
 };
 </script>

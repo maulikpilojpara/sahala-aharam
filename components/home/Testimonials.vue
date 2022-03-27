@@ -20,8 +20,8 @@
         </p>
       </div>
       <div class="testimonial-carousel-wrap">
-        <div class="testimonial-carousel owl-carousel owl-theme">
-          <div class="item" 
+        <hooper class="testimonial-carousel" :settings="homeTestimonialSetting">
+          <slide class="item"
             v-for="(testimonial, index) in testimonials"
             :key="index">
             <div class="testimonial-box">
@@ -38,23 +38,46 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </slide>
+          <hooper-navigation slot="hooper-addons"></hooper-navigation>
+        </hooper>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import { Hooper, Slide, Navigation as HooperNavigation } from 'hooper';
+import 'hooper/dist/hooper.css'
 import { mapGetters  } from 'vuex'
 
 export default {
   name: 'Testimonials',
+  data() {
+    return {
+      homeTestimonialSetting: {
+        infiniteScroll: true,
+        wheelControl: false,
+        keysControl: false,
+        autoPlay: true,
+        hoverPause: false,
+        playSpeed: 3000,
+        transition: 600,
+        itemsToSlide: 1,
+        trimWhiteSpace: true
+      }
+    }
+  },
+  components: {
+    Hooper,
+    Slide,
+    HooperNavigation
+  },
   computed: {
     ...mapGetters({
       testimonials: 'global/getTestimonials'
     })
   }
-  
+
 };
 </script>
