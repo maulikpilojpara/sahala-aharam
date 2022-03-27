@@ -21,7 +21,7 @@
         <div class="item" v-for="(product, indx) in products" :key="indx">
           <div class="product-box">
             <div class="img">
-              <nuxt-link :to="{path: `product/${product.name}` }">
+              <nuxt-link :to="{path: `/product/${product.name}` }">
                 <img :src="product.image ? product.image : '/logo.svg'" class="d-block" />
               </nuxt-link>
               <!-- <div class="offer-label">20% Off</div> -->
@@ -31,7 +31,7 @@
             </div>
             <div class="text">
               <h3>
-                <nuxt-link :to="{path: `product/${product.name}` }">
+                <nuxt-link :to="{path: `/product/${product.name}` }">
                   {{product.item_name}}
                 </nuxt-link>
               </h3>
@@ -43,7 +43,7 @@
                 <span style="width: 80%"></span>
               </div> -->
               <div class="more-link">
-                <nuxt-link :to="{path: `product/${product.name}` }">
+                <nuxt-link :to="{path: `/product/${product.name}` }">
                   <svg
                     width="19"
                     height="19"
