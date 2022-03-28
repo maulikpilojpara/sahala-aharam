@@ -866,6 +866,13 @@ html .btn.btn-primary:hover {
   color: #fff;
   background-color: var(--dark);
 }
+html .btn-check:active+.btn-primary:focus, html .btn-check:checked+.btn-primary:focus, html .btn-primary.active:focus, html .btn-primary:active:focus, html .show>.btn-primary.dropdown-toggle:focus,
+html .btn-check:focus+.btn-primary, html .btn-primary:focus {
+  color: #fff;
+  background-color: var(--dark);
+  border-color: var(--dark);
+  box-shadow: 0 0 0 0.25rem rgb(7 22 0 / 50%);
+}
 html .btn.btn-dark {
   color: #fff;
   background-color: var(--dark);
@@ -1782,6 +1789,9 @@ ul.footer-social-info li:last-child{
   margin: 22px auto 0;
   border-radius: 5px;
 }
+.login-inner .alert {
+  margin-top: 1rem;
+}
 ul.login-with-social {
   display: flex;
   list-style: none;
@@ -1816,9 +1826,12 @@ ul.login-with-social li a svg{
   color: #555;
   margin: 0 0 20px;
 }
-.form-field-latest {
+.form-field-latest:not(.form-field-radio) {
   margin: 0 0 18px;
   position: relative;
+}
+.form-field-radio {
+  margin: 0 0 18px;
 }
 .form-field-submit {
   text-align: center;
@@ -1827,7 +1840,7 @@ ul.login-with-social li a svg{
 .form-field-submit .btn {
   min-width: 150px;
 }
-.form-field-latest .form-control {
+.form-field-latest:not(.form-field-radio) .form-control {
   height: 46px;
   padding: 0 20px;
   font-weight: 500;
@@ -1836,10 +1849,10 @@ ul.login-with-social li a svg{
   border-radius: 6px;
   box-shadow: 0 0 0 0 transparent !important;
 }
-.form-field-latest .form-control:focus{
+.form-field-latest:not(.form-field-radio) .form-control:focus{
   border-color:var(--primary);
 }
-.form-field-latest label {
+.form-field-latest:not(.form-field-radio) label {
   position: absolute;
   left: 5px;
   top: 0;
@@ -1852,6 +1865,27 @@ ul.login-with-social li a svg{
   transition: all 0.3s;
   background: #fff;
   pointer-events: none;
+}
+.form-field-radio > label {
+  font-weight: 500;
+  font-size: 16px;
+  margin: 0 0 10px;
+  line-height: 28px;
+  color: #888;
+}
+.form-check-label {
+  font-weight: 500;
+  font-size: 16px;
+  color: #888;
+}
+.form-check-input:checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+.form-check-input:focus {
+  border-color: var(--primary);
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgb(105 189 68 / 25%);
 }
 .form-field-latest label em{
   font-style: normal;
@@ -2503,4 +2537,9 @@ ul.breadcrumb-list li:last-child a {
 
 .certification-carousel .item {
   padding: 0 5px;
+}
+
+.alert {
+  padding: 0.5rem 1rem;
+  font-size: 14px;
 }
