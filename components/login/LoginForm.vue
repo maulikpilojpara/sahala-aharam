@@ -44,19 +44,23 @@
       <p class="login-sub-label">Or use your email account</p>
       <form method="post" @submit.prevent="loginAction">
         <div class="form-field-latest">
-          <label>Email <em>*</em></label>
-          <input v-model="email" type="email" class="form-control" required />
+          <input v-model="email" placeholder="Email *" type="email" class="form-control" required />
         </div>
         <div class="form-field-latest">
-          <label>Password <em>*</em></label>
-          <input v-model="password" type="password" class="form-control" required />
+          <input v-model="password" placeholder="Password *" type="password" class="form-control" required />
         </div>
         <div class="form-field-links">
           <div class="remember-login-field">
-            <div class="custom-checkbox">
+            <!-- <div class="custom-checkbox">
               <label>
                 <input type="checkbox" />
                 <span>Remember Me</span>
+              </label>
+            </div> -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="rememberMe">
+              <label class="form-check-label" for="rememberMe">
+                Remember Me
               </label>
             </div>
           </div>
@@ -70,8 +74,11 @@
           </button>
         </div>
       </form>
-      <div v-if="formResponse && formResponse.class !== 'load'" class="form-response" :class="formResponse.class">
+      <!-- <div v-if="formResponse && formResponse.class !== 'load'" class="form-response" :class="formResponse.class">
         <h5>{{ formResponse.msg }}</h5>
+      </div> -->
+      <div class="alert" :class="`alert-${formResponse.class}`" v-if="Object.keys(formResponse).length > 0" role="alert">
+        {{ formResponse.msg }}
       </div>
     </div>
     <div class="login-bottom-links">
@@ -110,7 +117,7 @@ export default {
       this.formResponse = {};
       console.log('this.email', this.email);
       console.log('this.password', this.password);
-      
+
       try {
         this.formResponse = {
           msg: 'Processing...',
@@ -138,7 +145,7 @@ export default {
           this.$cookies.set('login_token', loginRes.data, { path: '/', maxAge: 60 * 60 * 24 * 7 });
           await this.$store.dispatch('customer/updateLoginFlag', true)
           await this.$store.dispatch('customer/updateUserContext', loginRes.data)
-          
+
           this.formResponse = {
             msg: 'You Have Successfully Logged in!',
             class: 'success'
@@ -147,7 +154,7 @@ export default {
         } else {
           this.formResponse = {
             msg: 'Something went wrong. Please try again!',
-            class: 'danger'  
+            class: 'danger'
           }
         }
 

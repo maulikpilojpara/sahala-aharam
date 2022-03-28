@@ -587,19 +587,19 @@
   .form-field-submit .btn {
       min-width: 110px;
   }
-  .form-field-latest label {
+  .form-field-latest:not(.form-field-radio) label {
       left: 5px;
       font-size: 14px;
       margin: 7px;
       line-height: 28px;
       padding: 0 6px;
   }
-  .form-field-latest .form-control {
+  .form-field-latest:not(.form-field-radio) .form-control {
       height: 42px;
       padding: 0 16px;
       font-size: 15px;
   }
-  .form-field-latest.input-has-value label {
+  .form-field-latest.input-has-value:not(.form-field-radio) label {
       top: -16px;
   }
   .custom-checkbox label span:before {
@@ -780,6 +780,9 @@
   }
   .category-carousel .item {
     padding: 0 10px;
+  }
+  .form-check-label {
+    font-size: 14px;
   }
 
 }
