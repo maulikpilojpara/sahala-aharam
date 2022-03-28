@@ -11,7 +11,7 @@ const actions = {
       }
       // console.log('payload:', payload);
       // return;
-      const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
+      const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD
       const productRes = await this.$axios.post(`${appURL}/api/getProductDetails/`, payload)
       if (productRes.data && productRes.data.message) {
         commit('SAVE_CURRENT_PRODUCT', productRes.data.message)
@@ -25,7 +25,7 @@ const actions = {
   },
   async getRelatedProducts ({commit}, skuName) {
     try {
-      const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
+      const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD
       const productRes = await this.$axios.get(`${appURL}/api/getRelatedProducts/${skuName}`)
 
       if (productRes.data && productRes.data.message) {

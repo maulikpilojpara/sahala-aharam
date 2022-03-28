@@ -97,7 +97,7 @@ export default {
           msg: 'Processing...',
           class: 'load'
         }
-        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
+        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD
         const registerResponse = await this.$axios.post(`${appURL}/api/register_user`, payload);
         console.log('registerResponse::', registerResponse.data);
         if (registerResponse && registerResponse.data && registerResponse.data.message) {

@@ -26,7 +26,7 @@ export default {
     Pagination
   },
   async asyncData({$axios, route}) {
-    const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD;
+    const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD;
     let currentSlug = route.params.pathMatch;
     let catTitle = (route.params.pathMatch).replace('-', ' ');
     const productResponse = await $axios.get(`${appURL}/api/getproducts/${currentSlug}`);

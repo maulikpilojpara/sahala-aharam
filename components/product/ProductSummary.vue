@@ -114,7 +114,7 @@ export default {
       console.log('this.$store:: ', this.getUserLoginStatus);
       
       if (this.getUserLoginStatus) {
-        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
+        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD
         const cartPayload = {
           items:[{
               item_code: 'OSGNW5KG',
