@@ -39,7 +39,7 @@ section{
   position: relative;
   padding-top: 80px;
   padding-bottom: 80px;
-  z-index:1;
+  // z-index:1;
 }
 section.mini-section {
   padding-top: 55px;
@@ -337,7 +337,7 @@ html div[class*=kursor].kursor--1 {
   flex-direction: column;
   justify-content: space-between;
   font-size: 14px;
-  z-index: 9;
+  z-index: 1;
 }
 .main-col {
   width: 83%;
@@ -2174,6 +2174,9 @@ ul.breadcrumb-list li:last-child a {
 }
 .details-gallery-carousel .img:hover img{
   transform:scale(1.1);
+}
+.details-gallery-carousel .owl-item {
+  width: 100%;
 }
 .details-gallery-carousel  .owl-nav {
   position: absolute;
