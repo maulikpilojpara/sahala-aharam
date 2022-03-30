@@ -1,5 +1,5 @@
 <template>
-  <div class="details-tabs">
+  <div class="details-tabs" @click="switchTab($event)">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <button
@@ -109,6 +109,25 @@
 
 <script>
 export default {
-  name: "ProductTabs"
+  name: "ProductTabs",
+  methods: {
+    switchTab(e) {
+      let tab = e.target.dataset.bsTarget;
+      if(!tab) return;
+      let tabContent = document.querySelector(tab);
+      let tabNav = document.querySelectorAll(".nav-link");
+      tabNav.forEach(item => {
+        item.classList.remove("active");
+      });
+      e.target.classList.add("active");
+      let tabPane = document.querySelectorAll(".tab-pane");
+      tabPane.forEach(item => {
+        item.classList.remove("show");
+        item.classList.remove("active");
+      });
+      tabContent.classList.add("show");
+      tabContent.classList.add("active");
+    }
+  }
 };
 </script>
