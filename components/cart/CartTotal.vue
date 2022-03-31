@@ -1,20 +1,20 @@
 <template>
-  <div class="cart-total-wrap">
+  <div class="cart-total-wrap" v-if="cartTotals && Object.keys(cartTotals).length > 0">
     <div class="cart-box cart-total">
       <div class="table-responsive">
         <table class="table cart-total-table mb-0">
           <tbody>
             <tr>
               <td>Subtotal</td>
-              <td align="right">$29.00</td>
+              <td align="right">&#8377; {{cartTotals.grand_total.toLocaleString('en-IN')}}</td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td>Tax</td>
-              <td align="right">$2.00</td>
-            </tr>
+              <td align="right">&#8377; 2.00</td>
+            </tr> -->
             <tr class="total-tr">
               <td>Total</td>
-              <td align="right">$31.00</td>
+              <td align="right">&#8377; {{cartTotals.total.toLocaleString('en-IN')}}</td>
             </tr>
           </tbody>
         </table>
@@ -27,8 +27,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-  name: 'CartTotal'
+  name: 'CartTotal',
+  computed: {
+    ...mapGetters({
+      cartTotals: 'customer/getCartTotals'
+    }),
+  },
 };
 </script>
 

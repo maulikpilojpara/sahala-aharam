@@ -1,7 +1,7 @@
 const actions = {
-	// async updateLoginFlag ({ commit }, flag) {
-	//     await commit('UPDATE_IS_LOGGED_IN', flag)
-	// },
+	async updateLoginFlag ({ commit }, flag) {
+	    await commit('UPDATE_IS_LOGGED_IN', flag)
+	},
 	async updateUserContext ({ commit }, data) {
 	    await commit('UPDATE_CUSTOMER_CONTEXT', data)
 	},
@@ -15,12 +15,12 @@ const actions = {
 		// console.log('checkIfUserLoggedin loginRes.data::; ', loginRes.data);
 		if (res.data && res.data.success)  {
 			if (res.data.response && res.data.response.message) {
-				// this.$store.dispatch('customer/updateLoginFlag', true);
-				await commit('UPDATE_IS_LOGGED_IN', true)
+				await this.$store.dispatch('customer/updateLoginFlag', true);
+				// await commit('UPDATE_IS_LOGGED_IN', true)
 			}
 		} else {
-			// this.$store.dispatch('customer/updateLoginFlag', false);
-			await commit('UPDATE_IS_LOGGED_IN', false)
+			await this.$store.dispatch('customer/updateLoginFlag', false);
+			// await commit('UPDATE_IS_LOGGED_IN', false)
 		}
 	},
 	async getUserCartData ({ commit }, token) {
@@ -31,7 +31,9 @@ const actions = {
 		}
 		const userDataResponse = await this.$axios(axiosOptions1);
 		console.log('getUserCartData userDataResponse.data::; ', userDataResponse.data.message.doc.items);
+		const cartObj = userDataResponse?.data?.message?.doc || {}
 		const cartItems = userDataResponse?.data?.message?.doc?.items || []
+		await commit('UPDATE_CART_TOTALS', cartObj)
 		await commit('UPDATE_CART_ITEMS', cartItems)
 		await commit('UPDATE_CART_ITEMS_COUNT', cartItems.length)
 		if (userDataResponse.data && userDataResponse.data.success)  {

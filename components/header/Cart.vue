@@ -1,6 +1,6 @@
 <template>
   <div class="min-cart">
-    <a href="#" class="min-cart-toggle">
+    <nuxt-link to="/cart" class="min-cart-toggle">
       <span class="icon"
         ><svg
           width="36"
@@ -33,7 +33,7 @@
         </svg> </span
       >
       <span class="cart-budge">{{ cartItemCount }}</span>
-    </a>
+    </nuxt-link>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="min-profile">
-    <nuxt-link to="/login" class="min-profile-toggle">
+    <nuxt-link :to="getUserURL" class="min-profile-toggle">
       <span class="icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="29" viewBox="0 0 28 29">
           <g id="Profile" transform="translate(-0.339 1.779)">
@@ -15,8 +15,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'MinProfile',
+  computed: {
+    ...mapGetters({
+      getUserLoginStatus: 'customer/getUserLoginStatus',
+    }),
+    getUserURL () {
+      return this.getUserLoginStatus ? '/my-account' : '/login'
+    }
+  },
 }
 </script>
 

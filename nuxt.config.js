@@ -11,6 +11,7 @@ export default {
     APP_URL_LOCAL: process.env.APP_URL_LOCAL || '',
     APP_URL_PROD: process.env.APP_URL_PROD || '',
     NODE_ENV: process.env.NODE_ENV || '',
+    ERP_DOMAIN: process.env.ERP_DOMAIN || '',
   },
   head: {
     title: 'Sahaja Aharam',
