@@ -189,3 +189,43 @@ app.post('/api/get_cutomer_cart', (req, res) => {
     res.status(404).send('Something went wrong. Please try again!');
   });
 });
+
+app.get('/api/check_loggedin_status/:token', (req, res) => {
+  console.log('req.body.token:: ', req.params.token);
+  const options = {
+    method: 'GET',
+    url: `${process.env.ERP_DOMAIN}/api/method/frappe.auth.get_logged_user`,
+    headers: {
+      'Authorization': req.params.token
+    },
+  };
+
+  console.log('get_cutomer_cart options:: ', options);
+  
+  axios.request(options).then((response) => {
+    res.status(200).send({success: true, response: response.data});
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send({error: true, msg:'Something went wrong. Please try again!'});
+  });
+});
+
+app.get('/api/get_cart_data/:token', (req, res) => {
+  console.log('req.body.token:: ', req.params.token);
+  const options = {
+    method: 'GET',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.get_cart_quotation`,
+    headers: {
+      'Authorization': req.params.token
+    },
+  };
+
+  console.log('get_cutomer_cart options:: ', options);
+  
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send({error: true, msg:'Something went wrong. Please try again!'});
+  });
+});

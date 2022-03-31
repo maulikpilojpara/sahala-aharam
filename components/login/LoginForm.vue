@@ -77,7 +77,7 @@
       <!-- <div v-if="formResponse && formResponse.class !== 'load'" class="form-response" :class="formResponse.class">
         <h5>{{ formResponse.msg }}</h5>
       </div> -->
-      <div class="alert" :class="`alert-${formResponse.class}`" v-if="Object.keys(formResponse).length > 0" role="alert">
+      <div class="alert" :class="`alert-${formResponse.class}`" v-if="Object.keys(formResponse).length > 0 &&  formResponse.class !== 'load'" role="alert">
         {{ formResponse.msg }}
       </div>
     </div>
@@ -123,9 +123,12 @@ export default {
           msg: 'Processing...',
           class: 'load'
         }
-        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
+        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD
         console.log('appURL:: ', appURL);
-        const loginRes = await this.$axios.post(`${appURL}/api/login_user`, {
+        const loginURL = `${appURL}/api/login_user`;
+        console.log('loginURL:: ', loginURL);
+
+        const loginRes = await this.$axios.post(loginURL, {
           // "email":"maulik@yopmail.com",
           // "password":"maulik@123"
           "email": this.email,

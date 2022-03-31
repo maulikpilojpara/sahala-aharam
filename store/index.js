@@ -14,8 +14,13 @@ export const actions = {
         })
         .catch(error => console.log(error));
       if (loggedinUserData) {
-        await context.store.dispatch('customer/updateLoginFlag', true);
+        
         await context.store.dispatch('customer/updateUserContext', loggedinUserData);
+        const cusToken = await context.store.getters['customer/getCustomerToken'];
+        
+        await context.store.dispatch('customer/checkIfUserLoggedin', cusToken);
+        await context.store.dispatch('customer/getUserCartData', cusToken);
+       
       }
     } catch (error) {
       /* eslint-disable no-console */

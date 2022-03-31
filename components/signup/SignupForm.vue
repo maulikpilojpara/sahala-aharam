@@ -56,7 +56,7 @@
       <!-- <div v-if="formResponse && formResponse.class !== 'load'" class="form-response" :class="formResponse.class">
         <h5>{{ formResponse.msg }}</h5>
       </div> -->
-      <div class="alert" :class="`alert-${formResponse.class}`" v-if="Object.keys(formResponse).length > 0" role="alert">
+      <div class="alert" :class="`alert-${formResponse.class}`" v-if="Object.keys(formResponse).length > 0 && formResponse.class !== 'load'" role="alert">
         {{ formResponse.msg }}
       </div>
     </div>
@@ -107,7 +107,7 @@ export default {
           msg: 'Processing...',
           class: 'load'
         }
-        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
+        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD
         const registerResponse = await this.$axios.post(`${appURL}/api/register_user`, payload);
         console.log('registerResponse::', registerResponse.data);
         if (registerResponse && registerResponse.data && registerResponse.data.message) {
