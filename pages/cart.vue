@@ -24,6 +24,7 @@ import CartTotal from '~/components/cart/CartTotal.vue'
 
 export default {
   name: "Cart",
+  // middleware: "authenticated",
   components: {
     CartItems,
     CartTotal
