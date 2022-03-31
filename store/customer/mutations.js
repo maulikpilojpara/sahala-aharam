@@ -5,5 +5,11 @@ const mutations = {
   UPDATE_IS_LOGGED_IN (state, isLoggedIn) {
       state.isLoggedIn = isLoggedIn
   },
+  UPDATE_CART_ITEMS (state, cartItems) {
+      state.cartItems = cartItems
+  },
+  UPDATE_CART_ITEMS_COUNT (state, cartItemsCount) {
+      state.cartItemsCount = cartItemsCount
+  },
 }
 export default mutations

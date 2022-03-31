@@ -56,7 +56,7 @@
       <!-- <div v-if="formResponse && formResponse.class !== 'load'" class="form-response" :class="formResponse.class">
         <h5>{{ formResponse.msg }}</h5>
       </div> -->
-      <div class="alert" :class="`alert-${formResponse.class}`" v-if="Object.keys(formResponse).length > 0" role="alert">
+      <div class="alert" :class="`alert-${formResponse.class}`" v-if="Object.keys(formResponse).length > 0 && formResponse.class !== 'load'" role="alert">
         {{ formResponse.msg }}
       </div>
     </div>

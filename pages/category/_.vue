@@ -30,7 +30,7 @@ export default {
     let currentSlug = route.params.pathMatch;
     let catTitle = (route.params.pathMatch).replace('-', ' ');
     const productResponse = await $axios.get(`${appURL}/api/getproducts/${currentSlug}`);
-    console.log('productResponse.data::', productResponse.data);
+    // console.log('productResponse.data::', productResponse.data);
     let products = productResponse?.data?.message?.items || [];
     let bannerImageURL = productResponse?.data?.message?.banner || '';
     // let products = [];
