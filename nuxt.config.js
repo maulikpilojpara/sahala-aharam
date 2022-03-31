@@ -60,6 +60,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~plugins/vue-js-modal.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -98,4 +99,56 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+  router: {
+    scrollBehavior: async (to, from, savedPosition) => {
+      if (savedPosition) {
+        return savedPosition;
+      }
+
+      const smoothscrollPolyfillScript =
+        "//unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js";
+
+      if (process.client && (!("scrollBehavior" in document.documentElement.style))) {
+        if (
+          document.querySelectorAll(
+            `script[src="${smoothscrollPolyfillScript}"]`
+          ).length === 0
+        ) {
+          const ele = document.createElement("script");
+          ele.src = smoothscrollPolyfillScript;
+          ele.defer = true;
+          document.body.appendChild(ele);
+        }
+      }
+
+      const findEl = async (hash, x) => {
+        return (
+          document.querySelector(hash) ||
+          new Promise((resolve, reject) => {
+            if (x > 50) {
+              return resolve();
+            }
+            setTimeout(() => {
+              resolve(findEl(hash, ++x || 1));
+            }, 100);
+          })
+        );
+      };
+
+      if (to.hash) {
+        setTimeout(async () => {
+          let el = await findEl(to.hash);
+          return window.scrollTo({
+            top: el.offsetTop,
+            behavior: "smooth"
+          });
+        }, 2000);
+      }
+
+      return {
+        x: 0,
+        y: 0
+      };
+    },
+  },
 }
