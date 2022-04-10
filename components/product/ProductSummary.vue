@@ -139,19 +139,15 @@ export default {
           msg: 'Product added successfully! Redirect to cart page...',
           class: 'success'
         }
-        // setTimeout(() => {
-        //   this.$router.push('/cart')
-        // }, 2000);
+        setTimeout(() => {
+          this.$router.push('/cart')
+        }, 2000);
 
-        console.log('createCartResponse::: ', createCartResponse);
-        console.log('customerCartRes::: ', customerCartRes);
-        console.log('getUserDataResponse::: ', getUserDataResponse);
       } else {
         this.cartResponse = {
           msg: 'Please login to continue',
           class: 'danger'
         }
-        // this.$router.push('/cart')
       }
     }
   },

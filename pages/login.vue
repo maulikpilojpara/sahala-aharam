@@ -12,6 +12,7 @@ import $ from 'jquery'
 
 export default {
   name: 'Login',
+  middleware: 'notauthenticate',
   layout: 'login',
   components: {
     LoginInfo,
