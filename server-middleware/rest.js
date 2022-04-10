@@ -1,18 +1,52 @@
 const bodyParser = require('body-parser');
 const app = require('express')();
 const axios = require('axios');
+// const functions = require("firebase-functions");
+// const admin = require("firebase-admin");
+// const router = express();
+// app.use(cors({ origin: true }));
+
+// Add your razorpay key and secret
+const KEY_ID = "rzp_test_WYMBQK6C3rMx0r";
+const KEY_SECRET = "BBVEgjzlkGVGgyR5tJxmBW4z";
+
 module.exports = {
   path: '/',
   handler: app
 };
 app.use(bodyParser.json());
 
+// app.post("/createPayment", (req, res, next) => {
+//   return admin
+//     .firestore()
+//     .collection("payments")
+//     .add(req.body)
+//     .then(payment => {
+//       var instance = new Razorpay({
+//         key_id: KEY_ID,
+//         key_secret: KEY_SECRET
+//       });
+
+//       var options = {
+//         amount: req.body.amount * 100,
+//         currency: "INR",
+//         receipt: payment.id,
+//         payment_capture: 1
+//       };
+//       instance.orders.create(options, function(err, order) {
+//         return res.status(201).send(order);
+//       });
+//     })
+//     .catch(er => {
+//       return res.status(400).send({ er });
+//     });
+// });
+
 app.post('/api/login_user', (req, res) => {
   const data = JSON.stringify({
       "usr": req.body.email,
       "pwd": req.body.password
   });
-  console.log('data:: ', data);
   const options = {
     method: 'post',
     url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.login`,
@@ -21,10 +55,7 @@ app.post('/api/login_user', (req, res) => {
     },
     data: data
   };
-  console.log('options:: ', options);
   axios.request(options).then((response) => {
-    console.log('response.data:: ', response.data);
-    
     res.status(200).send(response.data);
   }).catch((error) => {
     console.error(error);
@@ -46,7 +77,6 @@ app.post('/api/register_user', (req, res) => {
     "gender": req.body.gender,
     "mobile_no": req.body.mobile
   });
-  console.log('data:: ', data);
   const options = {
     method: 'post',
     url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.user_sign_up`,
@@ -55,10 +85,7 @@ app.post('/api/register_user', (req, res) => {
     },
     data: data
   };
-  console.log('register options:: ', options);
   axios.request(options).then((response) => {
-    console.log('response.data:: ', response.data);
-    
     res.status(200).send(response.data);
   }).catch((error) => {
     console.error(error);
@@ -142,11 +169,9 @@ app.post('/api/getProductDetails', (req, res) => {
 });
 
 app.post('/api/create_cart', (req, res) => {
-  console.log('req.body.token:: ', JSON.stringify(req.body.items));
   const items = JSON.stringify(req.body.items);
   var data = JSON.stringify({
     "items": items,
-    // "items":"[{\"item_code\": \"OSGNW5KG\",\"qty\": 3}, {\"item_code\": \"VGOKRLSE\",\"qty\": 2}]",
     "warehouse": "Tarnaka DC - SAPCO"
   });
   const options = {
@@ -158,8 +183,27 @@ app.post('/api/create_cart', (req, res) => {
     },
     data : data
   };
+  
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send('Something went wrong. Please try again!');
+  });
+});
 
-  console.log('create_cart options:: ', options);
+//Update cart
+app.post('/api/update_cart', (req, res) => {
+  const items = JSON.stringify(req.body.items);
+  const options = {
+    method: 'post',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.update_cart`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': req.body.token
+    },
+    data : items
+  };
   
   axios.request(options).then((response) => {
     res.status(200).send(response.data);
@@ -170,7 +214,6 @@ app.post('/api/create_cart', (req, res) => {
 });
 
 app.post('/api/get_cutomer_cart', (req, res) => {
-  console.log('req.body.token:: ', req.body.token);
   const options = {
     method: 'GET',
     url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.get_cart_quotation`,
@@ -179,8 +222,6 @@ app.post('/api/get_cutomer_cart', (req, res) => {
       'Authorization': req.body.token
     },
   };
-
-  console.log('get_cutomer_cart options:: ', options);
   
   axios.request(options).then((response) => {
     res.status(200).send(response.data);
@@ -190,17 +231,15 @@ app.post('/api/get_cutomer_cart', (req, res) => {
   });
 });
 
-app.get('/api/check_loggedin_status/:token', (req, res) => {
-  console.log('req.body.token:: ', req.params.token);
+app.post('/api/check_loggedin_status', (req, res) => {
   const options = {
     method: 'GET',
     url: `${process.env.ERP_DOMAIN}/api/method/frappe.auth.get_logged_user`,
     headers: {
-      'Authorization': req.params.token
+      'Content-Type': 'application/json',
+      'Authorization': req.body.token
     },
   };
-
-  console.log('get_cutomer_cart options:: ', options);
   
   axios.request(options).then((response) => {
     res.status(200).send({success: true, response: response.data});
@@ -211,7 +250,6 @@ app.get('/api/check_loggedin_status/:token', (req, res) => {
 });
 
 app.get('/api/get_cart_data/:token', (req, res) => {
-  console.log('req.body.token:: ', req.params.token);
   const options = {
     method: 'GET',
     url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.get_cart_quotation`,
@@ -219,8 +257,6 @@ app.get('/api/get_cart_data/:token', (req, res) => {
       'Authorization': req.params.token
     },
   };
-
-  console.log('get_cutomer_cart options:: ', options);
   
   axios.request(options).then((response) => {
     res.status(200).send(response.data);
@@ -228,4 +264,50 @@ app.get('/api/get_cart_data/:token', (req, res) => {
     console.error(error);
     res.status(404).send({error: true, msg:'Something went wrong. Please try again!'});
   });
+});
+
+//User Logout
+app.post('/api/user_logout', (req, res) => {
+  const options = {
+    method: 'GET',
+    url: `${process.env.ERP_DOMAIN}/api/method/logout`,
+    headers: {
+      'Authorization': req.body.token
+    },
+  };
+  
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send({error: true, msg:'Something went wrong. Please try again!'});
+  });
+});
+
+// Razorpay call
+
+app.post("/createPayment", (req, res, next) => {
+  return admin
+    .firestore()
+    .collection("payments")
+    .add(req.body)
+    .then(payment => {
+      var instance = new Razorpay({
+        key_id: KEY_ID,
+        key_secret: KEY_SECRET
+      });
+
+      var options = {
+        amount: req.body.amount * 100,
+        currency: "INR",
+        receipt: payment.id,
+        payment_capture: 1
+      };
+      instance.orders.create(options, function(err, order) {
+        return res.status(201).send(order);
+      });
+    })
+    .catch(er => {
+      return res.status(400).send({ er });
+    });
 });
