@@ -57,7 +57,7 @@
       right: 0;
       top: 0;
       background: #FBF9F9;
-      z-index: 9;
+      z-index: 1;
       transition: all 0.5s;
   }
   .sticky header {
@@ -408,11 +408,11 @@
       margin: 0 0 15px;
       line-height: 140%;
   }
-  html .owl-carousel .owl-nav button[class*="owl-"] {
+  html .hooper .hooper-navigation button[class*="hooper-"] {
       width: 32px;
       height: 32px;
   }
-  .title-nav .owl-nav {
+  .title-nav .hooper-navigation {
       top: -44px;
   }
   .category-box .icon {
@@ -587,19 +587,19 @@
   .form-field-submit .btn {
       min-width: 110px;
   }
-  .form-field-latest label {
+  .form-field-latest:not(.form-field-radio) label {
       left: 5px;
       font-size: 14px;
       margin: 7px;
       line-height: 28px;
       padding: 0 6px;
   }
-  .form-field-latest .form-control {
+  .form-field-latest:not(.form-field-radio) .form-control {
       height: 42px;
       padding: 0 16px;
       font-size: 15px;
   }
-  .form-field-latest.input-has-value label {
+  .form-field-latest.input-has-value:not(.form-field-radio) label {
       top: -16px;
   }
   .custom-checkbox label span:before {
@@ -774,7 +774,16 @@
       padding: 5px 10px;
       font-size: 13px;
   }
-
+  .product-carousel .item,
+  .offer-carousel .item {
+    padding: 0 5px;
+  }
+  .category-carousel .item {
+    padding: 0 10px;
+  }
+  .form-check-label {
+    font-size: 14px;
+  }
 
 }
 

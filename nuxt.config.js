@@ -1,7 +1,12 @@
-const webpack = require('webpack')
+// const webpack = require('webpack')
 
 export default {
+  // target: 'static',
   // Global page headers: https://go.nuxtjs.dev/config-head
+  server: {
+    port: 10000,
+    host: process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost',
+  },
   env: {
     APP_URL_LOCAL: process.env.APP_URL_LOCAL || '',
     APP_URL_PROD: process.env.APP_URL_PROD || '',
@@ -29,14 +34,14 @@ export default {
       }
     ],
     script: [
-      { hid: 'jquery', src: `${process.env.APP_URL_PROD}/js/jquery-2.2.4.min.js`, defer: true, body: true },
-      { hid: 'bootstrap', src: `${process.env.APP_URL_PROD}/js/bootstrap.bundle.min.js`, defer: true, body: true },
-      { hid: 'owlcarousel', src: `${process.env.APP_URL_PROD}/js/owl.carousel.min.js`, defer: true, body: true },
-      { hid: 'aos', src: `${process.env.APP_URL_PROD}/js/aos.js`, defer: true, body: true },
-      { hid: 'smoothscrollbar', src: `${process.env.APP_URL_PROD}/js/smooth-scrollbar.js`, defer: true, body: true },
-      { hid: 'kursor', src: `${process.env.APP_URL_PROD}/js/kursor.js`, defer: true, body: true },
-      { hid: 'fancybox', src: `${process.env.APP_URL_PROD}/js/fancybox.umd.js`, defer: true, body: true },
-      { hid: 'custom', src: `${process.env.APP_URL_PROD}/js/custom.js`, defer: true, body: true },
+      { hid: 'jquery', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/jquery-2.2.4.min.js`, defer: true, body: true },
+      { hid: 'bootstrap', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/bootstrap.bundle.min.js`, defer: true, body: true },
+      { hid: 'owlcarousel', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/owl.carousel.min.js`, defer: true, body: true },
+      { hid: 'aos', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/aos.js`, defer: true, body: true },
+      { hid: 'smoothscrollbar', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/smooth-scrollbar.js`, defer: true, body: true },
+      { hid: 'kursor', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/kursor.js`, defer: true, body: true },
+      { hid: 'fancybox', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/fancybox.umd.js`, defer: true, body: true },
+      { hid: 'custom', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/custom.js`, defer: true, body: true },
     ]
   },
   serverMiddleware: [
@@ -55,6 +60,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~plugins/vue-js-modal.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -93,4 +99,56 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+  router: {
+    scrollBehavior: async (to, from, savedPosition) => {
+      if (savedPosition) {
+        return savedPosition;
+      }
+
+      const smoothscrollPolyfillScript =
+        "//unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js";
+
+      if (process.client && (!("scrollBehavior" in document.documentElement.style))) {
+        if (
+          document.querySelectorAll(
+            `script[src="${smoothscrollPolyfillScript}"]`
+          ).length === 0
+        ) {
+          const ele = document.createElement("script");
+          ele.src = smoothscrollPolyfillScript;
+          ele.defer = true;
+          document.body.appendChild(ele);
+        }
+      }
+
+      const findEl = async (hash, x) => {
+        return (
+          document.querySelector(hash) ||
+          new Promise((resolve, reject) => {
+            if (x > 50) {
+              return resolve();
+            }
+            setTimeout(() => {
+              resolve(findEl(hash, ++x || 1));
+            }, 100);
+          })
+        );
+      };
+
+      if (to.hash) {
+        setTimeout(async () => {
+          let el = await findEl(to.hash);
+          return window.scrollTo({
+            top: el.offsetTop,
+            behavior: "smooth"
+          });
+        }, 2000);
+      }
+
+      return {
+        x: 0,
+        y: 0
+      };
+    },
+  },
 }

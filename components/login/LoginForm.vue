@@ -44,30 +44,41 @@
       <p class="login-sub-label">Or use your email account</p>
       <form method="post" @submit.prevent="loginAction">
         <div class="form-field-latest">
-          <label>Email <em>*</em></label>
-          <input v-model="email" type="email" class="form-control" required />
+          <input v-model="email" placeholder="Email *" type="email" class="form-control" required />
         </div>
         <div class="form-field-latest">
-          <label>Password <em>*</em></label>
-          <input v-model="password" type="password" class="form-control" required />
+          <input v-model="password" placeholder="Password *" type="password" class="form-control" required />
         </div>
         <div class="form-field-links">
           <div class="remember-login-field">
-            <div class="custom-checkbox">
+            <!-- <div class="custom-checkbox">
               <label>
                 <input type="checkbox" />
                 <span>Remember Me</span>
+              </label>
+            </div> -->
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="rememberMe">
+              <label class="form-check-label" for="rememberMe">
+                Remember Me
               </label>
             </div>
           </div>
           <p><a href="#">Forgot Password?</a></p>
         </div>
         <div class="form-field-submit">
-          <button class="btn btn-primary">Sign In</button>
+          <!-- <button class="btn btn-primary">Sign In</button> -->
+          <button class="btn btn-primary" :disabled="formResponse && formResponse.class === 'load' ? true : false">
+            <span v-if="formResponse && formResponse.class === 'load'"> {{formResponse.msg}} </span>
+            <span v-else> Sign In </span>
+          </button>
         </div>
       </form>
-      <div v-if="formResponse" class="form-response">
-        <h5>{{ formResponse }}</h5>
+      <!-- <div v-if="formResponse && formResponse.class !== 'load'" class="form-response" :class="formResponse.class">
+        <h5>{{ formResponse.msg }}</h5>
+      </div> -->
+      <div class="alert" :class="`alert-${formResponse.class}`" v-if="Object.keys(formResponse).length > 0 &&  formResponse.class !== 'load'" role="alert">
+        {{ formResponse.msg }}
       </div>
     </div>
     <div class="login-bottom-links">
@@ -90,7 +101,7 @@ export default {
     return {
       email: '',
       password: '',
-      formResponse: ''
+      formResponse: {}
     }
   },
   computed: {
@@ -103,34 +114,53 @@ export default {
       if (!this.email || !this.password) {
         return;
       }
-      this.formResponse = '';
+      this.formResponse = {};
       console.log('this.email', this.email);
       console.log('this.password', this.password);
-      
+
       try {
-        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
-        const loginRes = await this.$axios.post(`${appURL}/api/login`, {
+        this.formResponse = {
+          msg: 'Processing...',
+          class: 'load'
+        }
+        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD
+        console.log('appURL:: ', appURL);
+        const loginURL = `${appURL}/api/login_user`;
+        console.log('loginURL:: ', loginURL);
+
+        const loginRes = await this.$axios.post(loginURL, {
           // "email":"maulik@yopmail.com",
           // "password":"maulik@123"
           "email": this.email,
           "password": this.password
         });
         if (loginRes && loginRes.data && loginRes.data.message) {
-          if (Object.prototype.hasOwnProperty.call(loginRes.data.message, 'message')) {
-            this.formResponse = loginRes.data.message.message;
+          if (Object.prototype.hasOwnProperty.call(loginRes.data.message, 'message')) { //Authentication Failed
+            this.formResponse = {
+              msg: loginRes.data.message.message,
+              class: 'warning'
+            };
             return;
           }
-          this.$cookies.set('login_token', loginRes.data.message, { path: '/', maxAge: 60 * 60 * 24 * 7 });
+          this.$cookies.set('login_token', loginRes.data, { path: '/', maxAge: 60 * 60 * 24 * 7 });
           await this.$store.dispatch('customer/updateLoginFlag', true)
           await this.$store.dispatch('customer/updateUserContext', loginRes.data)
-          this.formResponse = 'You Have Successfully Logged in!'
-          this.$router.push('/my-account');
+
+          this.formResponse = {
+            msg: 'You Have Successfully Logged in!',
+            class: 'success'
+          }
+          // this.$router.push('/my-account');
         } else {
-          this.formResponse = 'Something went wrong. Please try again!'
+          this.formResponse = {
+            msg: 'Something went wrong. Please try again!',
+            class: 'danger'
+          }
         }
 
       } catch (e) {
         this.error = e.response.data.message
+        this.formResponse = {}
       }
     }
   }

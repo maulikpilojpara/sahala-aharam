@@ -8,36 +8,43 @@
       </div>
       <h2>Create an account</h2>
       <form method="post" @submit.prevent="register">
-        <div class="form-field-latest">
-          <label>First Name <em>*</em></label>
-          <input v-model="first_name" type="text" class="form-control" required />
+        <div class="row">
+          <div class="col col-12 col-lg-6">
+            <div class="form-field-latest">
+              <input v-model="first_name" placeholder="First Name *" type="text" class="form-control" required />
+            </div>
+          </div>
+          <div class="col col-12 col-lg-6">
+            <div class="form-field-latest">
+              <input v-model="last_name" placeholder="Last Name *" type="text" class="form-control" required />
+            </div>
+          </div>
         </div>
         <div class="form-field-latest">
-          <label>Last Name <em>*</em></label>
-          <input v-model="last_name" type="text" class="form-control" required />
+          <input v-model="email" placeholder="Email *" type="email" class="form-control" required />
         </div>
-        <div class="form-field-latest">
-          <label>Email <em>*</em></label>
-          <input v-model="email" type="email" class="form-control" required />
-        </div>
-        <div class="">
+        <div class="form-field-latest form-field-radio">
           <label>Gender <em>*</em></label>
-          <div>
-            <label for="male">Male</label>
-            <input v-model="gender" id="male" value="male" type="radio" class="" required />
-          </div>
-          <div>
-            <label for="female">Female</label>
-            <input v-model="gender" id="female" value="female" type="radio" class="" required />
+          <div class="row">
+            <div class="col col-12 col-lg-6">
+              <div class="form-check">
+                <input v-model="gender" id="male" value="male" type="radio" class="form-check-input" required />
+                <label for="male" class="form-check-label">Male</label>
+              </div>
+            </div>
+            <div class="col col-12 col-lg-6">
+              <div class="form-check">
+                <input v-model="gender" id="female" value="female" type="radio" class="form-check-input" required />
+                <label for="female" class="form-check-label">Female</label>
+              </div>
+            </div>
           </div>
         </div>
         <div class="form-field-latest">
-          <label>Phone <em>*</em></label>
-          <input v-model="phone" type="text" class="form-control" required />
+          <input v-model="phone" placeholder="Phone *" type="text" class="form-control" required />
         </div>
         <div class="form-field-latest">
-          <label>Password <em>*</em></label>
-          <input v-model="password" type="password" class="form-control" required />
+          <input v-model="password" placeholder="Password *" type="password" class="form-control" required />
         </div>
         <div class="form-field-submit">
           <button class="btn btn-primary" :disabled="formResponse && formResponse.class === 'load' ? true : false">
@@ -46,8 +53,11 @@
           </button>
         </div>
       </form>
-      <div v-if="formResponse && formResponse.class !== 'load'" class="form-response" :class="formResponse.class">
+      <!-- <div v-if="formResponse && formResponse.class !== 'load'" class="form-response" :class="formResponse.class">
         <h5>{{ formResponse.msg }}</h5>
+      </div> -->
+      <div class="alert" :class="`alert-${formResponse.class}`" v-if="Object.keys(formResponse).length > 0 && formResponse.class !== 'load'" role="alert">
+        {{ formResponse.msg }}
       </div>
     </div>
     <div class="login-bottom-links">
@@ -91,13 +101,13 @@ export default {
       }
       // console.log('Register payload:: ', payload);
       // return;
-      
+
       try {
         this.formResponse = {
           msg: 'Processing...',
           class: 'load'
         }
-        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:3000' : process.env.APP_URL_PROD
+        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD
         const registerResponse = await this.$axios.post(`${appURL}/api/register_user`, payload);
         console.log('registerResponse::', registerResponse.data);
         if (registerResponse && registerResponse.data && registerResponse.data.message) {
@@ -108,7 +118,7 @@ export default {
               class: 'success'
             }
             // this.$router.push('/login')
-            
+
           }
           if (registerResponse.data.message[1] === 'Already Registered') {
             this.formResponse = {
@@ -116,7 +126,7 @@ export default {
               class: 'danger'
             }
           }
-          
+
         } else {
           this.formResponse = {
             msg: 'Something went wrong. Please try again!',
@@ -126,6 +136,7 @@ export default {
 
       } catch (e) {
         this.error = e.response.data.message
+        this.formResponse = {}
       }
     }
   }

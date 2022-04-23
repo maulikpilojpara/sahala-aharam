@@ -1,14 +1,23 @@
 <template>
   <div class="details-gallery-wrap">
-    <div class="details-gallery-carousel owl-carousel owl-theme">
-      <div class="item" v-for="index in 1" :key="index">
-        <div class="img">
-          <a :href="getProductImage" data-fancybox="product">
-            <img :src="getProductImage" class="d-block" />
-          </a>
+    <div class="details-gallery-carousel owl-carousel owl-theme owl-loaded">
+      <div class="owl-stage-outer">
+        <div class="owl-stage">
+          <div class="owl-item">
+            <div class="item" v-for="index in 1" :key="index">
+              <div class="img">
+                <a href="#" @click="openModal">
+                  <img :src="getProductImage" class="d-block" />
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    <modal name="productImage">
+      <img :src="getProductImage" class="d-block" />
+    </modal>
   </div>
 </template>
 
@@ -29,6 +38,12 @@ export default {
           return '/logo.svg'
         }
       },
+  },
+  methods: {
+    openModal (e) {
+      e.preventDefault()
+      this.$modal.show('productImage')
+    }
   }
 };
 </script>

@@ -18,8 +18,8 @@
     <div class="qty-submit-wrap" v-if="isInStock">
       <div class="product-qty">
         <div class="product-qty-field">
-          <input type="text" value="1" />
-          <span class="qty-action qty-action-minus"
+          <input type="text" v-model="qty" />
+          <span class="qty-action qty-action-minus" @click="decreaseQty()"
             ><svg
               width="17"
               height="2"
@@ -36,7 +36,7 @@
               />
             </svg>
           </span>
-          <span class="qty-action qty-action-plus"
+          <span class="qty-action qty-action-plus" @click="increaseQty()"
             ><svg
               width="17"
               height="17"
@@ -63,17 +63,22 @@
         </div>
       </div>
       <div class="add-to-cart">
-        <button class="addtocart-btn">
-          <img src="images/shopping-cart.svg" alt="" /> Add to Cart
+        <button class="addtocart-btn" @click="addToCart">
+          <img src="images/shopping-cart.svg" alt="" />
+          <span v-if="loading">Adding.. </span>
+          <span v-else>Add to Cart</span>
         </button>
       </div>
     </div>
     <div class="is-not-available" v-else>
       <h4>Out of stock!</h4>
     </div>
+    <div class="alert" :class="`alert-${cartResponse.class}`" v-if="Object.keys(cartResponse).length > 0 &&  cartResponse.class !== 'load'" role="alert">
+      {{ cartResponse.msg }}
+    </div>
     <div class="product-meta">
       <div class="item" v-if="getCategory"><b>Category : </b>{{getCategory}}</div>
-      <div class="item"><b>SKU : </b>{{getSku}}</div>
+      <div class="item" v-if="getSku"><b>SKU : </b>{{getSku}}</div>
       <!-- <div class="item ms-lg-auto">
         <b>Tags : </b><a href="#">Chicken</a>, <a href="#">Natural</a>,
         <a href="#">Organic</a>
@@ -83,23 +88,87 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: "ProductSummary",
+  data() {
+    return {
+      qty: 1,
+      loading: false,
+      cartResponse: {}
+    }
+  },
   props: {
     product: {
       type: Array,
       default: () => []
     }
   },
+  methods: {
+    increaseQty() {
+      console.log('this.qty: ', this.qty);
+      
+      this.qty = this.qty + 1
+    },
+    decreaseQty() {
+      if (this.qty > 1) {
+        this.qty = this.qty - 1
+      }
+    },
+    async addToCart () {
+      console.log('addToCart in');
+      
+      if (this.getUserLoginStatus) {
+        this.loading = true;
+        const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD
+        let payload = this.getCartItemsPayload;
+        payload.push({
+              item_code: this.getSku,
+              qty: this.qty
+            })
+        const cartPayload = {
+          items:payload,
+          token: this.customerToken
+        }
+
+        const createCartResponse = await this.$axios.post(`${appURL}/api/create_cart`, cartPayload);
+        const customerCartRes = await this.$axios.post(`${appURL}/api/get_cutomer_cart`, { token: this.customerToken });
+        const getUserDataResponse = await this.$store.dispatch('customer/getUserCartData', this.customerToken);
+        this.loading = false;
+        this.cartResponse = {
+          msg: 'Product added successfully! Redirect to cart page...',
+          class: 'success'
+        }
+        // setTimeout(() => {
+        //   this.$router.push('/cart')
+        // }, 2000);
+
+        console.log('createCartResponse::: ', createCartResponse);
+        console.log('customerCartRes::: ', customerCartRes);
+        console.log('getUserDataResponse::: ', getUserDataResponse);
+      } else {
+        this.cartResponse = {
+          msg: 'Please login to continue',
+          class: 'danger'
+        }
+        // this.$router.push('/cart')
+      }
+    }
+  },
   computed: {
+    ...mapGetters({
+      getUserLoginStatus: 'customer/getUserLoginStatus',
+      customerToken: 'customer/getCustomerToken',
+      getCartItems: 'customer/getCartItems',
+    }),
     getName () {
-      return this.product?.[0]?.item_name || 'Product Name'
+      return this.product?.[0]?.item_name || ''
     },
     getprice () {
       return this.product?.[0]?.rate || 0
     },
     getProductDescription () {
-      return this.product?.[0]?.description || 'Product Description'
+      return this.product?.[0]?.description || ''
     },
     isInStock () {
       if (this.product && this.product.length > 0) {
@@ -112,7 +181,20 @@ export default {
     },
     getCategory () {
       return this.product?.[0]?.item_group || ''
-    }
+    },
+    getCartItemsPayload () {
+      let cartObj = []
+      if (this.getCartItems && this.getCartItems.length > 0) {
+        (this.getCartItems).map( c => {
+          const data = {
+            item_code: c.item_code,
+            qty: c.qty
+          }
+          cartObj.push(data);
+        })
+      }
+      return cartObj;
+    },
   }
 };
 </script>

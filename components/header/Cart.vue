@@ -32,13 +32,19 @@
           />
         </svg> </span
       >
-      <span class="cart-budge">0</span>
+      <span class="cart-budge">{{ cartItemCount }}</span>
     </a>
   </div>
 </template>
 
 <script>
+import { mapGetters  } from 'vuex'
 export default {
-  name: 'MinCart'
-};
+  name: 'MinCart',
+  computed: {
+    ...mapGetters({
+      cartItemCount: 'customer/getCartItemsCount'
+    })
+  }
+}
 </script>

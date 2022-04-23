@@ -15,7 +15,7 @@
         <h5>Shop</h5>
         <ul class="nav-menu" v-if="firstHalfCat && firstHalfCat.length > 0 && toggleCat === 'show_half'">
           <li v-for="(cat, indx) in firstHalfCat" :key="indx">
-            <nuxt-link :to="`category/${cat.route}`">
+            <nuxt-link :to="`/category/${cat.route}`">
               <span class="icon">
                 <img :src="cat.icon ? cat.icon : '/logo.svg'" class="d-block" />
                 </span>
