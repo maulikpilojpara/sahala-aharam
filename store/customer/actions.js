@@ -7,14 +7,14 @@ const actions = {
 	},
 	async checkIfUserLoggedin ({ commit }, token) {
 		const appURL = process.env.NODE_ENV !== 'production' ? process.env.APP_URL_LOCAL : process.env.APP_URL_PROD;
-		// var data = JSON.stringify({
-		// 	token
-		// });
-		// const axiosOptions1 = {
-		// 	method: 'post',
-		// 	url: `${appURL}/api/check_loggedin_status`,
-		// 	data
-		// }
+		var data = JSON.stringify({
+			token
+		});
+		const axiosOptions1 = {
+			method: 'post',
+			url: `${appURL}/api/check_loggedin_status`,
+			data
+		}
 		const res = await this.$axios.post(`${appURL}/api/check_loggedin_status`, { token });
 		if (res.data && res.data.success)  {
 			if (res.data.response && res.data.response.message) {

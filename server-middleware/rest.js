@@ -16,6 +16,32 @@ module.exports = {
 };
 app.use(bodyParser.json());
 
+// app.post("/createPayment", (req, res, next) => {
+//   return admin
+//     .firestore()
+//     .collection("payments")
+//     .add(req.body)
+//     .then(payment => {
+//       var instance = new Razorpay({
+//         key_id: KEY_ID,
+//         key_secret: KEY_SECRET
+//       });
+
+//       var options = {
+//         amount: req.body.amount * 100,
+//         currency: "INR",
+//         receipt: payment.id,
+//         payment_capture: 1
+//       };
+//       instance.orders.create(options, function(err, order) {
+//         return res.status(201).send(order);
+//       });
+//     })
+//     .catch(er => {
+//       return res.status(400).send({ er });
+//     });
+// });
+
 app.post('/api/login_user', (req, res) => {
   const data = JSON.stringify({
       "usr": req.body.email,
@@ -166,26 +192,6 @@ app.post('/api/create_cart', (req, res) => {
   });
 });
 
-// Create Order
-app.post('/api/create_order', (req, res) => {
-  const options = {
-    method: 'post',
-    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.place_order`,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': req.body.token
-    },
-  };
-  console.log('options::: ', options);
-  
-  axios.request(options).then((response) => {
-    res.status(200).send(response.data);
-  }).catch((error) => {
-    console.error(error);
-    res.status(404).send('Something went wrong with create order. Please try again!');
-  });
-});
-
 //Update cart
 app.post('/api/update_cart', (req, res) => {
   const items = JSON.stringify(req.body.items);
@@ -259,6 +265,7 @@ app.get('/api/get_cart_data/:token', (req, res) => {
     res.status(404).send({error: true, msg:'Something went wrong. Please try again!'});
   });
 });
+<<<<<<< HEAD
 
 //Get CMS pages call
 app.get('/api/get_cms_data/:page', (req, res) => {
@@ -275,6 +282,8 @@ app.get('/api/get_cms_data/:page', (req, res) => {
     res.status(404).send({error: true, msg:'Something went wrong. Please try again!'});
   });
 });
+=======
+>>>>>>> 3d88a417f66c302fc23d6604b4a49865f1483542
 
 //User Logout
 app.post('/api/user_logout', (req, res) => {
@@ -295,6 +304,10 @@ app.post('/api/user_logout', (req, res) => {
 });
 
 // Razorpay call
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3d88a417f66c302fc23d6604b4a49865f1483542
 app.post("/createPayment", (req, res, next) => {
   return admin
     .firestore()
