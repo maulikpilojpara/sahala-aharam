@@ -15,6 +15,9 @@ const getters = {
       }
       return token;
   },
+  getCartTotals (state) {
+    return state.cartTotals;
+  },
   getCartItems (state) {
     return state.cartItems;
   },

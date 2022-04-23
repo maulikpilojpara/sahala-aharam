@@ -145,12 +145,16 @@ export default {
           this.$cookies.set('login_token', loginRes.data, { path: '/', maxAge: 60 * 60 * 24 * 7 });
           await this.$store.dispatch('customer/updateLoginFlag', true)
           await this.$store.dispatch('customer/updateUserContext', loginRes.data)
+          const cusToken = await this.$store.getters['customer/getCustomerToken'];
+          await this.$store.dispatch('customer/getUserCartData', cusToken);
 
           this.formResponse = {
-            msg: 'You Have Successfully Logged in!',
+            msg: 'You Have Successfully Logged in. Redirecting...',
             class: 'success'
           }
-          // this.$router.push('/my-account');
+          setTimeout(() => {
+            this.$router.push('/my-account');
+          }, 1500)
         } else {
           this.formResponse = {
             msg: 'Something went wrong. Please try again!',

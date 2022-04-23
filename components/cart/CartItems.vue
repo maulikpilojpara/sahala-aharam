@@ -1,6 +1,6 @@
 <template>
   <div class="table-responsive">
-    <table class="table cart-main-table">
+    <table class="table cart-main-table" v-if="cartItems && cartItems.length > 0">
       <thead>
         <tr>
           <th>Product</th>
@@ -10,20 +10,22 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr v-for="(item, indx) in cartItems" :key="indx">
           <td>
             <div class="cart-product-name">
               <div class="img">
-                <a href="#"><img src="/products/2.jpg" /></a>
+                <nuxt-link :to="`/product/${item.item_code}`"><img :src="getProductImage(item.image)" /></nuxt-link>
               </div>
-              <h3><a href="#">Brown Eggs</a></h3>
+              <h3>
+                <nuxt-link :to="`/product/${item.item_code}`">{{item.item_name}}</nuxt-link>
+              </h3>
             </div>
           </td>
-          <td align="right">$7.25</td>
+          <td align="right">&#8377;{{item.rate}}</td>
           <td align="center">
             <div class="product-qty-field">
-              <input type="text" value="1" />
-              <span class="qty-action qty-action-minus"
+              <input type="text" :value="item.qty" />
+              <span class="qty-action qty-action-minus" @click="updateQty(item, 'decrease')"
                 ><svg
                   width="17"
                   height="2"
@@ -40,7 +42,7 @@
                   />
                 </svg>
               </span>
-              <span class="qty-action qty-action-plus"
+              <span class="qty-action qty-action-plus" @click="updateQty(item, 'increase')"
                 ><svg
                   width="17"
                   height="17"
@@ -66,248 +68,75 @@
               </span>
             </div>
           </td>
-          <td align="right">$14.50</td>
-        </tr>
-        <tr>
-          <td>
-            <div class="cart-product-name">
-              <div class="img">
-                <a href="#"><img src="/products/2.jpg" /></a>
-              </div>
-              <h3><a href="#">Brown Eggs</a></h3>
-            </div>
-          </td>
-          <td align="right">$7.25</td>
-          <td align="center">
-            <div class="product-qty-field">
-              <input type="text" value="1" />
-              <span class="qty-action qty-action-minus"
-                ><svg
-                  width="17"
-                  height="2"
-                  viewBox="0 0 17 2"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 1H15.17"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-              <span class="qty-action qty-action-plus"
-                ><svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 17 17"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 8H15.17"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M8 1L8 15.17"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </div>
-          </td>
-          <td align="right">$14.50</td>
-        </tr>
-        <tr>
-          <td>
-            <div class="cart-product-name">
-              <div class="img">
-                <a href="#"><img src="/products/2.jpg" /></a>
-              </div>
-              <h3><a href="#">Brown Eggs</a></h3>
-            </div>
-          </td>
-          <td align="right">$7.25</td>
-          <td align="center">
-            <div class="product-qty-field">
-              <input type="text" value="1" />
-              <span class="qty-action qty-action-minus"
-                ><svg
-                  width="17"
-                  height="2"
-                  viewBox="0 0 17 2"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 1H15.17"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-              <span class="qty-action qty-action-plus"
-                ><svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 17 17"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 8H15.17"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M8 1L8 15.17"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </div>
-          </td>
-          <td align="right">$14.50</td>
-        </tr>
-        <tr>
-          <td>
-            <div class="cart-product-name">
-              <div class="img">
-                <a href="#"><img src="/products/2.jpg" /></a>
-              </div>
-              <h3><a href="#">Brown Eggs</a></h3>
-            </div>
-          </td>
-          <td align="right">$7.25</td>
-          <td align="center">
-            <div class="product-qty-field">
-              <input type="text" value="1" />
-              <span class="qty-action qty-action-minus"
-                ><svg
-                  width="17"
-                  height="2"
-                  viewBox="0 0 17 2"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 1H15.17"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-              <span class="qty-action qty-action-plus"
-                ><svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 17 17"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 8H15.17"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M8 1L8 15.17"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </div>
-          </td>
-          <td align="right">$14.50</td>
-        </tr>
-        <tr>
-          <td>
-            <div class="cart-product-name">
-              <div class="img">
-                <a href="#"><img src="/products/2.jpg" /></a>
-              </div>
-              <h3><a href="#">Brown Eggs</a></h3>
-            </div>
-          </td>
-          <td align="right">$7.25</td>
-          <td align="center">
-            <div class="product-qty-field">
-              <input type="text" value="1" />
-              <span class="qty-action qty-action-minus"
-                ><svg
-                  width="17"
-                  height="2"
-                  viewBox="0 0 17 2"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 1H15.17"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-              <span class="qty-action qty-action-plus"
-                ><svg
-                  width="17"
-                  height="17"
-                  viewBox="0 0 17 17"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 8H15.17"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M8 1L8 15.17"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-            </div>
-          </td>
-          <td align="right">$14.50</td>
+          <td align="right">&#8377; {{item.amount.toLocaleString('en-IN')}}</td>
         </tr>
       </tbody>
     </table>
+    <div v-else>
+      <h3>No products found!</h3>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'CartItems',
+  computed: {
+    ...mapGetters({
+      cartItems: 'customer/getCartItems',
+      customerToken: 'customer/getCustomerToken',
+    }),
+  },
+  data () {
+    return {
+      loading: false
+    }
+  },
+  methods: {
+    async updateQty (item, operation) {
+      this.loading = true;
+      let payload = await this.getCartItemsPayload();
+      const foundIndex = payload.findIndex(x => x.item_code == item.item_code);
+      let newQty;
+      if (operation === 'increase') {
+        newQty = payload[foundIndex].qty + 1
+      }
+      if (operation === 'decrease') {
+        newQty = payload[foundIndex].qty - 1
+      }
+      const updatedProduct = {
+        item_code: payload[foundIndex].item_code,
+        qty: newQty
+      }
+      const cartPayload = {
+        items:updatedProduct,
+        token: this.customerToken
+      }
+      await this.$store.dispatch('customer/updateUserCart', cartPayload);
+      this.loading = false;
+    },
+    getProductImage (imgPath) {
+      if (imgPath) {
+        return process.env.ERP_DOMAIN + imgPath
+      } else {
+        return '/logo.svg'
+      }
+    },
+    getCartItemsPayload () {
+      let cartObj = []
+      if (this.cartItems && this.cartItems.length > 0) {
+        (this.cartItems).map( c => {
+          const data = {
+            item_code: c.item_code,
+            qty: c.qty
+          }
+          cartObj.push(data);
+        })
+      }
+      return cartObj;
+    },
+  },
 };
 </script>
 
