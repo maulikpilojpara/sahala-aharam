@@ -46,7 +46,6 @@ export default {
     },
     faqItemClick (characterIndex) {
       const itemElement = document.querySelectorAll('[data-character-id="' + characterIndex + '"]')[0];
-      console.log('itemElement', itemElement.children[1]);
       if (itemElement.classList.contains('block')) {
         itemElement.classList.remove('block')
         itemElement.classList.add('hidden')
