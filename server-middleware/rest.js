@@ -265,6 +265,25 @@ app.get('/api/get_cart_data/:token', (req, res) => {
     res.status(404).send({error: true, msg:'Something went wrong. Please try again!'});
   });
 });
+<<<<<<< HEAD
+
+//Get CMS pages call
+app.get('/api/get_cms_data/:page', (req, res) => {
+  
+  const options = {
+    method: 'GET',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.${req.params.page}`,
+  };
+  
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send({error: true, msg:'Something went wrong. Please try again!'});
+  });
+});
+=======
+>>>>>>> 3d88a417f66c302fc23d6604b4a49865f1483542
 
 //User Logout
 app.post('/api/user_logout', (req, res) => {
@@ -285,7 +304,10 @@ app.post('/api/user_logout', (req, res) => {
 });
 
 // Razorpay call
+<<<<<<< HEAD
+=======
 
+>>>>>>> 3d88a417f66c302fc23d6604b4a49865f1483542
 app.post("/createPayment", (req, res, next) => {
   return admin
     .firestore()
