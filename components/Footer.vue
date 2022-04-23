@@ -25,27 +25,37 @@
             <div class="col">
               <h3>Shop Now</h3>
               <ul class="footer-list">
-                <li><a href="#">Oils</a></li>
-                <li><a href="#">Pulses</a></li>
-                <li><a href="#">Cereals</a></li>
-                <li><a href="#">Millets</a></li>
-                <li><a href="#">Oil Seeds</a></li>
-                <li><a href="#">Sweetners</a></li>
-                <li><a href="#">Flours & Suji</a></li>
-                <li><a href="#">Health Care</a></li>
-                <li><a href="#">Processed Foods</a></li>
+                <li v-for="(cat, indx) in footerCatList" :key="indx">
+                  <nuxt-link :to="`/category/${cat.route}`">
+                    {{cat.name}}
+                  </nuxt-link>
+                </li>
               </ul>
-              <div class="view-all-foot-nav"><a href="#">View All +</a></div>
             </div>
             <div class="col">
               <h3>Quick Links</h3>
               <ul class="footer-list">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Our Services</a></li>
-                <li><a href="#">Shop</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Contact Us</a></li>
+                <li>
+                  <nuxt-link to="/">Home</nuxt-link>
+                </li>
+                <li>
+                  <nuxt-link to="/about-us">About Us</nuxt-link>
+                </li>
+                <li>
+                  <nuxt-link to="/quality-management">Quality Management</nuxt-link>
+                </li>
+                <li>
+                  <nuxt-link to="/faqs">FAQs</nuxt-link>
+                </li>
+                <!-- <li>
+                  <nuxt-link href="#">Shop</nuxt-link>
+                </li>
+                <li>
+                  <nuxt-link href="#">Blog</nuxt-link>
+                </li> -->
+                <!-- <li>
+                  <nuxt-link href="#">Contact Us</nuxt-link>
+                </li> -->
               </ul>
             </div>
             <div class="col">
@@ -274,7 +284,16 @@
 </template>
 
 <script>
+import { mapGetters  } from 'vuex'
 export default {
   name: 'Footer',
+  computed: {
+    ...mapGetters({
+      categories: 'global/getMainCategories'
+    }),
+    footerCatList () {
+      return this.categories && this.categories.length > 0 ? this.categories.slice(0, 6) : [];
+    }
+  }
 };
 </script>

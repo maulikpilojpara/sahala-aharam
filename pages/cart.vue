@@ -25,6 +25,18 @@ import CartTotal from '~/components/cart/CartTotal.vue'
 export default {
   name: "Cart",
   // middleware: "authenticated",
+  head () {
+      return {
+          script: [
+              {
+                  hid: 'Razorpay',
+                  src: 'https://checkout.razorpay.com/v1/checkout.js',
+                  body: true,
+                  defer: true,
+              }
+          ],
+      }
+  },
   components: {
     CartItems,
     CartTotal

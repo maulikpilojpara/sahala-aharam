@@ -13,7 +13,9 @@ export const actions = {
           commit('global/SET_COMMONELEMENTS', res.data);
         })
         .catch(error => console.log(error));
-      if (loggedinUserData) {
+        console.log('loggedinUserData::', loggedinUserData);
+        
+        if (loggedinUserData) {
         
         await context.store.dispatch('customer/updateUserContext', loggedinUserData);
         const cusToken = await context.store.getters['customer/getCustomerToken'];
