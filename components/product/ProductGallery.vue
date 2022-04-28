@@ -15,8 +15,8 @@
         </div>
       </div>
     </div>
-    <modal name="productImage">
-      <img :src="getProductImage" class="d-block" />
+    <modal name="productImage" :adaptive="true" height="auto">
+      <img :src="getProductImage" @click="closeModal" class="img-fluid" />
     </modal>
   </div>
 </template>
@@ -43,6 +43,10 @@ export default {
     openModal (e) {
       e.preventDefault()
       this.$modal.show('productImage')
+    },
+    closeModal (e) {
+      e.preventDefault()
+      this.$modal.hide('productImage')
     }
   }
 };
