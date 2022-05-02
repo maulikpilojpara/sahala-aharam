@@ -10,7 +10,7 @@
           <div class="card-wrap">
             <template v-for="(spAddress, indx) in shippingAddresses">
               <div class="card" :key="indx">
-                <span v-show="showDeleteIcon" class="delete" @click="deleteAddress(spAddress)">x</span>
+                <input type="radio" v-model="selectedAddress" :value="spAddress.name" name="select-radio" class="delete" />
                 <h4>{{ spAddress.name }}</h4>
                 <p v-html="spAddress.display" />
               </div>
@@ -23,7 +23,7 @@
           <div class="card-wrap">
             <template v-for="(blAddress, indx) in billingAddresses">
               <div class="card" :key="indx">
-                <span v-show="showDeleteIcon" class="delete" @click="deleteAddress(blAddress)">x</span>
+                <input type="radio" v-model="selectedAddress" :value="blAddress.name" name="select-radio" class="delete"  />
                 <h4>{{ blAddress.name }}</h4>
                 <p v-html="blAddress.display" />
               </div>
@@ -32,7 +32,7 @@
         </div>
         <!-- Add new address -->
         <button class="add-address-btn" @click="toggleAddressForm()">Add new address</button>
-        <button class="add-address-btn" @click="showDeleteIcon = true">Delete address</button>
+        <button class="add-address-btn" @click="deleteAddress()">Delete address</button>
         <div v-if="newAddressForm" class="form_wrap">
           <form method="post" @submit.prevent="addNewForm">
             <div class="row">
@@ -141,7 +141,7 @@ export default {
         address_type: ''
       },
       newAddressForm: false,
-      showDeleteIcon: false,
+      selectedAddress: {},
       deleteResponse: ''
   }
   },
@@ -162,12 +162,11 @@ export default {
       console.log('ErpOrderResponse:: ', this.ErpOrderResponse);
 
     },
-    async deleteAddress (address) {
+    async deleteAddress () {
       if (confirm("Are you sure you want to delete?")) {
-        console.log('address:: ', address);
         const deleteObj = {
           address: {
-            	address_name: address.name
+            	address_name: this.selectedAddress
           },
           token: this.customerToken
         }
