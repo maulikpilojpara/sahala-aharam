@@ -3,7 +3,7 @@
     <table class="table cart-main-table" v-if="cartItems && cartItems.length > 0">
       <thead>
         <tr>
-          <th>Product</th>
+          <th width="40%">Product</th>
           <th class="text-end">Price</th>
           <th class="text-center">Quantity</th>
           <th class="text-end">Total</th>
@@ -11,7 +11,7 @@
       </thead>
       <tbody>
         <tr v-for="(item, indx) in cartItems" :key="indx">
-          <td>
+          <td width="40%">
             <div class="cart-product-name">
               <div class="img">
                 <nuxt-link :to="`/product/${item.item_code}`"><img :src="getProductImage(item.image)" /></nuxt-link>
@@ -68,7 +68,7 @@
               </span>
             </div>
           </td>
-          <td align="right">&#8377; {{item.amount.toLocaleString('en-IN')}}</td>
+          <td align="right" style="white-space:nowrap;">&#8377; {{item.amount.toLocaleString('en-IN')}}</td>
         </tr>
       </tbody>
     </table>
