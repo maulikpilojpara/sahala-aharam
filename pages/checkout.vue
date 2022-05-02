@@ -10,7 +10,7 @@
           <div class="card-wrap">
             <template v-for="(spAddress, indx) in shippingAddresses">
               <div class="card" :key="indx">
-                <span v-show="showDeleteIcon" class="delete" @click="deleteAddress(spAddress)">x</span>
+                <input type="radio" v-model="selectedAddress" :value="spAddress.name" name="select-radio" class="delete" />
                 <h6>{{ spAddress.name }}</h6>
                 <p v-html="spAddress.display" />
               </div>
@@ -23,7 +23,7 @@
           <div class="card-wrap">
             <template v-for="(blAddress, indx) in billingAddresses">
               <div class="card" :key="indx">
-                <span v-show="showDeleteIcon" class="delete" @click="deleteAddress(blAddress)">x</span>
+                <input type="radio" v-model="selectedAddress" :value="blAddress.name" name="select-radio" class="delete"  />
                 <h6>{{ blAddress.name }}</h6>
                 <p v-html="blAddress.display" />
               </div>
@@ -32,7 +32,7 @@
         </div>
         <!-- Add new address -->
         <button class="add-address-btn btn btn-primary" @click="toggleAddressForm()">Add new address</button>
-        <button class="add-address-btn btn btn-primary" @click="showDeleteIcon = true">Delete address</button>
+        <button class="add-address-btn btn btn-primary" @click="deleteAddress()">Delete address</button>
         <div v-if="newAddressForm" class="form_wrap">
           <form method="post" @submit.prevent="addNewForm">
             <div class="row">
@@ -100,7 +100,7 @@
           </form>
         </div>
         <!-- checkout total -->
-        <table class="table cart-total-table mb-0">
+        <table class="table cart-total-table mb-0 mt-5">
           <tbody>
             <tr>
               <td>Subtotal</td>
@@ -141,7 +141,7 @@ export default {
         address_type: ''
       },
       newAddressForm: false,
-      showDeleteIcon: false,
+      selectedAddress: {},
       deleteResponse: ''
   }
   },
@@ -162,12 +162,11 @@ export default {
       console.log('ErpOrderResponse:: ', this.ErpOrderResponse);
 
     },
-    async deleteAddress (address) {
+    async deleteAddress () {
       if (confirm("Are you sure you want to delete?")) {
-        console.log('address:: ', address);
         const deleteObj = {
           address: {
-            	address_name: address.name
+            	address_name: this.selectedAddress
           },
           token: this.customerToken
         }
