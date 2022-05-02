@@ -7,7 +7,7 @@
           <div class="card-wrap">
             <template v-for="(spAddress, indx) in shippingAddresses">
               <div class="card" :key="indx">
-                <h4>{{ spAddress.name }}</h4>
+                <h6>{{ spAddress.name }}</h6>
                 <p v-html="spAddress.display" />
               </div>
             </template>
@@ -19,15 +19,14 @@
           <div class="card-wrap">
             <template v-for="(blAddress, indx) in billingAddresses">
               <div class="card" :key="indx">
-                <h4>{{ blAddress.name }}</h4>
+                <h6>{{ blAddress.name }}</h6>
                 <p v-html="blAddress.display" />
               </div>
             </template>
           </div>
         </div>
         <!-- Add new address -->
-        <button class="add-address-btn" @click="toggleAddressForm()">Add new address</button>
-        newAddressForm :: {{ newAddressForm }}
+        <button class="add-address-btn btn btn-primary" @click="toggleAddressForm()">Add new address</button>
         <div v-if="newAddressForm" class="form_wrap">
           <form method="post" @submit.prevent="addNewForm">
             <div class="row">
@@ -136,7 +135,7 @@ export default {
         class: 'load'
       }
       const addObj = {
-        address: this.address, 
+        address: this.address,
         token: this.customerToken
       }
       const addResponse = await this.$store.dispatch('customer/cart/addNewAddress', addObj);
@@ -148,7 +147,7 @@ export default {
         }
       }
       await this.currentCartQuotation();
-      
+
       setTimeout(() => {
         this.newAddressForm = false;
         this.formResponse = {}
@@ -168,8 +167,58 @@ export default {
 </script>
 
 <style scoped>
+.address-main {
+  margin-bottom: 50px;
+}
+.address-main > h3 {
+  margin-bottom: 20px;
+}
 .card-wrap {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+}
+.card {
+  border: 0 none;
+  background-color: transparent;
+  flex: 0 0 33.33%;
+  max-width: 33.33%;
+  padding: 0 15px;
+}
+.card:nth-child(n+4) {
+  margin-top: 20px;
+}
+.address-wrap .form_wrap {
+  margin-top: 50px;
+}
+@media (max-width: 767px) {
+  .card {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .card:nth-child(n+4) {
+    margin-top: 0;
+  }
+  .card:nth-child(n+3) {
+    margin-top: 20px;
+  }
+  .address-main[data-v-3f9ab082] {
+    margin-bottom: 30px;
+  }
+}
+@media (max-width: 479px) {
+  .card-wrap {
+    flex-direction: column;
+  }
+  .card {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .card:nth-child(n+3) {
+    margin-top: 0;
+  }
+  .card:nth-child(n+2) {
+    margin-top: 20px;
+  }
 }
 </style>
