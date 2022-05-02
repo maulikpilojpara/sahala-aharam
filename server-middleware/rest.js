@@ -213,6 +213,25 @@ app.post('/api/update_cart', (req, res) => {
   });
 });
 
+// get cart details
+app.post('/api/get_cart_quotation', (req, res) => {
+  const options = {
+    method: 'post',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.get_cart_quotation`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': req.body.token
+    },
+  };
+  
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send('Something went wrong. Please try again!');
+  });
+});
+
 app.post('/api/get_cutomer_cart', (req, res) => {
   const options = {
     method: 'GET',
@@ -290,6 +309,28 @@ app.post('/api/user_logout', (req, res) => {
     headers: {
       'Authorization': req.body.token
     },
+  };
+  
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send({error: true, msg:'Something went wrong. Please try again!'});
+  });
+});
+
+//User Add new shipping/billing adress
+app.post('/api/add_cutomer_address', (req, res) => {
+  var data = JSON.stringify(req.body.address);
+
+  const options = {
+    method: 'POST',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.add_new_address_custom`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': req.body.token
+    },
+    data
   };
   
   axios.request(options).then((response) => {

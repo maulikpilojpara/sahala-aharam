@@ -2,7 +2,7 @@
   <div style="text-align:center">
     <h5>Welcome {{ customerName }}</h5>
     <div>
-      <buton @click="logout()">Logout</buton>
+      <button @click="logout()">Logout</button>
     </div>
   </div>
 </template>
