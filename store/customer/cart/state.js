@@ -1,4 +1,5 @@
 const state = () => ({
-  erpOrderResponse: null
+  erpOrderResponse: null,
+  cartQuotation: null
 })
 export default state

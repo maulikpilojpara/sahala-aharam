@@ -1,4 +1,21 @@
 const actions = {
+	async getCurrentCartQuotation ({ commit }, token) {
+        
+        const appURL = process.env.NODE_ENV !== 'production' ? process.env.APP_URL_LOCAL : process.env.APP_URL_PROD;
+		const res = await this.$axios.post(`${appURL}/api/get_cart_quotation`, { token });
+        
+		if (res.data && res.data.message)  {
+			await commit('UPDATE_CART_QUOTATION', res.data.message)
+		}
+	},
+	async addNewAddress ({ commit }, payload) {
+        const appURL = process.env.NODE_ENV !== 'production' ? process.env.APP_URL_LOCAL : process.env.APP_URL_PROD;
+		const res = await this.$axios.post(`${appURL}/api/add_cutomer_address`, payload);
+        return res?.data?.message?.address || [];
+		// if (res.data && res.data.message && res.data.message.address)  {
+        //     this.$store.dispatch('customer/cart/getCurrentCartQuotation', payload.token)
+		// }
+	},
 	async createErpOrder ({ commit }, token) {
         console.log('createErpOrder token:: ', token);
         
@@ -13,7 +30,6 @@ const actions = {
 		} else {
 			await commit('UPDATE_ERP_ORDER_RESPONSE', res.data.response.message)
 		}
-
 	},
 	async _createRazorpayOrder (_context, data) {
         const url = await this.$getApiEndpoint('createRazorpayOrder')

@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="checkout-btn-wrap">
-      <button class="btn btn-primary w-100" @click="checkout()">CHECK OUT</button>
+      <button class="btn btn-primary w-100" @click="goTocheckout()">CHECK OUT</button>
     </div>
   </div>
 </template>
@@ -37,6 +37,11 @@ export default {
     }),
   },
   methods: {
+    goTocheckout () {
+      this.$router.push({
+        path: '/checkout'
+      })
+    },
     async checkout() {
       console.log('checkoutIN');
       await this.$store.dispatch('customer/cart/createErpOrder', this.customerToken)
