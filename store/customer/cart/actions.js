@@ -16,6 +16,16 @@ const actions = {
         //     this.$store.dispatch('customer/cart/getCurrentCartQuotation', payload.token)
 		// }
 	},
+	
+    async deleteAddress ({ commit }, payload) {
+        console.log('deleteAddress payload:: ', payload);
+        
+        const appURL = process.env.NODE_ENV !== 'production' ? process.env.APP_URL_LOCAL : process.env.APP_URL_PROD;
+		const res = await this.$axios.post(`${appURL}/api/delete_address`, payload);
+        console.log('res?.data::', res.data);
+        
+        return res?.data?.message || '';
+	},
 	async createErpOrder ({ commit }, token) {
         console.log('createErpOrder token:: ', token);
         

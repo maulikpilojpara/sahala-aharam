@@ -1,12 +1,16 @@
 <template>
   <div class="checkout-main">
     <div class="container">
+      <div v-show="deleteResponse" class="delete-response">
+          <p>{{ deleteResponse }}</p>
+      </div>
       <div class="address-wrap">
         <div v-if="shippingAddresses && shippingAddresses.length > 0" class="address-main">
           <h3>Shipping Addresses</h3>
           <div class="card-wrap">
             <template v-for="(spAddress, indx) in shippingAddresses">
               <div class="card" :key="indx">
+                <span v-show="showDeleteIcon" class="delete" @click="deleteAddress(spAddress)">x</span>
                 <h4>{{ spAddress.name }}</h4>
                 <p v-html="spAddress.display" />
               </div>
@@ -19,6 +23,7 @@
           <div class="card-wrap">
             <template v-for="(blAddress, indx) in billingAddresses">
               <div class="card" :key="indx">
+                <span v-show="showDeleteIcon" class="delete" @click="deleteAddress(blAddress)">x</span>
                 <h4>{{ blAddress.name }}</h4>
                 <p v-html="blAddress.display" />
               </div>
@@ -27,7 +32,7 @@
         </div>
         <!-- Add new address -->
         <button class="add-address-btn" @click="toggleAddressForm()">Add new address</button>
-        newAddressForm :: {{ newAddressForm }}
+        <button class="add-address-btn" @click="showDeleteIcon = true">Delete address</button>
         <div v-if="newAddressForm" class="form_wrap">
           <form method="post" @submit.prevent="addNewForm">
             <div class="row">
@@ -94,6 +99,26 @@
             </div>
           </form>
         </div>
+        <!-- checkout total -->
+        <table class="table cart-total-table mb-0">
+          <tbody>
+            <tr>
+              <td>Subtotal</td>
+              <td align="right">&#8377; {{cartTotals.grand_total.toLocaleString('en-IN')}}</td>
+            </tr>
+            <!-- <tr>
+              <td>Tax</td>
+              <td align="right">&#8377; 2.00</td>
+            </tr> -->
+            <tr class="total-tr">
+              <td>Total</td>
+              <td align="right">&#8377; {{cartTotals.total.toLocaleString('en-IN')}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="checkoutt-btn-wrap">
+          <button class="btn btn-primary w-100" @click="placeOrder()">Place Order</button>
+        </div>
       </div>
     </div>
   </div>
@@ -116,16 +141,46 @@ export default {
         address_type: ''
       },
       newAddressForm: false,
-    }
+      showDeleteIcon: false,
+      deleteResponse: ''
+  }
   },
   computed: {
     ...mapGetters({
       customerToken: 'customer/getCustomerToken',
       shippingAddresses: 'customer/cart/getUserShippingAddresses',
       billingAddresses: 'customer/cart/getUserBillingAddresses',
+      ErpOrderResponse: 'customer/cart/getErpOrderResponse',
+      cartTotals: 'customer/getCartTotals',
     }),
+
   },
   methods: {
+    async placeOrder () {
+      console.log('placeOrder IN');
+      await this.$store.dispatch('customer/cart/createErpOrder', this.customerToken)
+      console.log('ErpOrderResponse:: ', this.ErpOrderResponse);
+
+    },
+    async deleteAddress (address) {
+      if (confirm("Are you sure you want to delete?")) {
+        console.log('address:: ', address);
+        const deleteObj = {
+          address: {
+            	address_name: address.name
+          },
+          token: this.customerToken
+        }
+        const deleteAddressResp = await this.$store.dispatch('customer/cart/deleteAddress', deleteObj);
+        this.deleteResponse = deleteAddressResp;
+
+        if (deleteAddressResp.includes("Successfully")) {
+            this.
+            return 
+        }
+        console.log('deleteAddressResp:: ', deleteAddressResp);
+      };
+    },
     toggleAddressForm() {
       this.newAddressForm = !this.newAddressForm
     },
@@ -161,7 +216,6 @@ export default {
     }
   },
   async fetch () {
-    console.log('fetchin');
     await this.currentCartQuotation();
   }
 }
@@ -171,5 +225,19 @@ export default {
 .card-wrap {
   display: flex;
   align-items: center;
+  margin-right: 10px;
+}
+span.delete {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    background: red;
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    line-height: 25px;
+    font-size: 15px;
+    border-radius: 50%;
+    cursor: pointer;
 }
 </style>
