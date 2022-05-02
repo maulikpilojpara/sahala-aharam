@@ -341,6 +341,30 @@ app.post('/api/add_cutomer_address', (req, res) => {
   });
 });
 
+//Delete address
+app.post('/api/delete_address', (req, res) => {
+  var data = JSON.stringify(req.body.address);
+  console.log('data:: ', data);
+  
+  const options = {
+    method: 'POST',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.delete_address`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': req.body.token
+    },
+    data
+  };
+  console.log('options:: ', options);
+
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send({error: true, msg:'Something went wrong. Please try again!'});
+  });
+});
+
 // Razorpay call
 app.post("/createPayment", (req, res, next) => {
   return admin
