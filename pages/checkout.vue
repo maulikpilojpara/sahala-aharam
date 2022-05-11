@@ -10,9 +10,13 @@
           <div class="card-wrap">
             <template v-for="(spAddress, indx) in shippingAddresses">
               <div class="card" :key="indx">
-                <input type="radio" v-model="selectedAddress" :value="spAddress.name" name="select-radio" class="delete" />
-                <h6>{{ spAddress.name }}</h6>
-                <p v-html="spAddress.display" />
+                <div class="card-cover">
+                  <input type="radio" v-model="selectedAddress" :value="spAddress.name" name="select-radio" class="delete" />
+                  <div class="card-detail">
+                    <h6>{{ spAddress.name }}</h6>
+                    <p v-html="spAddress.display" />
+                  </div>
+                </div>
               </div>
             </template>
           </div>
@@ -23,15 +27,19 @@
           <div class="card-wrap">
             <template v-for="(blAddress, indx) in billingAddresses">
               <div class="card" :key="indx">
-                <input type="radio" v-model="selectedAddress" :value="blAddress.name" name="select-radio" class="delete"  />
-                <h6>{{ blAddress.name }}</h6>
-                <p v-html="blAddress.display" />
+                <div class="card-cover">
+                  <input type="radio" v-model="selectedAddress" :value="blAddress.name" name="select-radio" class="delete"  />
+                  <div class="card-detail">
+                    <h6>{{ blAddress.name }}</h6>
+                    <p v-html="blAddress.display" />
+                  </div>
+                </div>
               </div>
             </template>
           </div>
         </div>
         <!-- Add new address -->
-        <button class="add-address-btn btn btn-primary" @click="toggleAddressForm()">Add new address</button>
+        <button class="add-address-btn btn btn-primary me-1" @click="toggleAddressForm()">Add new address</button>
         <button class="add-address-btn btn btn-primary" @click="deleteAddress()">Delete address</button>
         <div v-if="newAddressForm" class="form_wrap">
           <form method="post" @submit.prevent="addNewForm">
@@ -245,6 +253,29 @@ export default {
 .address-wrap .form_wrap {
   margin: 50px 0;
 }
+.card-cover {
+  position: relative;
+  height: 100%;
+}
+.card-cover > input[type="radio"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.card-cover .card-detail {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  padding: 15px;
+  border-radius: 10px;
+  height: 100%;
+}
+.card-cover > input[type="radio"]:checked + .card-detail {
+  border-color: var(--primary);
+}
 @media (max-width: 767px) {
   .card {
     flex: 0 0 50%;
@@ -273,6 +304,9 @@ export default {
   }
   .card:nth-child(n+2) {
     margin-top: 20px;
+  }
+  html .btn {
+    padding: 0 15px;
   }
 }
 </style>
