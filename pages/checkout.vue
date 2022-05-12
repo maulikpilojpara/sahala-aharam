@@ -168,7 +168,97 @@ export default {
       console.log('placeOrder IN');
       await this.$store.dispatch('customer/cart/createErpOrder', this.customerToken)
       console.log('ErpOrderResponse:: ', this.ErpOrderResponse);
+      const createOrderObject = {
+          "paymentMethod": {
+              "method": "razorpay"
+          },
+          "billing_address": {
+              "region": "Gujarat",
+              "region_id": 496,
+              "region_code": "GJ",
+              "country_id": "IN",
+              "street": [
+                  "plot no 5, Tirupati Nagar ",
+                  "Navagam Dindoli"
+              ],
+              "postcode": "396450",
+              "city": "Surat",
+              "firstname": "Maulik pilojpura",
+              "lastname": "",
+              "email": "maulikpilojpara@gmail.com",
+              "telephone": "9033346057",
+              "company": "Office"
+          }
+      }
+      this.razorpayCheckoutFlow(createOrderObject)
+    },
+    async razorpayCheckoutFlow (createOrderObject) {
+      // showLoadingScreen();
+      // const customerContext = this.$store.getters['customer/login/getCustomerContext']
+      const createRazorpayOrderData = {
+          email: 'maulikpilojpara@gmail.com',
+          billingAddressObject: createOrderObject.billing_address,
+          quoteId: this.ErpOrderResponse,
+          paymentMethod: 'razorpay'
+      }
+      console.log('razorpayCheckoutFlow createRazorpayOrderData', createRazorpayOrderData);
+      await this.$store.dispatch('customer/cart/_createRazorpayOrder', createRazorpayOrderData)
+      // call set payment info ?
+      // // call fetch cart totals?
+      // await this.$store.dispatch('customer/cart/_createOrder', createOrderObject)
+      const confirmRazorpayOrderData = {
+          email: 'maulikpilojpara@gmail.com',
+          orderCheck: '1',
+          quoteId: 123,
+          paymentMethod: 'razorpay'
+      }
+      const confirmRazorpayOrderResponse = await this.$store.dispatch('customer/cart/_createRazorpayOrder', confirmRazorpayOrderData)
+      console.log('razorpayCheckoutFlow confirmRazorpayOrderResponse', confirmRazorpayOrderResponse);
+      
+      const razorpayModalOptions = this.prepareRazorpayCheckoutModalOptions(confirmRazorpayOrderResponse.reserved_order_id, confirmRazorpayOrderResponse.amount, confirmRazorpayOrderResponse.rzp_order)
+      // eslint-disable-next-line no-undef
+      const razorpayCheckoutFlow = new Razorpay(razorpayModalOptions)
+      razorpayCheckoutFlow.open()
+      this.updateLatestOrderContext()
+      // hideLoadingScreen()
+    },
+    prepareRazorpayCheckoutModalOptions (reservedIncrementId, amount, razorpayOrderId) {
+      const KEY_ID = "rzp_test_WYMBQK6C3rMx0r";
+      const KEY_SECRET = "BBVEgjzlkGVGgyR5tJxmBW4z";
+      const razorpayModalOptions = {
+          key: 'rzp_test_WYMBQK6C3rMx0r',
+          currency: 'INR',
+          name: 'Sahala Aharam',
+          description: 'Organic Stores',
+          image: 'https://sahala-aharam1.onrender.com/logo.svg',
+          prefill: {
+              name: 'Maulik',
+              email: 'maulikpilojpara@gmail.com',
+              contact: '9033346057'
+          },
+          theme: {
+              color: '#3399cc'
+          }
+      }
 
+        // const razorpayModalOptions = this.$store.getters['customer/cart/getRazorpayModalOptions'](true)
+        razorpayModalOptions.notes = {
+            merchant_quote_id: this.ErpOrderResponse,
+            merchant_order_id: reservedIncrementId
+        }
+        razorpayModalOptions.amount = amount
+        razorpayModalOptions.handler = response => this.placeOrderSuccessHandler(response)
+        razorpayModalOptions.order_id = razorpayOrderId;
+        razorpayModalOptions.modal = {
+            ondismiss: () => this.paymentModalDismissedHandler()
+        }
+        return razorpayModalOptions
+    },
+    placeOrderSuccessHandler () {
+        console.log('placeOrderSuccessHandler IN');
+    },
+    paymentModalDismissedHandler () {
+        console.log('paymentModalDismissedHandler IN');
     },
     async deleteAddress () {
       if (confirm("Are you sure you want to delete?")) {
