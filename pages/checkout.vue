@@ -10,9 +10,13 @@
           <div class="card-wrap">
             <template v-for="(spAddress, indx) in shippingAddresses">
               <div class="card" :key="indx">
-                <input type="radio" v-model="selectedAddress" :value="spAddress.name" name="select-radio" class="delete" />
-                <h4>{{ spAddress.name }}</h4>
-                <p v-html="spAddress.display" />
+                <div class="card-cover">
+                  <input type="radio" v-model="selectedAddress" :value="spAddress.name" name="select-radio" class="delete" />
+                  <div class="card-detail">
+                    <h6>{{ spAddress.name }}</h6>
+                    <p v-html="spAddress.display" />
+                  </div>
+                </div>
               </div>
             </template>
           </div>
@@ -23,16 +27,20 @@
           <div class="card-wrap">
             <template v-for="(blAddress, indx) in billingAddresses">
               <div class="card" :key="indx">
-                <input type="radio" v-model="selectedAddress" :value="blAddress.name" name="select-radio" class="delete"  />
-                <h4>{{ blAddress.name }}</h4>
-                <p v-html="blAddress.display" />
+                <div class="card-cover">
+                  <input type="radio" v-model="selectedAddress" :value="blAddress.name" name="select-radio" class="delete"  />
+                  <div class="card-detail">
+                    <h6>{{ blAddress.name }}</h6>
+                    <p v-html="blAddress.display" />
+                  </div>
+                </div>
               </div>
             </template>
           </div>
         </div>
         <!-- Add new address -->
-        <button class="add-address-btn" @click="toggleAddressForm()">Add new address</button>
-        <button class="add-address-btn" @click="deleteAddress()">Delete address</button>
+        <button class="add-address-btn btn btn-primary me-1" @click="toggleAddressForm()">Add new address</button>
+        <button class="add-address-btn btn btn-primary" @click="deleteAddress()">Delete address</button>
         <div v-if="newAddressForm" class="form_wrap">
           <form method="post" @submit.prevent="addNewForm">
             <div class="row">
@@ -100,7 +108,7 @@
           </form>
         </div>
         <!-- checkout total -->
-        <table class="table cart-total-table mb-0">
+        <table class="table cart-total-table mb-0 mt-5">
           <tbody>
             <tr>
               <td>Subtotal</td>
@@ -175,7 +183,7 @@ export default {
 
         if (deleteAddressResp.includes("Successfully")) {
             this.
-            return 
+            return
         }
         console.log('deleteAddressResp:: ', deleteAddressResp);
       };
@@ -190,7 +198,7 @@ export default {
         class: 'load'
       }
       const addObj = {
-        address: this.address, 
+        address: this.address,
         token: this.customerToken
       }
       const addResponse = await this.$store.dispatch('customer/cart/addNewAddress', addObj);
@@ -202,7 +210,7 @@ export default {
         }
       }
       await this.currentCartQuotation();
-      
+
       setTimeout(() => {
         this.newAddressForm = false;
         this.formResponse = {}
@@ -221,22 +229,84 @@ export default {
 </script>
 
 <style scoped>
+.address-main {
+  margin-bottom: 50px;
+}
+.address-main > h3 {
+  margin-bottom: 20px;
+}
 .card-wrap {
   display: flex;
-  align-items: center;
-  margin-right: 10px;
+  flex-wrap: wrap;
+  margin: 0 -15px;
 }
-span.delete {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    background: red;
-    height: 25px;
-    width: 25px;
-    text-align: center;
-    line-height: 25px;
-    font-size: 15px;
-    border-radius: 50%;
-    cursor: pointer;
+.card {
+  border: 0 none;
+  background-color: transparent;
+  flex: 0 0 33.33%;
+  max-width: 33.33%;
+  padding: 0 15px;
+}
+.card:nth-child(n+4) {
+  margin-top: 20px;
+}
+.address-wrap .form_wrap {
+  margin: 50px 0;
+}
+.card-cover {
+  position: relative;
+  height: 100%;
+}
+.card-cover > input[type="radio"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.card-cover .card-detail {
+  background-color: #fff;
+  border: 2px solid #ccc;
+  padding: 15px;
+  border-radius: 10px;
+  height: 100%;
+}
+.card-cover > input[type="radio"]:checked + .card-detail {
+  border-color: var(--primary);
+}
+@media (max-width: 767px) {
+  .card {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  .card:nth-child(n+4) {
+    margin-top: 0;
+  }
+  .card:nth-child(n+3) {
+    margin-top: 20px;
+  }
+  .address-main[data-v-3f9ab082] {
+    margin-bottom: 30px;
+  }
+}
+@media (max-width: 479px) {
+  .card-wrap {
+    flex-direction: column;
+  }
+  .card {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  .card:nth-child(n+3) {
+    margin-top: 0;
+  }
+  .card:nth-child(n+2) {
+    margin-top: 20px;
+  }
+  html .btn {
+    padding: 0 15px;
+  }
 }
 </style>
