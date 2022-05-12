@@ -1,6 +1,6 @@
 <template>
   <div class="table-responsive">
-    <table class="table cart-main-table" v-if="cartItems && cartItems.length > 0">
+    <table class="table cart-main-table" :class="{ 'loading' : loading}" v-if="cartItems && cartItems.length > 0">
       <thead>
         <tr>
           <th>Product</th>
@@ -19,6 +19,11 @@
               <h3>
                 <nuxt-link :to="`/product/${item.item_code}`">{{item.item_name}}</nuxt-link>
               </h3>
+            </div>
+            <div v-show="isInStock(item) === 0" class="error-msg-wrap">
+                <div class="alert alert-danger" role="alert">
+                  This product is currently not available.
+                </div>
             </div>
           </td>
           <td align="right">&#8377;{{item.rate}}</td>
@@ -86,14 +91,26 @@ export default {
     ...mapGetters({
       cartItems: 'customer/getCartItems',
       customerToken: 'customer/getCustomerToken',
+      CartQuotationDoc: 'customer/cart/getCartQuotationDoc',
     }),
   },
   data () {
     return {
-      loading: false
+      loading: false,
+      disableCheckout: false,
     }
   },
+  async fetch () {
+    await this.$store.dispatch('customer/cart/getCurrentCartQuotation', this.customerToken)
+  },
   methods: {
+    isInStock (item) {
+      const cartItems = this.CartQuotationDoc.items;
+      const currentItem = cartItems && cartItems.length > 0 ? cartItems.find(c => c.item_code === item.item_code) : {};
+      if (currentItem && Object.keys(currentItem).length > 0) {
+        return currentItem.actual_qty;
+      }
+    },
     async updateQty (item, operation) {
       this.loading = true;
       let payload = await this.getCartItemsPayload();
@@ -140,5 +157,13 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.table.cart-main-table.loading {
+    opacity: 0.5;
+    pointer-events: none;
+}
+.error-msg-wrap {
+  text-align: center;
+  margin-top: 10px;
+}
 </style>

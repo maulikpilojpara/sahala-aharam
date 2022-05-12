@@ -223,6 +223,7 @@ app.post('/api/get_cart_quotation', (req, res) => {
       'Authorization': req.body.token
     },
   };
+  console.log('get_cart_quotation options:: ', options);
   
   axios.request(options).then((response) => {
     res.status(200).send(response.data);
@@ -362,6 +363,26 @@ app.post('/api/delete_address', (req, res) => {
   }).catch((error) => {
     console.error(error);
     res.status(404).send({error: true, msg:'Something went wrong. Please try again!'});
+  });
+});
+
+// Create Order
+app.post('/api/create_order', (req, res) => {
+  const options = {
+    method: 'post',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.place_order`,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': req.body.token
+    },
+  };
+  console.log('options::: ', options);
+
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send('Something went wrong with create order. Please try again!');
   });
 });
 

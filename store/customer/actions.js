@@ -46,6 +46,7 @@ const actions = {
 		const udpateCartResponse = await this.$axios.post(`${appURL}/api/update_cart`, data);
 		const cartObj = udpateCartResponse?.data?.message?.doc || {}
 		const cartItems = udpateCartResponse?.data?.message?.doc?.items || []
+		await commit('customer/cart/UPDATE_CART_QUOTATION', udpateCartResponse.data.message, { root: true })
 		await commit('UPDATE_CART_TOTALS', cartObj)
 		await commit('UPDATE_CART_ITEMS', cartItems)
 		await commit('UPDATE_CART_ITEMS_COUNT', cartItems.length)

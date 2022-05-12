@@ -24,6 +24,17 @@ import CartTotal from '~/components/cart/CartTotal.vue'
 
 export default {
   name: "Cart",
+  // data() {
+  //   return {
+  //     checkotState: false
+  //   }
+  // },
+  methods: {
+    // changeCheckoutStatus (val) {
+    //   console.log('changeIN');
+    //   this.checkotState = val
+    // }
+  },
   // middleware: "authenticated",
   head () {
       return {
