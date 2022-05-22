@@ -1,5 +1,5 @@
 <template>
-  <div class="cart-total-wrap" v-if="cartTotals && Object.keys(cartTotals).length > 0">
+  <div class="cart-total-wrap" v-if="cartItems && cartItems.length > 0 && cartTotals && Object.keys(cartTotals).length > 0">
     <div class="cart-box cart-total">
       <div class="table-responsive">
         <table class="table cart-total-table mb-0">
@@ -32,13 +32,14 @@ export default {
   name: 'CartTotal',
   computed: {
     ...mapGetters({
+      cartItems: 'customer/getCartItems',
       cartTotals: 'customer/getCartTotals',
       customerToken: 'customer/getCustomerToken',
       CartQuotationDoc: 'customer/cart/getCartQuotationDoc'
     }),
     disableCheckout () {
       const cartItems = this.CartQuotationDoc.items;
-      const currentItem = cartItems.find(c => c.actual_qty === 0);
+      const currentItem = cartItems && cartItems.length > 0 ? cartItems.find(c => c.actual_qty === 0) : {};
       console.log('currentItem:: ', currentItem);
       if (currentItem && Object.keys(currentItem).length > 0) {
         return true;

@@ -81,7 +81,7 @@
         </ul>
         <ul class="nav-menu" v-if="categories && categories.length > 0 && toggleCat === 'show_all'">
           <li v-for="(cat, indx) in categories" :key="indx">
-            <nuxt-link :to="`category/${cat.route}`">
+            <nuxt-link :to="`/category/${cat.route}`">
               <span class="icon">
                 <img :src="cat.icon ? cat.icon : '/logo.svg'" class="d-block" />
                 </span>

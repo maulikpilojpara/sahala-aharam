@@ -3,6 +3,7 @@ const state = () => ({
   isLoggedIn: false,
   cartItems: [],
   cartItemsCount: 0,
-  cartTotals: {}
+  cartTotals: {},
+  ordersList: []
 })
 export default state

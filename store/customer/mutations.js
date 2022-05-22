@@ -5,6 +5,9 @@ const mutations = {
   UPDATE_IS_LOGGED_IN (state, isLoggedIn) {
       state.isLoggedIn = isLoggedIn
   },
+  UPDATE_USER_ORDERS_LIST (state, ordersList) {
+      state.ordersList = ordersList
+  },
   UPDATE_CART_TOTALS (state, cartTotals) {
       state.cartTotals = cartTotals
   },

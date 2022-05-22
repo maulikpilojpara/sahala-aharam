@@ -15,10 +15,11 @@ export const actions = {
         .catch(error => console.log(error));
         console.log('loggedinUserData::', loggedinUserData);
         
-        if (loggedinUserData) {
+      if (loggedinUserData) {
         
         await context.store.dispatch('customer/updateUserContext', loggedinUserData);
         const cusToken = await context.store.getters['customer/getCustomerToken'];
+        console.log('cusToken check:: ', cusToken);
         
         await context.store.dispatch('customer/checkIfUserLoggedin', cusToken);
         await context.store.dispatch('customer/getUserCartData', cusToken);

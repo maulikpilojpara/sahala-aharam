@@ -125,7 +125,8 @@
           </tbody>
         </table>
         <div class="checkoutt-btn-wrap">
-          <button class="btn btn-primary w-100" @click="placeOrder()">Place Order</button>
+          <button class="btn btn-primary w-100" :disabled="showLoader" @click="placeOrder()"><template v-if="showLoader">Please wait...</template><template v-else>Place Order</template></button>
+          <div v-if="showLoader" class="lds-ripple"><div></div><div></div></div>
         </div>
       </div>
     </div>
@@ -134,10 +135,24 @@
 
 <script>
 import { mapGetters } from 'vuex'
+
 export default {
   name: 'Checkout',
+  head () {
+      return {
+          script: [
+              {
+                  hid: 'Razorpay',
+                  src: 'https://checkout.razorpay.com/v1/checkout.js',
+                  body: true,
+                  defer: true,
+              }
+          ],
+      }
+  },
   data () {
     return {
+      showLoader: false,
       formResponse: {},
       address: {
         address_title: '',
@@ -159,6 +174,7 @@ export default {
       shippingAddresses: 'customer/cart/getUserShippingAddresses',
       billingAddresses: 'customer/cart/getUserBillingAddresses',
       ErpOrderResponse: 'customer/cart/getErpOrderResponse',
+      razorpayInputs: 'customer/cart/getRazorpayInputs',
       cartTotals: 'customer/getCartTotals',
     }),
 
@@ -166,99 +182,80 @@ export default {
   methods: {
     async placeOrder () {
       console.log('placeOrder IN');
+      this.showLoader = true;
+      return;
       await this.$store.dispatch('customer/cart/createErpOrder', this.customerToken)
       console.log('ErpOrderResponse:: ', this.ErpOrderResponse);
-      const createOrderObject = {
-          "paymentMethod": {
-              "method": "razorpay"
+      // const erpOrder = 'SAL-ORD-2022-00003';
+      if (this.ErpOrderResponse) {
+        const payload = {
+          token: this.customerToken,
+          order_ref: this.ErpOrderResponse
+        }
+        await this.$store.dispatch('customer/cart/ERPMakePayment', payload)
+        console.log('razorpayInputs:: ', this.razorpayInputs);
+        const paymentResData = this.razorpayInputs
+        const inputData = {
+          key: this.razorpayInputs.api_key,
+          amount: this.razorpayInputs.amount * 100, // 2000 paise = INR 20
+          name: this.razorpayInputs.title,
+          description: this.razorpayInputs.description,
+          handler: function (response){
+            razorpay.make_payment_log(response, inputData, paymentResData.reference_doctype, paymentResData.reference_docname, paymentResData.token);
           },
-          "billing_address": {
-              "region": "Gujarat",
-              "region_id": 496,
-              "region_code": "GJ",
-              "country_id": "IN",
-              "street": [
-                  "plot no 5, Tirupati Nagar ",
-                  "Navagam Dindoli"
-              ],
-              "postcode": "396450",
-              "city": "Surat",
-              "firstname": "Maulik pilojpura",
-              "lastname": "",
-              "email": "maulikpilojpara@gmail.com",
-              "telephone": "9033346057",
-              "company": "Office"
-          }
-      }
-      this.razorpayCheckoutFlow(createOrderObject)
-    },
-    async razorpayCheckoutFlow (createOrderObject) {
-      // showLoadingScreen();
-      // const customerContext = this.$store.getters['customer/login/getCustomerContext']
-      const createRazorpayOrderData = {
-          email: 'maulikpilojpara@gmail.com',
-          billingAddressObject: createOrderObject.billing_address,
-          quoteId: this.ErpOrderResponse,
-          paymentMethod: 'razorpay'
-      }
-      console.log('razorpayCheckoutFlow createRazorpayOrderData', createRazorpayOrderData);
-      await this.$store.dispatch('customer/cart/_createRazorpayOrder', createRazorpayOrderData)
-      // call set payment info ?
-      // // call fetch cart totals?
-      // await this.$store.dispatch('customer/cart/_createOrder', createOrderObject)
-      const confirmRazorpayOrderData = {
-          email: 'maulikpilojpara@gmail.com',
-          orderCheck: '1',
-          quoteId: 123,
-          paymentMethod: 'razorpay'
-      }
-      const confirmRazorpayOrderResponse = await this.$store.dispatch('customer/cart/_createRazorpayOrder', confirmRazorpayOrderData)
-      console.log('razorpayCheckoutFlow confirmRazorpayOrderResponse', confirmRazorpayOrderResponse);
-      
-      const razorpayModalOptions = this.prepareRazorpayCheckoutModalOptions(confirmRazorpayOrderResponse.reserved_order_id, confirmRazorpayOrderResponse.amount, confirmRazorpayOrderResponse.rzp_order)
-      // eslint-disable-next-line no-undef
-      const razorpayCheckoutFlow = new Razorpay(razorpayModalOptions)
-      razorpayCheckoutFlow.open()
-      this.updateLatestOrderContext()
-      // hideLoadingScreen()
-    },
-    prepareRazorpayCheckoutModalOptions (reservedIncrementId, amount, razorpayOrderId) {
-      const KEY_ID = "rzp_test_WYMBQK6C3rMx0r";
-      const KEY_SECRET = "BBVEgjzlkGVGgyR5tJxmBW4z";
-      const razorpayModalOptions = {
-          key: 'rzp_test_WYMBQK6C3rMx0r',
-          currency: 'INR',
-          name: 'Sahala Aharam',
-          description: 'Organic Stores',
-          image: 'https://sahala-aharam1.onrender.com/logo.svg',
           prefill: {
-              name: 'Maulik',
-              email: 'maulikpilojpara@gmail.com',
-              contact: '9033346057'
+            name: this.razorpayInputs.payer_name,
+            email: this.razorpayInputs.payer_email,
+            order_id: this.razorpayInputs.order_id
           },
-          theme: {
-              color: '#3399cc'
-          }
-      }
+          notes: 'Test Notes'
+        };
+        
+        var razorpay = new Razorpay(inputData);
+          
+          razorpay.open();
 
-        // const razorpayModalOptions = this.$store.getters['customer/cart/getRazorpayModalOptions'](true)
-        razorpayModalOptions.notes = {
-            merchant_quote_id: this.ErpOrderResponse,
-            merchant_order_id: reservedIncrementId
-        }
-        razorpayModalOptions.amount = amount
-        razorpayModalOptions.handler = response => this.placeOrderSuccessHandler(response)
-        razorpayModalOptions.order_id = razorpayOrderId;
-        razorpayModalOptions.modal = {
-            ondismiss: () => this.paymentModalDismissedHandler()
-        }
-        return razorpayModalOptions
-    },
-    placeOrderSuccessHandler () {
-        console.log('placeOrderSuccessHandler IN');
-    },
-    paymentModalDismissedHandler () {
-        console.log('paymentModalDismissedHandler IN');
+          const axiosObj = this.$axios;
+          const routerObj = this.$router;
+          razorpay.make_payment_log = function(response, options, doctype, docname, token){
+            const razPayload = {
+              razorpay_payment_id: response.razorpay_payment_id,
+              options: options,
+              reference_doctype: doctype,
+              reference_docname: docname,
+              token: token
+            }
+            console.log('razPayload:: ', razPayload);
+            
+            const appURL = process.env.NODE_ENV !== 'production' ? process.env.APP_URL_LOCAL : process.env.APP_URL_PROD;
+            try {
+              axiosObj.post(`${appURL}/api/razorpay_checkout`, {orderData: razPayload}).then(res => {
+                console.log('res make_payment_log:: ', res);
+                if (res.data && res.data.message && res.data.message.status == 200) {
+                  routerObj.push({
+                    path: res.data.message.redirect_to
+                  })
+                  // window.location.href = res.data.message.redirect_to
+                } else if (res.status && ([401,400,500].indexOf(res.data.message.status) > -1)) {
+                  routerObj.push({
+                    path: res.data.message.redirect_to
+                  })
+                  // window.location.href = res.data.message.redirect_to
+                }
+              })
+            } catch (e) {
+              console.log('Place Order Error: ',e);
+            } 
+          }
+
+          razorpay.on('payment.failed', function (response){
+              console.log('payment.failed:: ', response);
+        });
+        return
+        
+      } else {
+        console.log('Order Response not found!');
+      }
     },
     async deleteAddress () {
       if (confirm("Are you sure you want to delete?")) {
@@ -366,7 +363,17 @@ export default {
 .card-cover > input[type="radio"]:checked + .card-detail {
   border-color: var(--primary);
 }
+.address-wrap .form_wrap {
+    margin: 50px 0;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 6px 0px #b9b3b3;
+}
 @media (max-width: 767px) {
+  .address-wrap .form_wrap {
+      margin: 25px 0;
+      padding: 15px;
+  }
   .card {
     flex: 0 0 50%;
     max-width: 50%;
@@ -377,7 +384,7 @@ export default {
   .card:nth-child(n+3) {
     margin-top: 20px;
   }
-  .address-main[data-v-3f9ab082] {
+  .address-main {
     margin-bottom: 30px;
   }
 }
@@ -397,6 +404,60 @@ export default {
   }
   html .btn {
     padding: 0 15px;
+  }
+}
+
+/*Loader*/
+.checkoutt-btn-wrap {
+    position: relative;
+}
+.lds-ripple {
+  display: inline-block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  right: 40px;
+  top: -15px;
+  z-index: 9;
+}
+.lds-ripple div {
+  position: absolute;
+  border: 4px solid #fff;
+  opacity: 1;
+  border-radius: 50%;
+  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+.lds-ripple div:nth-child(2) {
+  animation-delay: -0.5s;
+}
+@keyframes lds-ripple {
+  0% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  4.9% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+  5% {
+    top: 36px;
+    left: 36px;
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 0px;
+    left: 0px;
+    width: 72px;
+    height: 72px;
+    opacity: 0;
   }
 }
 </style>
