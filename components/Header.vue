@@ -4,7 +4,7 @@
       <div class="navbar">
         <div class="header-left">
           <nuxt-link to="/" class="logo d-xl-none">
-            <img src="/logo.svg" />
+            <img src="/sahaja-logo.png" />
             <h3>Organic Stores</h3>
           </nuxt-link>
           <h2 v-if="$route.name === 'category'">Health Care</h2>

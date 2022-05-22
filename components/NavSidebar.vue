@@ -7,7 +7,7 @@
     <div class="sidebar-top-wrap">
       <div class="sidebar-logo">
         <nuxt-link to="/" class="logo">
-          <img src="/logo.svg" />
+          <img src="/sahaja-logo.png" />
           <h3>Organic Stores</h3>
         </nuxt-link>
       </div>
