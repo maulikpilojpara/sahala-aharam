@@ -121,19 +121,24 @@ export default {
       if (this.getUserLoginStatus) {
         this.loading = true;
         const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD
-        let payload = this.getCartItemsPayload;
-        payload.push({
-              item_code: this.getSku,
-              qty: this.qty
-            })
+        // let payload = this.getCartItemsPayload;
+        // payload.push({
+        //       item_code: this.getSku,
+        //       qty: this.qty
+        //     })
+        const payload = {
+          item_code: this.getSku,
+          qty: this.qty
+        }
         const cartPayload = {
           items:payload,
           token: this.customerToken
         }
+        await this.$store.dispatch('customer/updateUserCart', cartPayload);
 
-        const createCartResponse = await this.$axios.post(`${appURL}/api/create_cart`, cartPayload);
-        const customerCartRes = await this.$axios.post(`${appURL}/api/get_cutomer_cart`, { token: this.customerToken });
-        const getUserDataResponse = await this.$store.dispatch('customer/getUserCartData', this.customerToken);
+        // const createCartResponse = await this.$axios.post(`${appURL}/api/create_cart`, cartPayload);
+        // const customerCartRes = await this.$axios.post(`${appURL}/api/get_cutomer_cart`, { token: this.customerToken });
+        // const getUserDataResponse = await this.$store.dispatch('customer/getUserCartData', this.customerToken);
         this.loading = false;
         this.cartResponse = {
           msg: 'Product added successfully! Redirect to cart page...',

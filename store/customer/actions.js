@@ -7,21 +7,34 @@ const actions = {
 	},
 	async checkIfUserLoggedin ({ commit }, token) {
 		const appURL = process.env.NODE_ENV !== 'production' ? process.env.APP_URL_LOCAL : process.env.APP_URL_PROD;
-		var data = JSON.stringify({
-			token
-		});
-		const axiosOptions1 = {
-			method: 'post',
-			url: `${appURL}/api/check_loggedin_status`,
-			data
-		}
+		// var data = JSON.stringify({
+		// 	token
+		// });
+		// const axiosOptions1 = {
+		// 	method: 'post',
+		// 	url: `${appURL}/api/check_loggedin_status`,
+		// 	data
+		// }
+		// console.log('axiosOptions1:: ', axiosOptions1);
 		const res = await this.$axios.post(`${appURL}/api/check_loggedin_status`, { token });
+		console.log('checkIfUserLoggedin res:: ', res);
 		if (res.data && res.data.success)  {
 			if (res.data.response && res.data.response.message) {
 				await commit('UPDATE_IS_LOGGED_IN', true)
 			}
 		} else {
 			await commit('UPDATE_IS_LOGGED_IN', false)
+		}
+	},
+	async getOrdersList ({ commit }, token) {
+		const appURL = process.env.NODE_ENV !== 'production' ? process.env.APP_URL_LOCAL : process.env.APP_URL_PROD;
+		const res = await this.$axios.post(`${appURL}/api/get_order_list`, { token });
+		console.log('getOrdersList res.data.response:: ', res.data.response);
+		
+			if (res.data.response && res.data.response.message) {
+				await commit('UPDATE_USER_ORDERS_LIST', res.data.response.message)
+			} else {
+			await commit('UPDATE_USER_ORDERS_LIST', [])
 		}
 	},
 	async getUserCartData ({ commit }, token) {

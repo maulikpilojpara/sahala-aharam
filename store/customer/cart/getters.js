@@ -2,6 +2,9 @@ const getters = {
   getErpOrderResponse (state) {
       return state.erpOrderResponse
   },
+  getRazorpayInputs (state) {
+      return state.razorpayInputs
+  },
   getCartQuotationDoc (state) {
       return state?.cartQuotation?.doc || {}
   },

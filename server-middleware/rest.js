@@ -204,7 +204,7 @@ app.post('/api/update_cart', (req, res) => {
     },
     data : items
   };
-  
+  console.log('options update_cart:: ', options);
   axios.request(options).then((response) => {
     res.status(200).send(response.data);
   }).catch((error) => {
@@ -219,7 +219,6 @@ app.post('/api/get_cart_quotation', (req, res) => {
     method: 'post',
     url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.get_cart_quotation`,
     headers: {
-      'Content-Type': 'application/json',
       'Authorization': req.body.token
     },
   };
@@ -252,20 +251,45 @@ app.post('/api/get_cutomer_cart', (req, res) => {
 });
 
 app.post('/api/check_loggedin_status', (req, res) => {
+  console.log('req.body.token:: ', req.body.token);
+  
   const options = {
     method: 'GET',
     url: `${process.env.ERP_DOMAIN}/api/method/frappe.auth.get_logged_user`,
     headers: {
-      'Content-Type': 'application/json',
       'Authorization': req.body.token
     },
   };
+  console.log('check_loggedin_status options:: ', options);
+  
   
   axios.request(options).then((response) => {
     res.status(200).send({success: true, response: response.data});
   }).catch((error) => {
     console.error(error);
     res.status(404).send({error: true, msg:'Something went wrong. Please try again!'});
+  });
+});
+
+//Get all orders by token
+app.post('/api/get_order_list', (req, res) => {
+  console.log('req.body.token:: ', req.body.token);
+  
+  const options = {
+    method: 'GET',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.get_sales_order_list_custom`,
+    headers: {
+      'Authorization': req.body.token
+    },
+  };
+  console.log('check_loggedin_status options:: ', options);
+  
+  
+  axios.request(options).then((response) => {
+    res.status(200).send({success: true, response: response.data});
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send({error: true, msg:'Orders not found. Something went wrong. Please try again!'});
   });
 });
 
@@ -345,7 +369,6 @@ app.post('/api/add_cutomer_address', (req, res) => {
 //Delete address
 app.post('/api/delete_address', (req, res) => {
   var data = JSON.stringify(req.body.address);
-  console.log('data:: ', data);
   
   const options = {
     method: 'POST',
@@ -356,7 +379,6 @@ app.post('/api/delete_address', (req, res) => {
     },
     data
   };
-  console.log('options:: ', options);
 
   axios.request(options).then((response) => {
     res.status(200).send(response.data);
@@ -372,11 +394,9 @@ app.post('/api/create_order', (req, res) => {
     method: 'post',
     url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.organic_cart.place_order`,
     headers: {
-      'Content-Type': 'application/json',
       'Authorization': req.body.token
     },
   };
-  console.log('options::: ', options);
 
   axios.request(options).then((response) => {
     res.status(200).send(response.data);
@@ -386,29 +406,51 @@ app.post('/api/create_order', (req, res) => {
   });
 });
 
-// Razorpay call
-app.post("/createPayment", (req, res, next) => {
-  return admin
-    .firestore()
-    .collection("payments")
-    .add(req.body)
-    .then(payment => {
-      var instance = new Razorpay({
-        key_id: KEY_ID,
-        key_secret: KEY_SECRET
-      });
+// After Create Order make payment call
+app.post('/api/make_payment_request', (req, res) => {
+  
+  var data = JSON.stringify({
+    "dn": req.body.order_ref,
+    "dt": "Sales Order",
+    "submit_doc": 1,
+    "order_type": "Shopping Cart"
+  });
+  
+  var config = {
+    method: 'post',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.make_payment_request`,
+    headers: { 
+      'Content-Type': 'application/json', 
+      'Authorization': req.body.token, 
+    },
+    data : data
+  };
 
-      var options = {
-        amount: req.body.amount * 100,
-        currency: "INR",
-        receipt: payment.id,
-        payment_capture: 1
-      };
-      instance.orders.create(options, function(err, order) {
-        return res.status(201).send(order);
-      });
-    })
-    .catch(er => {
-      return res.status(400).send({ er });
-    });
+  axios.request(config).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send('Something went wrong with create order. Please try again!');
+  });
+});
+
+// After Success Order call
+app.post('/api/razorpay_checkout', (req, res) => {
+  var data = JSON.stringify(req.body.orderData);
+  
+  var config = {
+    method: 'post',
+    url: `${process.env.ERP_DOMAIN}/api/method/frappe.templates.pages.integrations.razorpay_checkout.make_payment`,
+    headers: { 
+      'Content-Type': 'application/json'
+    },
+    data : data
+  };
+
+  axios.request(config).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error(error);
+    res.status(404).send('Something went wrong with create order. Please try again!');
+  });
 });

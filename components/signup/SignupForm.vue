@@ -43,8 +43,12 @@
         <div class="form-field-latest">
           <input v-model="phone" placeholder="Phone *" type="text" class="form-control" required />
         </div>
-        <div class="form-field-latest">
-          <input v-model="password" placeholder="Password *" type="password" class="form-control" required />
+        <div class="form-field-latest p-relative">
+          <input v-if="showPassword" v-model="password" placeholder="Password *" type="text" class="form-control p-right-40" required />
+          <input v-else v-model="password" placeholder="Password *" type="password" class="form-control p-right-40" required />
+          <span class="eye-icon-main" @click="toggleShow">
+            <img :src="!showPassword ? '/eye.svg' : '/eye-slash.svg'" />
+          </span>
         </div>
         <div class="form-field-submit">
           <button class="btn btn-primary" :disabled="formResponse && formResponse.class === 'load' ? true : false">
@@ -78,6 +82,7 @@ export default {
   name: 'LoginForm',
   data () {
     return {
+      showPassword: false,
       first_name: '',
       last_name: '',
       email: '',
@@ -88,6 +93,9 @@ export default {
     }
   },
   methods: {
+    toggleShow() {
+      this.showPassword = !this.showPassword;
+    },
     async register() {
       console.log('registerin');
       this.formResponse = {};
@@ -142,3 +150,21 @@ export default {
   }
 };
 </script>
+<style scoped>
+.p-relative {
+  position: relative;
+}
+span.eye-icon-main img {
+    height: 20px;
+}
+span.eye-icon-main {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer ;
+}
+.form-control.p-right-40 {
+  padding-right: 40px;
+}
+</style>

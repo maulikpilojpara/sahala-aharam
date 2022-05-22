@@ -30,19 +30,21 @@ const actions = {
         console.log('createErpOrder token:: ', token);
         
         const appURL = process.env.NODE_ENV !== 'production' ? process.env.APP_URL_LOCAL : process.env.APP_URL_PROD;
-		const res = await this.$axios.post(`${appURL}/api/create_order`, { token });
+		const res = await this.$axios.post(`${appURL}/api/create_order`, {token});
         console.log('createErpOrder res:: ', res);
         if (res.data && res.data.message) {
             await commit('UPDATE_ERP_ORDER_RESPONSE', res.data.message)
         }
+	},
+	async ERPMakePayment ({ commit }, payload) {
+        console.log('ERPMakePayment orderRef:: ', payload);
         
-		// if (res.data && res.data.success)  {
-		// 	if (res.data && res.data.message) {
-		// 		await commit('UPDATE_ERP_ORDER_RESPONSE', res.data.response.message)
-		// 	}
-		// } else {
-		// 	await commit('UPDATE_ERP_ORDER_RESPONSE', res.data.response.message)
-		// }
+        const appURL = process.env.NODE_ENV !== 'production' ? process.env.APP_URL_LOCAL : process.env.APP_URL_PROD;
+		const res = await this.$axios.post(`${appURL}/api/make_payment_request`, payload);
+        console.log('ERPMakePayment res:: ', res);
+        if (res.data && res.data.message) {
+            await commit('UPDATE_RAZORPAY_INPUTS', res.data.message)
+        }
 	},
 	async _createRazorpayOrder (_context, data) {
         // const url = await this.$getApiEndpoint('createRazorpayOrder')

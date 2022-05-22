@@ -28,8 +28,8 @@
           </td>
           <td align="right">&#8377;{{item.rate}}</td>
           <td align="center">
-            <div class="product-qty-field">
-              <input type="text" :value="item.qty" />
+            <div class="product-qty-field" :class="{'disable-btn' : isInStock(item) === 0}">
+              <input type="text" :value="item.qty" readonly />
               <span class="qty-action qty-action-minus" @click="updateQty(item, 'decrease')"
                 ><svg
                   width="17"
@@ -107,6 +107,8 @@ export default {
     isInStock (item) {
       const cartItems = this.CartQuotationDoc.items;
       const currentItem = cartItems && cartItems.length > 0 ? cartItems.find(c => c.item_code === item.item_code) : {};
+      console.log('currentItem:: ', currentItem);
+      
       if (currentItem && Object.keys(currentItem).length > 0) {
         return currentItem.actual_qty;
       }
@@ -166,4 +168,11 @@ export default {
   text-align: center;
   margin-top: 10px;
 }
+/* .product-qty-field.disable-btn .qty-action {
+    pointer-events: none;
+    opacity: 0.5;
+}
+.product-qty-field.disable-btn {
+    opacity: 0.5;
+} */
 </style>

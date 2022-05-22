@@ -46,8 +46,12 @@
         <div class="form-field-latest">
           <input v-model="email" placeholder="Email *" type="email" class="form-control" required />
         </div>
-        <div class="form-field-latest">
-          <input v-model="password" placeholder="Password *" type="password" class="form-control" required />
+        <div class="form-field-latest p-relative">
+          <input v-if="showPassword" v-model="password" placeholder="Password *" type="text" class="form-control p-right-40" required />
+          <input v-else v-model="password" placeholder="Password *" type="password" class="form-control p-right-40" required />
+          <span class="eye-icon-main" @click="toggleShow">
+            <img :src="!showPassword ? '/eye.svg' : '/eye-slash.svg'" />
+          </span>
         </div>
         <div class="form-field-links">
           <div class="remember-login-field">
@@ -99,6 +103,7 @@ export default {
   name: 'LoginForm',
   data() {
     return {
+      showPassword: false,
       email: '',
       password: '',
       formResponse: {}
@@ -110,6 +115,9 @@ export default {
     },
   },
   methods: {
+    toggleShow() {
+      this.showPassword = !this.showPassword;
+    },
     async loginAction() {
       if (!this.email || !this.password) {
         return;
@@ -170,3 +178,22 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.p-relative {
+  position: relative;
+}
+span.eye-icon-main img {
+    height: 20px;
+}
+span.eye-icon-main {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer ;
+}
+.form-control.p-right-40 {
+  padding-right: 40px;
+}
+</style>
