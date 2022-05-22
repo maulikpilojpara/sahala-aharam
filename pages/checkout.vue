@@ -183,7 +183,6 @@ export default {
     async placeOrder () {
       console.log('placeOrder IN');
       this.showLoader = true;
-      return;
       await this.$store.dispatch('customer/cart/createErpOrder', this.customerToken)
       console.log('ErpOrderResponse:: ', this.ErpOrderResponse);
       // const erpOrder = 'SAL-ORD-2022-00003';
@@ -251,6 +250,7 @@ export default {
           razorpay.on('payment.failed', function (response){
               console.log('payment.failed:: ', response);
         });
+        this.showLoader = false;
         return
         
       } else {

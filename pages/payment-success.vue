@@ -32,10 +32,12 @@ export default {
       ErpOrderResponse: 'customer/cart/getErpOrderResponse',
     })
   },
-  mounted() {
+  async mounted() {
     console.log('this.$razorpayInputs', this.razorpayInputs);
     console.log('this.CartQuotationDoc', this.CartQuotationDoc);
     console.log('ErpOrderResponse:: ', this.ErpOrderResponse);
+    const cusToken = await this.$store.getters['customer/getCustomerToken'];
+    await this.$store.dispatch('customer/getUserCartData', cusToken);
   }
 }
 </script>
