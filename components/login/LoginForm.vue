@@ -160,8 +160,9 @@ export default {
             msg: 'You Have Successfully Logged in. Redirecting...',
             class: 'success'
           }
+          const redirectURL = localStorage.getItem('afterLoggedInRedirection') ? localStorage.getItem('afterLoggedInRedirection') : '/my-account';
           setTimeout(() => {
-            this.$router.push('/my-account');
+             this.$router.push({ path: redirectURL })
           }, 1500)
         } else {
           this.formResponse = {

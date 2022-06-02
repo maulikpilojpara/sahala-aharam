@@ -1,6 +1,11 @@
 <template>
   <div class="min-profile">
-    <nuxt-link :to="getUserURL" class="min-profile-toggle">
+    <nuxt-link
+      to="/login"
+      event=""
+      @click.native="redirectTo('/login')"
+      class="min-profile-toggle"
+    >
       <span class="icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="29" viewBox="0 0 28 29">
           <g id="Profile" transform="translate(-0.339 1.779)">
@@ -21,11 +26,16 @@ export default {
   computed: {
     ...mapGetters({
       getUserLoginStatus: 'customer/getUserLoginStatus',
-    }),
-    getUserURL () {
-      return this.getUserLoginStatus ? '/my-account' : '/login'
-    }
+    })
   },
+  methods: {
+    redirectTo (path) {
+      console.log('route:: ', this.$route.fullPath);
+      localStorage.setItem('afterLoggedInRedirection', this.$route.fullPath);
+      this.$router.push({ path })
+      // return this.getUserLoginStatus ? '/my-account' : '/login'
+    }
+  }
 }
 </script>
 
