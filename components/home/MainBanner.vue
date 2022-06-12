@@ -144,7 +144,6 @@ html .main-slider {
       transform: translateY(-50%) !important;
       margin: 0 !important;
     }
-    .hooper-prev {}
     .hooper-next {
       left: auto;
       right: 10px;

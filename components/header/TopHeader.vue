@@ -38,5 +38,6 @@ export default {
 <style lang="scss" scoped>
 .top-header {
   background-color: #fff;
+  border-bottom: 1px solid #69BD44;
 }
 </style>

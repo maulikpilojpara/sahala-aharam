@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container py-5">
     <h1 class="mb-4">About Us</h1>
     <div v-if="AboutData && AboutData.image" class="text-center mb-4">
       <img class="img-fluid" :src="AboutData.image" :alt="AboutData.image_header" />
