@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="py-5">
     <div class="container d-flex justify-content-between align-items-center">
       <h5>Welcome {{ customerName }}</h5>
-      <button @click="logout()">Logout</button>  
+      <button class="btn btn-danger" @click="logout()">Logout</button>
     </div>
     <div class="container">
       <div class="seperator"></div>
@@ -46,7 +46,7 @@ export default {
   async fetch() {
     await this.$store.dispatch('customer/getOrdersList', this.customerToken);
     console.log('orders::: ', this.orders);
-    
+
   },
   methods: {
     async logout() {

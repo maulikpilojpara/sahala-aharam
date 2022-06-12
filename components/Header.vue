@@ -1,5 +1,6 @@
 <template>
   <header>
+    <TopHeader />
     <div class="container">
       <div class="navbar">
         <div class="header-left">
@@ -31,7 +32,8 @@ import HeaderSearch from "~/components/header/Search.vue";
 import MinCart from "~/components/header/Cart.vue";
 import MinWishlist from "~/components/header/Wishlist.vue";
 import MinProfile from "~/components/header/Profile.vue";
-import Breadcrumb from '~/components/Breadcrumb.vue'
+import Breadcrumb from '~/components/Breadcrumb.vue';
+import TopHeader from '~/components/header/TopHeader.vue';
 
 export default {
   name: "Header",
@@ -58,7 +60,8 @@ export default {
     MinCart,
     Breadcrumb,
     MinWishlist,
-    MinProfile
+    MinProfile,
+    TopHeader
   }
 };
 </script>

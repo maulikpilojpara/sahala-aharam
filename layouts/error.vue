@@ -1,7 +1,9 @@
 
 <template>
-  <div class="nuxt-error">
-    <component :is="errorPage" :error="error" />
+  <div class="nuxt-error py-5">
+    <div class="container">
+      <component :is="errorPage" :error="error" />
+    </div>
   </div>
 </template>
 <script>
