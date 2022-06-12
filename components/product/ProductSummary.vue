@@ -74,7 +74,12 @@
       <h4>Out of stock!</h4>
     </div>
     <div class="alert" :class="`alert-${cartResponse.class}`" v-if="Object.keys(cartResponse).length > 0 &&  cartResponse.class !== 'load'" role="alert">
-      {{ cartResponse.msg }}
+      <template v-if="cartResponse.class === 'danger'">
+        <span>Please <nuxt-link to="/login">login</nuxt-link> to continue</span>
+      </template>
+      <template v-else>
+        <span>"{{getName}}" has been added to your cart. </span><nuxt-link to="/cart">Go To Cart</nuxt-link>
+      </template>
     </div>
     <div class="product-meta">
       <div class="item" v-if="getCategory"><b>Category : </b>{{getCategory}}</div>
@@ -107,7 +112,7 @@ export default {
   methods: {
     increaseQty() {
       console.log('this.qty: ', this.qty);
-      
+
       this.qty = this.qty + 1
     },
     decreaseQty() {
@@ -117,7 +122,7 @@ export default {
     },
     async addToCart () {
       console.log('addToCart in');
-      
+
       if (this.getUserLoginStatus) {
         this.loading = true;
         const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD
@@ -141,12 +146,11 @@ export default {
         // const getUserDataResponse = await this.$store.dispatch('customer/getUserCartData', this.customerToken);
         this.loading = false;
         this.cartResponse = {
-          msg: 'Product added successfully! Redirect to cart page...',
           class: 'success'
         }
-        setTimeout(() => {
-          this.$router.push('/cart')
-        }, 2000);
+        // setTimeout(() => {
+        //   this.$router.push('/cart')
+        // }, 2000);
 
       } else {
         this.cartResponse = {
@@ -163,6 +167,8 @@ export default {
       getCartItems: 'customer/getCartItems',
     }),
     getName () {
+      console.log('this.product::: ', this.product);
+
       return this.product?.[0]?.item_name || ''
     },
     getprice () {
@@ -199,3 +205,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.alert.alert-danger a {
+    text-decoration: underline;
+    color: #842029;
+}
+.alert-success a {
+    color: inherit;
+    border-bottom: 1px solid;
+}
+</style>
