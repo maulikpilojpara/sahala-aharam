@@ -1,10 +1,10 @@
 <template>
   <div class="footer-wrap">
-    <div class="footer-shape">
+    <!-- <div class="footer-shape">
       <img src="/footer-shape.svg" alt="" class="d-block w-100" />
-    </div>
+    </div> -->
     <footer>
-      <div class="footer-top">
+      <!-- <div class="footer-top">
         <div class="container">
           <div class="footer-text">
             <div class="footer-logo">
@@ -18,11 +18,17 @@
             </p>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="footer-middle">
         <div class="container">
           <div class="row">
-            <div class="col">
+            <div class="col col-xs-12">
+              <nuxt-link to="/" class="logo-footer text-center d-inline-block text-primary">
+                <img src="/sahaja-logo.png" width="80" height="92" alt="Sahaja Aharam" class="mx-auto d-block" />
+                <h6 class="mt-3 text-uppercase">Organic Stores</h6>
+              </nuxt-link>
+            </div>
+            <!-- <div class="col">
               <h3>Shop Now</h3>
               <ul class="footer-list">
                 <li v-for="(cat, indx) in footerCatList" :key="indx">
@@ -31,8 +37,8 @@
                   </nuxt-link>
                 </li>
               </ul>
-            </div>
-            <div class="col">
+            </div> -->
+            <div class="col col-xs-12">
               <h3>Quick Links</h3>
               <ul class="footer-list">
                 <li>
@@ -47,6 +53,9 @@
                 <li>
                   <nuxt-link to="/faqs">FAQs</nuxt-link>
                 </li>
+                <li>
+                  <nuxt-link to="/stores">Stores</nuxt-link>
+                </li>
                 <!-- <li>
                   <nuxt-link href="#">Shop</nuxt-link>
                 </li>
@@ -56,15 +65,6 @@
                 <!-- <li>
                   <nuxt-link href="#">Contact Us</nuxt-link>
                 </li> -->
-              </ul>
-            </div>
-            <div class="col">
-              <h3>Account</h3>
-              <ul class="footer-list">
-                <li><a href="#">My Account</a></li>
-                <li><a href="#">Address Book</a></li>
-                <li><a href="#">Order History</a></li>
-                <li><a href="#">Invoices</a></li>
               </ul>
             </div>
             <div class="col col-xs-12">
@@ -297,3 +297,17 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.footer-wrap {
+  border-top: 3px solid #69BD44;
+}
+.logo-footer {
+  img {
+    max-width: 80px;
+  }
+  h6 {
+    font-size: 13px;
+  }
+}
+</style>

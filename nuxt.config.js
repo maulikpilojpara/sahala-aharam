@@ -40,7 +40,6 @@ export default {
       { hid: 'owlcarousel', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/owl.carousel.min.js`, defer: true, body: true },
       { hid: 'aos', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/aos.js`, defer: true, body: true },
       { hid: 'smoothscrollbar', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/smooth-scrollbar.js`, defer: true, body: true },
-      { hid: 'kursor', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/kursor.js`, defer: true, body: true },
       { hid: 'fancybox', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/fancybox.umd.js`, defer: true, body: true },
       { hid: 'custom', src: `${process.env.NODE_ENV === 'production' ? process.env.APP_URL_PROD : process.env.APP_URL_LOCAL}/js/custom.js`, defer: true, body: true },
     ]

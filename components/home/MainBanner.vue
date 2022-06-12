@@ -93,13 +93,14 @@
             </div>
           </div>
         </div> -->
+        <hooper-navigation slot="hooper-addons"></hooper-navigation>
       </hooper>
     </div>
   </section>
 </template>
 
 <script>
-import { Hooper, Slide, Pagination as HooperPagination } from 'hooper';
+import { Hooper, Slide, Pagination as HooperPagination, Navigation as HooperNavigation } from 'hooper';
 import 'hooper/dist/hooper.css'
 import { mapGetters  } from 'vuex'
 
@@ -121,7 +122,8 @@ export default {
   components: {
     Hooper,
     Slide,
-    HooperPagination
+    HooperPagination,
+    HooperNavigation
   },
   computed: {
     ...mapGetters({
@@ -130,3 +132,23 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+html .main-slider {
+  .hooper-navigation {
+    .hooper-prev,
+    .hooper-next {
+      position: absolute !important;
+      top: 50% !important;
+      left: 10px;
+      transform: translateY(-50%) !important;
+      margin: 0 !important;
+    }
+    .hooper-next {
+      left: auto;
+      right: 10px;
+      transform: translateY(-50%) rotate(180deg) !important;
+    }
+  }
+}
+</style>

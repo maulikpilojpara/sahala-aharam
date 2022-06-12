@@ -14,7 +14,7 @@
       display:none;
   }
   body {
-      padding-top: 88px;
+      padding-top: 142px;
   }
   .main-col {
       width: 100%;
@@ -168,7 +168,7 @@
   }
   .banner-box .banner-img {
       border-radius: 20px;
-      height: 400px;
+      height: 300px;
   }
   .main-slider .item {
       border-radius: 20px;
@@ -280,7 +280,7 @@
 
 /*Mobile view*/
 @media (max-width:767px){
-  body{
+  body {
       font-size:14px;
       padding-top: 140px;
   }
@@ -787,6 +787,10 @@
 
 }
 
-
+@media (max-width: 537px) {
+  body {
+    padding-top: 220px;
+  }
+}
 
 

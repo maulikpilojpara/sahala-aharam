@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container py-5">
     <h1 v-if="pageData && pageData.header" class="mb-4">{{ pageData.header }}</h1>
     <div v-if="pageData && pageData.details" v-html="pageData.details" />
   </div>

@@ -1,132 +1,144 @@
 <template>
-  <div class="checkout-main">
+  <div class="checkout-main py-5">
     <div class="container">
       <div v-show="deleteResponse" class="delete-response">
           <p>{{ deleteResponse }}</p>
       </div>
-      <div class="address-wrap">
-        <div v-if="shippingAddresses && shippingAddresses.length > 0" class="address-main">
-          <h3>Shipping Addresses</h3>
-          <div class="card-wrap">
-            <template v-for="(spAddress, indx) in shippingAddresses">
-              <div class="card" :key="indx">
-                <div class="card-cover">
-                  <input type="radio" v-model="selectedAddress" :value="spAddress.name" name="select-radio" class="delete" />
-                  <div class="card-detail">
-                    <h6>{{ spAddress.name }}</h6>
-                    <p v-html="spAddress.display" />
+      <div class="row">
+        <div class="col-md-8">
+          <div class="address-wrap">
+            <div v-if="shippingAddresses && shippingAddresses.length > 0" class="address-main">
+              <h3>Shipping Addresses</h3>
+              <div class="card-wrap">
+                <template v-for="(spAddress, indx) in shippingAddresses">
+                  <div class="card" :key="indx">
+                    <div class="card-cover">
+                      <input type="radio" v-model="selectedAddress" :value="spAddress.name" name="select-radio" class="delete" />
+                      <div class="card-detail">
+                        <h6>{{ spAddress.name }}</h6>
+                        <p v-html="spAddress.display" />
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+            <!-- Billing -->
+            <div v-if="billingAddresses && billingAddresses.length > 0" class="address-main">
+              <h3>Billing Addresses</h3>
+              <div class="card-wrap">
+                <template v-for="(blAddress, indx) in billingAddresses">
+                  <div class="card" :key="indx">
+                    <div class="card-cover">
+                      <input type="radio" v-model="selectedAddress" :value="blAddress.name" name="select-radio" class="delete"  />
+                      <div class="card-detail">
+                        <h6>{{ blAddress.name }}</h6>
+                        <p v-html="blAddress.display" />
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+            <!-- Add new address -->
+            <button class="add-address-btn btn btn-primary me-1" @click="toggleAddressForm()">Add new address</button>
+            <button class="add-address-btn btn btn-primary" @click="deleteAddress()">Delete address</button>
+            <div v-if="newAddressForm" class="form_wrap">
+              <form method="post" @submit.prevent="addNewForm">
+                <div class="row">
+                  <div class="col col-12 col-lg-6">
+                    <div class="form-field-latest">
+                      <input v-model="address.address_title" placeholder="Address Title *" type="text" class="form-control" required />
+                    </div>
+                  </div>
+                  <div class="col col-12 col-lg-6">
+                    <div class="form-field-latest">
+                      <input v-model="address.address_line1" placeholder="Address Line 1 *" type="text" class="form-control" required />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </template>
+                <div class="row">
+                  <div class="col col-12 col-lg-6">
+                    <div class="form-field-latest">
+                      <input v-model="address.address_line2" placeholder="Address Line 2 *" type="text" class="form-control" required />
+                    </div>
+                  </div>
+                  <div class="col col-12 col-lg-6">
+                    <div class="form-field-latest">
+                      <input v-model="address.city" placeholder="City *" type="text" class="form-control" required />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col col-12 col-lg-6">
+                    <div class="form-field-latest">
+                      <input v-model="address.state" placeholder="State *" type="text" class="form-control" required />
+                    </div>
+                  </div>
+                  <div class="col col-12 col-lg-6">
+                    <div class="form-field-latest">
+                      <input v-model="address.pincode" placeholder="Pincode *" type="text" class="form-control" required />
+                    </div>
+                  </div>
+                </div>
+                <div class="form-field-latest form-field-radio">
+                  <label>Adress Type <em>*</em></label>
+                  <div class="row">
+                    <div class="col col-12 col-lg-6">
+                      <div class="form-check">
+                        <input v-model="address.address_type" id="billing" value="Billing" type="radio" class="form-check-input" required />
+                        <label for="billing" class="form-check-label">Billing</label>
+                      </div>
+                    </div>
+                    <div class="col col-12 col-lg-6">
+                      <div class="form-check">
+                        <input v-model="address.address_type" id="Shipping" value="Shipping" type="radio" class="form-check-input" required />
+                        <label for="Shipping" class="form-check-label">Shipping</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-field-submit">
+                  <button class="btn btn-primary" :disabled="formResponse && formResponse.class === 'load' ? true : false">
+                    <span v-if="formResponse && formResponse.class === 'load'"> {{formResponse.msg}} </span>
+                    <span v-else> Add </span>
+                  </button>
+                  <div class="alert" :class="`alert-${formResponse.class}`" v-if="Object.keys(formResponse).length > 0 && formResponse.class !== 'load'" role="alert">
+                    {{ formResponse.msg }}
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-        <!-- Billing -->
-        <div v-if="billingAddresses && billingAddresses.length > 0" class="address-main">
-          <h3>Billing Addresses</h3>
-          <div class="card-wrap">
-            <template v-for="(blAddress, indx) in billingAddresses">
-              <div class="card" :key="indx">
-                <div class="card-cover">
-                  <input type="radio" v-model="selectedAddress" :value="blAddress.name" name="select-radio" class="delete"  />
-                  <div class="card-detail">
-                    <h6>{{ blAddress.name }}</h6>
-                    <p v-html="blAddress.display" />
-                  </div>
-                </div>
+        <div class="col-md-4">
+          <!-- checkout total -->
+          <div class="cart-total-wrap">
+            <div class="cart-box cart-total">
+              <div class="table-responsive">
+                <table class="table cart-total-table mb-0">
+                  <tbody>
+                    <tr>
+                      <td>Subtotal</td>
+                      <td align="right">&#8377; {{cartTotals.grand_total.toLocaleString('en-IN')}}</td>
+                    </tr>
+                    <!-- <tr>
+                      <td>Tax</td>
+                      <td align="right">&#8377; 2.00</td>
+                    </tr> -->
+                    <tr class="total-tr">
+                      <td>Total</td>
+                      <td align="right">&#8377; {{cartTotals.total.toLocaleString('en-IN')}}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
-            </template>
+            </div>
+            <div class="checkout-btn-wrap">
+              <button class="btn btn-primary w-100" :disabled="showLoader" @click="placeOrder()"><template v-if="showLoader">Please wait...</template><template v-else>Place Order</template></button>
+              <div v-if="showLoader" class="lds-ripple"><div></div><div></div></div>
+            </div>
           </div>
-        </div>
-        <!-- Add new address -->
-        <button class="add-address-btn btn btn-primary me-1" @click="toggleAddressForm()">Add new address</button>
-        <button class="add-address-btn btn btn-primary" @click="deleteAddress()">Delete address</button>
-        <div v-if="newAddressForm" class="form_wrap">
-          <form method="post" @submit.prevent="addNewForm">
-            <div class="row">
-              <div class="col col-12 col-lg-6">
-                <div class="form-field-latest">
-                  <input v-model="address.address_title" placeholder="Address Title *" type="text" class="form-control" required />
-                </div>
-              </div>
-              <div class="col col-12 col-lg-6">
-                <div class="form-field-latest">
-                  <input v-model="address.address_line1" placeholder="Address Line 1 *" type="text" class="form-control" required />
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col col-12 col-lg-6">
-                <div class="form-field-latest">
-                  <input v-model="address.address_line2" placeholder="Address Line 2 *" type="text" class="form-control" required />
-                </div>
-              </div>
-              <div class="col col-12 col-lg-6">
-                <div class="form-field-latest">
-                  <input v-model="address.city" placeholder="City *" type="text" class="form-control" required />
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col col-12 col-lg-6">
-                <div class="form-field-latest">
-                  <input v-model="address.state" placeholder="State *" type="text" class="form-control" required />
-                </div>
-              </div>
-              <div class="col col-12 col-lg-6">
-                <div class="form-field-latest">
-                  <input v-model="address.pincode" placeholder="Pincode *" type="text" class="form-control" required />
-                </div>
-              </div>
-            </div>
-            <div class="form-field-latest form-field-radio">
-              <label>Adress Type <em>*</em></label>
-              <div class="row">
-                <div class="col col-12 col-lg-6">
-                  <div class="form-check">
-                    <input v-model="address.address_type" id="billing" value="Billing" type="radio" class="form-check-input" required />
-                    <label for="billing" class="form-check-label">Billing</label>
-                  </div>
-                </div>
-                <div class="col col-12 col-lg-6">
-                  <div class="form-check">
-                    <input v-model="address.address_type" id="Shipping" value="Shipping" type="radio" class="form-check-input" required />
-                    <label for="Shipping" class="form-check-label">Shipping</label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="form-field-submit">
-              <button class="btn btn-primary" :disabled="formResponse && formResponse.class === 'load' ? true : false">
-                <span v-if="formResponse && formResponse.class === 'load'"> {{formResponse.msg}} </span>
-                <span v-else> Add </span>
-              </button>
-              <div class="alert" :class="`alert-${formResponse.class}`" v-if="Object.keys(formResponse).length > 0 && formResponse.class !== 'load'" role="alert">
-                {{ formResponse.msg }}
-              </div>
-            </div>
-          </form>
-        </div>
-        <!-- checkout total -->
-        <table class="table cart-total-table mb-0 mt-5">
-          <tbody>
-            <tr>
-              <td>Subtotal</td>
-              <td align="right">&#8377; {{cartTotals.grand_total.toLocaleString('en-IN')}}</td>
-            </tr>
-            <!-- <tr>
-              <td>Tax</td>
-              <td align="right">&#8377; 2.00</td>
-            </tr> -->
-            <tr class="total-tr">
-              <td>Total</td>
-              <td align="right">&#8377; {{cartTotals.total.toLocaleString('en-IN')}}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="checkoutt-btn-wrap">
-          <button class="btn btn-primary w-100" :disabled="showLoader" @click="placeOrder()"><template v-if="showLoader">Please wait...</template><template v-else>Place Order</template></button>
-          <div v-if="showLoader" class="lds-ripple"><div></div><div></div></div>
         </div>
       </div>
     </div>
@@ -209,9 +221,9 @@ export default {
           },
           notes: 'Test Notes'
         };
-        
+
         var razorpay = new Razorpay(inputData);
-          
+
           razorpay.open();
 
           const axiosObj = this.$axios;
@@ -225,7 +237,7 @@ export default {
               token: token
             }
             console.log('razPayload:: ', razPayload);
-            
+
             const appURL = process.env.NODE_ENV !== 'production' ? process.env.APP_URL_LOCAL : process.env.APP_URL_PROD;
             try {
               axiosObj.post(`${appURL}/api/razorpay_checkout`, {orderData: razPayload}).then(res => {
@@ -244,7 +256,7 @@ export default {
               })
             } catch (e) {
               console.log('Place Order Error: ',e);
-            } 
+            }
           }
 
           razorpay.on('payment.failed', function (response){
@@ -252,7 +264,7 @@ export default {
         });
         this.showLoader = false;
         return
-        
+
       } else {
         console.log('Order Response not found!');
       }
@@ -330,11 +342,11 @@ export default {
 .card {
   border: 0 none;
   background-color: transparent;
-  flex: 0 0 33.33%;
-  max-width: 33.33%;
+  flex: 0 0 50%;
+  max-width: 50%;
   padding: 0 15px;
 }
-.card:nth-child(n+4) {
+.card:nth-child(n+3) {
   margin-top: 20px;
 }
 .address-wrap .form_wrap {
@@ -355,7 +367,7 @@ export default {
 }
 .card-cover .card-detail {
   background-color: #fff;
-  border: 2px solid #ccc;
+  border: 1px solid #ccc;
   padding: 15px;
   border-radius: 10px;
   height: 100%;
@@ -368,21 +380,12 @@ export default {
     padding: 25px;
     border-radius: 8px;
     box-shadow: 0px 0px 6px 0px #b9b3b3;
+    background-color: #fff;
 }
 @media (max-width: 767px) {
   .address-wrap .form_wrap {
       margin: 25px 0;
       padding: 15px;
-  }
-  .card {
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
-  .card:nth-child(n+4) {
-    margin-top: 0;
-  }
-  .card:nth-child(n+3) {
-    margin-top: 20px;
   }
   .address-main {
     margin-bottom: 30px;
@@ -429,6 +432,9 @@ export default {
 }
 .lds-ripple div:nth-child(2) {
   animation-delay: -0.5s;
+}
+.checkout-main .btn {
+  z-index: 0;
 }
 @keyframes lds-ripple {
   0% {
