@@ -53,6 +53,9 @@
                 <li>
                   <nuxt-link to="/faqs">FAQs</nuxt-link>
                 </li>
+                <li>
+                  <nuxt-link to="/stores">Stores</nuxt-link>
+                </li>
                 <!-- <li>
                   <nuxt-link href="#">Shop</nuxt-link>
                 </li>
