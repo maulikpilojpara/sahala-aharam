@@ -15,11 +15,11 @@
           <MinProfile v-if="$device.isDesktop" />
           <!-- <MinWishlist v-if="$device.isDesktop" /> -->
           <MinCart />
-          <button class="header-info-toggle" type="button">
+          <!-- <button class="header-info-toggle" type="button">
             <span></span>
             <span></span>
             <span></span>
-          </button>
+          </button> -->
         </div>
       </div>
     </div>

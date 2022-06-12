@@ -146,7 +146,7 @@
               <h3>Follow Us</h3>
               <ul class="footer-social-info">
                 <li>
-                  <a href="#" target="_blank"
+                  <a href="https://www.facebook.com/sahajaaharam/" target="_blank"
                     ><svg
                       width="25"
                       height="25"
@@ -165,7 +165,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="#" target="_blank"
+                  <a href="https://www.instagram.com/sahajaaharam/" target="_blank"
                     ><svg
                       width="25"
                       height="25"
@@ -184,7 +184,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="#" target="_blank"
+                  <a href="https://twitter.com/sahajaaharam" target="_blank"
                     ><svg
                       width="25"
                       height="25"
@@ -201,7 +201,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="#" target="_blank"
+                  <a href="https://wa.me/8500783300" target="_blank"
                     ><svg
                       width="25"
                       height="25"
@@ -227,7 +227,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="#" target="_blank"
+                  <a href="https://www.linkedin.com/company/sahajaaharam/" target="_blank"
                     ><svg
                       width="25"
                       height="25"
@@ -246,7 +246,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="#" target="_blank"
+                  <a href="https://www.youtube.com/krishitv" target="_blank"
                     ><svg
                       width="25"
                       height="25"
