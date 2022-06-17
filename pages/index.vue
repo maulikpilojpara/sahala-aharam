@@ -33,6 +33,19 @@ export default {
     ProductSlider: () => import('~/components/home/ProductSlider.vue'),
     Testimonials: () => import('~/components/home/Testimonials.vue'),
     Certifications: () => import('~/components/home/Certifications.vue')
-  }
+  },
+  // async asyncData({$axios}) {
+  //   const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD;
+  //   const healthySnacks = await $axios.get(`${appURL}/api/getproducts/healthy-snacks`);
+  //   console.log('healthySnacks::: ', healthySnacks);
+  //   return {
+  //     healthySnacks
+  //   }
+  // },
+  // async mounted () {
+  //   const appURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:10000' : process.env.APP_URL_PROD;
+  //   const healthySnacks = await this.$axios.get(`${appURL}/api/getproducts/healthy-snacks`);
+  //   console.log('healthySnacks::: ', healthySnacks);
+  // }
 }
 </script>

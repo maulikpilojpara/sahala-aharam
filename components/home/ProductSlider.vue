@@ -18,7 +18,7 @@
         ></a> -->
       </div>
       <hooper class="product-carousel title-nav" :settings="homeProductSliderSetting">
-        <slide class="item" v-for="(product, indx) in products" :key="indx">
+        <slide class="item" v-for="(product, indx) in products" :key="indx" :class="{'overlay': activeIndex === indx && showLoader}">
           <div class="product-box">
             <div class="img">
               <nuxt-link :to="{path: `/product/${product.name}` }">
@@ -43,29 +43,32 @@
                 <span style="width: 80%"></span>
               </div> -->
               <div class="more-link">
-                <nuxt-link :to="{path: `/product/${product.name}` }">
-                  <svg
-                    width="19"
-                    height="19"
-                    viewBox="0 0 19 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M1.63867 9.3999H17.8053"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M9.72266 1.31665L9.72266 17.4833"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    /></svg
-                ></nuxt-link>
+                <nuxt-link event="" to="#" @click.native="addToCart(product, indx)">
+                <svg v-if="activeIndex === indx && cartResponse && !showLoader" width="19" height="19" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#fff" d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"/></svg>
+                <svg
+                  v-else
+                  width="19"
+                  height="19"
+                  viewBox="0 0 19 19"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1.63867 9.3999H17.8053"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M9.72266 1.31665L9.72266 17.4833"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                </nuxt-link>
               </div>
             </div>
           </div>
@@ -317,6 +320,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { Hooper, Slide, Navigation as HooperNavigation } from 'hooper';
 import 'hooper/dist/hooper.css'
 
@@ -324,6 +328,9 @@ export default {
   name: 'ProductSlider',
   data() {
     return {
+      activeIndex: '',
+      showLoader: false,
+      cartResponse: false,
       homeProductSliderSetting: {
         infiniteScroll: true,
         wheelControl: false,
@@ -370,5 +377,44 @@ export default {
       default: () => [],
     },
   },
+  computed: {
+    ...mapGetters({
+      getUserLoginStatus: 'customer/getUserLoginStatus',
+      customerToken: 'customer/getCustomerToken',
+      cartItems: 'customer/getCartItems',
+    }),
+  },
+  methods: {
+    async addToCart(product, indx) {
+      console.log('addToCart:: ', product);
+      if (this.activeIndex === indx) {
+        return;
+      }
+      if (this.getUserLoginStatus) {
+        this.activeIndex = indx;
+        this.showLoader = true;
+        const sameInCart = this.cartItems.find(item => item.item_code === product.name);
+        let qty = 1;
+        if (sameInCart && Object.keys(sameInCart).length > 0) {
+          qty = parseInt(sameInCart.qty) + 1
+        }
+
+        const payload = {
+          item_code: product.name,
+          qty
+        }
+        const cartPayload = {
+          items:payload,
+          token: this.customerToken
+        }
+        console.log('product:: ',product);
+        await this.$store.dispatch('customer/updateUserCart', cartPayload);
+        this.showLoader = false;
+        this.cartResponse = true;
+      } else {
+        this.cartResponse = false;
+      }
+    }
+  }
 };
 </script>

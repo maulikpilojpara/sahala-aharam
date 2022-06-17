@@ -80,6 +80,7 @@ export default {
     ...mapGetters({
       getUserLoginStatus: 'customer/getUserLoginStatus',
       customerToken: 'customer/getCustomerToken',
+      cartItems: 'customer/getCartItems',
     }),
   },
   methods: {
@@ -93,9 +94,15 @@ export default {
       if (this.getUserLoginStatus) {
         this.activeIndex = indx;
         this.showLoader = true;
+        
+        const sameInCart = this.cartItems.find(item => item.item_code === product.name);
+        let qty = 1;
+        if (sameInCart && Object.keys(sameInCart).length > 0) {
+          qty = parseInt(sameInCart.qty) + 1
+        }
         const payload = {
           item_code: product.name,
-          qty: 1
+          qty
         }
         const cartPayload = {
           items:payload,
@@ -116,8 +123,3 @@ export default {
 }
 </script>
 
-<style scoped>
-.item.overlay {
-  opacity: 0.6;
-}
-</style>
