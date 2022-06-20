@@ -107,7 +107,6 @@ export default {
     isInStock (item) {
       const cartItems = this.CartQuotationDoc.items;
       const currentItem = cartItems && cartItems.length > 0 ? cartItems.find(c => c.item_code === item.item_code) : {};
-      console.log('currentItem:: ', currentItem);
       
       if (currentItem && Object.keys(currentItem).length > 0) {
         return currentItem.actual_qty;

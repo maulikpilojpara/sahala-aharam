@@ -454,3 +454,19 @@ app.post('/api/razorpay_checkout', (req, res) => {
     res.status(404).send('Something went wrong with create order. Please try again!');
   });
 });
+
+//Related products from SKU
+app.get('/api/get_season_item', (req, res) => {
+  const options = {
+    method: 'GET',
+    url: `${process.env.ERP_DOMAIN}/api/method/organic_shop.api.get_season_item`,
+    headers: {
+      'Authorization': process.env.GUEST_TOKEN
+    }
+  };
+  axios.request(options).then((response) => {
+    res.status(200).send(response.data);
+  }).catch((error) => {
+    console.error('get_season_item::  ', error);
+  });
+});

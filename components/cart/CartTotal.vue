@@ -40,7 +40,6 @@ export default {
     disableCheckout () {
       const cartItems = this.CartQuotationDoc.items;
       const currentItem = cartItems && cartItems.length > 0 ? cartItems.find(c => c.actual_qty === 0) : {};
-      console.log('currentItem:: ', currentItem);
       if (currentItem && Object.keys(currentItem).length > 0) {
         return true;
       } else {
