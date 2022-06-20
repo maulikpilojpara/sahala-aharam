@@ -2141,7 +2141,7 @@ ul.breadcrumb-list li:last-child a {
   position: relative;
   padding-right:15px;
 }
-.details-gallery-carousel .owl-stage-outer{
+.details-gallery-carousel .hooper-list{
   background: #fff;
   border-radius: 35px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.05);
@@ -2181,7 +2181,7 @@ ul.breadcrumb-list li:last-child a {
 .details-gallery-carousel .owl-item {
   width: 100%;
 }
-.details-gallery-carousel  .owl-nav {
+.details-gallery-carousel  .hooper-navigation {
   position: absolute;
   top: 100%;
   right: 0;
@@ -2191,7 +2191,7 @@ ul.breadcrumb-list li:last-child a {
   align-items: center;
   justify-content: center;
 }
-.details-gallery-carousel.details-gallery-carousel .owl-nav  button[class*="owl-"] {
+.details-gallery-carousel.details-gallery-carousel .hooper-navigation  button[class*="hooper-"] {
   border: 0;
   background: transparent;
   width: 55px;
@@ -2199,11 +2199,11 @@ ul.breadcrumb-list li:last-child a {
   height: 35px;
   padding: 0;
 }
-.details-gallery-carousel.details-gallery-carousel .owl-nav button[class*="owl-"]::before {
+.details-gallery-carousel.details-gallery-carousel .hooper-navigation button[class*="hooper-"]::before {
   width: 34px;
   border-width: 3px;
 }
-.details-gallery-carousel.details-gallery-carousel .owl-nav button[class*="owl-"]::after {
+.details-gallery-carousel.details-gallery-carousel .hooper-navigation button[class*="hooper-"]::after {
   width: 18px;
   height: 18px;
   border-width: 3px;

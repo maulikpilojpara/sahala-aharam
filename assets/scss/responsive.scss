@@ -236,7 +236,7 @@
   .details-gallery-carousel .img {
       height: 330px;
   }
-  .details-gallery-carousel .owl-stage-outer {
+  .details-gallery-carousel .hooper-list {
       border-radius: 25px;
   }
   .summery {
@@ -282,7 +282,7 @@
 @media (max-width:767px){
   body {
       font-size:14px;
-      padding-top: 140px;
+      padding-top: 192px;
   }
   p {
       line-height: 140%;
@@ -692,10 +692,10 @@
       width: 55%;
       border-radius: 0 30px 30px 0;
   }
-  .details-gallery-carousel .owl-stage-outer {
+  .details-gallery-carousel .hooper-list {
       border-radius: 25px;
   }
-  .details-gallery-carousel  .owl-nav {
+  .details-gallery-carousel .hooper-navigation {
       margin: 10px 0;
       width: 48%;
   }
