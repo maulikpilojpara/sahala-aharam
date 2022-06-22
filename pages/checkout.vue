@@ -1,7 +1,7 @@
 <template>
   <div class="checkout-main py-5">
     <div class="container">
-      <div v-show="deleteResponse" class="delete-response">
+      <div v-show="deleteResponse" class="alert" :class="{ 'alert-success' : deleteResponse && deleteResponse.includes('Successfully'), 'alert-danger' : deleteResponse && !deleteResponse.includes('Successfully') }" role="alert">
           <p>{{ deleteResponse }}</p>
       </div>
       <div class="row">
@@ -11,12 +11,15 @@
               <h3>Shipping Addresses</h3>
               <div class="card-wrap">
                 <template v-for="(spAddress, indx) in shippingAddresses">
-                  <div class="card" :key="indx">
+                  <div class="card" :class="{ 'hidden' : selectedAddress === spAddress.name && deleteResponse && deleteResponse.includes('Successfully') }" :key="indx">
                     <div class="card-cover">
                       <input type="radio" v-model="selectedAddress" :value="spAddress.name" name="select-radio" class="delete" />
                       <div class="card-detail">
                         <h6>{{ spAddress.name }}</h6>
                         <p v-html="spAddress.display" />
+                        <div v-if="selectedAddress === spAddress.name" class="svg-wrap">
+                          <svg width="19" height="19" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#fff" d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"/></svg>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -28,12 +31,15 @@
               <h3>Billing Addresses</h3>
               <div class="card-wrap">
                 <template v-for="(blAddress, indx) in billingAddresses">
-                  <div class="card" :key="indx">
+                  <div class="card" :class="{ 'hidden' : selectedAddress === blAddress.name && deleteResponse && deleteResponse.includes('Successfully') }" :key="indx">
                     <div class="card-cover">
                       <input type="radio" v-model="selectedAddress" :value="blAddress.name" name="select-radio" class="delete"  />
                       <div class="card-detail">
                         <h6>{{ blAddress.name }}</h6>
                         <p v-html="blAddress.display" />
+                        <div v-if="selectedAddress === blAddress.name" class="svg-wrap">
+                          <svg width="19" height="19" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#fff" d="M438.6 105.4C451.1 117.9 451.1 138.1 438.6 150.6L182.6 406.6C170.1 419.1 149.9 419.1 137.4 406.6L9.372 278.6C-3.124 266.1-3.124 245.9 9.372 233.4C21.87 220.9 42.13 220.9 54.63 233.4L159.1 338.7L393.4 105.4C405.9 92.88 426.1 92.88 438.6 105.4H438.6z"/></svg>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -42,7 +48,7 @@
             </div>
             <!-- Add new address -->
             <button class="add-address-btn btn btn-primary me-1" @click="toggleAddressForm()">Add new address</button>
-            <button class="add-address-btn btn btn-primary" @click="deleteAddress()">Delete address</button>
+            <button v-show="selectedAddress" class="add-address-btn btn btn-primary" @click="deleteAddress()">Delete address</button>
             <div v-if="newAddressForm" class="form_wrap">
               <form method="post" @submit.prevent="addNewForm">
                 <div class="row">
@@ -176,7 +182,7 @@ export default {
         address_type: ''
       },
       newAddressForm: false,
-      selectedAddress: {},
+      selectedAddress: '',
       deleteResponse: ''
   }
   },
@@ -280,9 +286,10 @@ export default {
         const deleteAddressResp = await this.$store.dispatch('customer/cart/deleteAddress', deleteObj);
         this.deleteResponse = deleteAddressResp;
 
+        window.scrollTo(0,0);
         if (deleteAddressResp.includes("Successfully")) {
-            this.
-            return
+            // this.
+            // return
         }
         console.log('deleteAddressResp:: ', deleteAddressResp);
       };
@@ -345,6 +352,9 @@ export default {
   flex: 0 0 50%;
   max-width: 50%;
   padding: 0 15px;
+}
+.card.hidden {
+  display: none;
 }
 .card:nth-child(n+3) {
   margin-top: 20px;
@@ -435,6 +445,18 @@ export default {
 }
 .checkout-main .btn {
   z-index: 0;
+}
+.svg-wrap {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: #69BD44;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    text-align: center;
 }
 @keyframes lds-ripple {
   0% {
