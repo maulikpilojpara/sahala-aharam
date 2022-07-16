@@ -75,7 +75,7 @@
     </div>
     <div class="alert" :class="`alert-${cartResponse.class}`" v-if="Object.keys(cartResponse).length > 0 &&  cartResponse.class !== 'load'" role="alert">
       <template v-if="cartResponse.class === 'danger'">
-        <span>Please <nuxt-link to="/login">login</nuxt-link> to continue</span>
+        <span>Please <nuxt-link to="/login" event="" @click.native="redirectTo('/login')">login</nuxt-link> to continue</span>
       </template>
       <template v-else>
         <span>"{{getName}}" has been added to your cart. </span><nuxt-link to="/cart">Go To Cart</nuxt-link>
@@ -110,6 +110,12 @@ export default {
     }
   },
   methods: {
+    redirectTo (path) {
+      console.log('route:: ', this.$route.fullPath);
+      localStorage.setItem('afterLoggedInRedirection', this.$route.fullPath);
+      this.$router.push({ path })
+      // return this.getUserLoginStatus ? '/my-account' : '/login'
+    },
     increaseQty() {
       console.log('this.qty: ', this.qty);
 

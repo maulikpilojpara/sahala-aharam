@@ -1,11 +1,13 @@
 <template>
   <div class="homepage">
-    <MainBanner />
+    <MainBanner :items="homeBanners" />
     <BestOffers />
     <Category />
     <ProductSlider v-if="popularProducts && popularProducts.length > 0" title="Popular Products" :products="popularProducts" />
     <ProductSlider v-if="recentProducts && recentProducts.length > 0" title="Recent Products" :products="recentProducts" />
+    <MainBanner :items="comboBundleBanner" />
     <ProductSlider v-if="seasonItemArray && seasonItemArray.length > 0" title="Seasonal Products" :products="seasonItemArray" />
+    <MainBanner :items="whySahajaBanner" />
     <Testimonials />
     <Certifications />
   </div>
@@ -20,8 +22,11 @@ export default {
   name: 'IndexPage',
   computed: {
     ...mapGetters({
+      homeBanners: 'global/getHomeBanners',
       popularProducts: 'global/getHomePopularProducts',
-      recentProducts: 'global/getHomeRecentProducts'
+      recentProducts: 'global/getHomeRecentProducts',
+      comboBundleBanner: 'global/getHomeComboBundle',
+      whySahajaBanner: 'global/getHomeWhySahaja',
     })
   },
   // async fetch (context) {
